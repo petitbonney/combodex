@@ -18,6 +18,13 @@ export const TOOL_IDS = [
   'favoriteArtist',
   'bigBench',
   'marketValue',
+  'piggyBank',
+  'nap',
+  'duo',
+  'evolutionStone',
+  'heavyweight',
+  'palette',
+  'badgeCase',
 ] as const;
 export type ToolId = (typeof TOOL_IDS)[number];
 
@@ -45,6 +52,12 @@ export interface ToolContext {
   variantsOff: boolean;
   /** Pokémon différents joués pendant la run, main en cours comprise. */
   distinctPokemon: number;
+  /** ₽ détenus au moment de jouer. */
+  money: number;
+  /** Points de Retraite restants au moment de jouer. */
+  retreatPoints: number;
+  /** Combats gagnés pendant la run, combat en cours exclu. */
+  fightsWon: number;
 }
 
 export interface ToolDef {
@@ -82,6 +95,14 @@ const TRAINING_STEP = 0.1;
 const CAMPFIRE_MULT = 4;
 const RIGID_BINDER_TIMES = 1.5;
 const FAVORITE_ARTIST_TIMES = 2;
+const PIGGY_BANK_STEP = 5;
+const NAP_MULT = 2;
+const DUO_MULT = 6;
+const EVOLUTION_STONE_MULT = 3;
+const HEAVYWEIGHT_MULT = 4;
+const HEAVYWEIGHT_RETREAT = 3;
+const PALETTE_TIMES = 2;
+const BADGE_CASE_STEP = 0.1;
 
 export function isLineCombo(combo: ComboId): boolean {
   return combo === 'line' || combo === 'monoLine';
@@ -146,6 +167,43 @@ export const TOOLS: Record<ToolId, ToolDef> = {
     rarity: 'legendary',
     collection: true,
     addMult: ({ scoring }) => scoring.reduce((sum, { data }) => sum + marketMult(data), 0),
+  },
+  piggyBank: {
+    id: 'piggyBank',
+    rarity: 'common',
+    addMult: ({ money }) => Math.floor(money / PIGGY_BANK_STEP),
+  },
+  nap: {
+    id: 'nap',
+    rarity: 'common',
+    addMult: ({ retreatPoints }) => NAP_MULT * retreatPoints,
+  },
+  duo: {
+    id: 'duo',
+    rarity: 'common',
+    addMult: ({ combo }) => (combo === 'pair' || combo === 'family' ? DUO_MULT : 0),
+  },
+  evolutionStone: {
+    id: 'evolutionStone',
+    rarity: 'common',
+    addMult: ({ played }) =>
+      EVOLUTION_STONE_MULT * played.filter(({ data }) => data.stage !== 'Basic').length,
+  },
+  heavyweight: {
+    id: 'heavyweight',
+    rarity: 'uncommon',
+    addMult: ({ played }) =>
+      HEAVYWEIGHT_MULT * played.filter(({ data }) => data.retreat >= HEAVYWEIGHT_RETREAT).length,
+  },
+  palette: {
+    id: 'palette',
+    rarity: 'uncommon',
+    timesMult: ({ combo }) => (combo === 'rainbow' ? PALETTE_TIMES : 1),
+  },
+  badgeCase: {
+    id: 'badgeCase',
+    rarity: 'rare',
+    timesMult: ({ fightsWon }) => 1 + BADGE_CASE_STEP * fightsWon,
   },
 };
 

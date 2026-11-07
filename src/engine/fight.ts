@@ -340,6 +340,9 @@ function scoreInput(
     rules: currentRules(fight),
     comboCounts: state.stats.comboCounts,
     seenDexIds: state.stats.seenDexIds,
+    money: state.money,
+    retreatPoints: fight.retreatPoints,
+    fightsWon: state.stats.fightsWon,
     rng: estimate ? null : state.rng,
   };
 }
@@ -351,6 +354,11 @@ export function previewHand(
   uids: readonly number[],
 ): ScoreResult {
   return scoreHand(scoreInput(state, requireFight(state), index, uids, true));
+}
+
+/** Vrai si la Brume ou une carte cachée interdit de montrer l'estimation au joueur. */
+export function isPreviewMasked(fight: FightState, uids: readonly number[]): boolean {
+  return currentRules(fight).hideCombo || uids.some((uid) => isHidden(fight, uid));
 }
 
 function validatePlay(state: RunState, fight: FightState, uids: readonly number[]): void {

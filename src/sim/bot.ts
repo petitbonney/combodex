@@ -119,7 +119,9 @@ function shopAction(state: RunState, index: CardIndex): Action {
     if (evolveUid !== undefined) return { type: 'buySlot', index: card.position, evolveUid };
     return { type: 'buySlot', index: card.position };
   }
-  const booster = shop.boosters.findIndex((entry) => entry && entry.price <= state.money);
+  const booster = shop.boosters.findIndex(
+    (entry) => entry && entry.price <= state.money && (entry.kind !== 'trainer' || toolRoom),
+  );
   if (booster >= 0) return { type: 'buyBooster', index: booster };
   return { type: 'leaveShop' };
 }
@@ -136,6 +138,14 @@ function boosterAction(state: RunState, index: CardIndex): Action {
       state.deck.some((entry) => cardOf(index, entry).types.includes(energy)),
     );
     return { type: 'keepBoosterEnergy', index: Math.max(0, shared), targetUid: strongest.uid };
+  }
+  if (booster.kind === 'trainer') {
+    const priciest = booster.tools
+      .map((tool, position) => ({ price: tool.price, position }))
+      .sort((a, b) => b.price - a.price)[0];
+    return priciest && state.tools.length < TOOL_SLOTS
+      ? { type: 'keepBoosterTool', index: priciest.position }
+      : { type: 'skipBooster' };
   }
   const tagTeamsFull = tagTeamCount(state, index) >= MAX_TAG_TEAMS;
   const options = booster.cards

@@ -196,3 +196,31 @@ describe('estimation', () => {
     expect(run(5)).toBe(run(5));
   });
 });
+
+describe('totaux pas à pas pour les animations', () => {
+  it('donne les Dégâts et le Multi après chaque étape, et finit sur le résultat', () => {
+    const [a, b] = fillers(2, { dexIds: [930], types: ['Fire'], bestDamage: 40 });
+    const holo = instance(1, a as never, 'holo');
+    const plain = instance(2, b as never);
+    const result = scoreHand(
+      scoreInput([holo, plain], [a, b] as never, { tools: [tool(9, 'campfire', 'Fire')] }),
+    );
+    expect(result.running).toHaveLength(result.steps.length);
+    expect(result.running[0]).toEqual({ damage: 20, mult: 2 });
+    expect(result.running.at(-1)).toEqual({ damage: result.damage, mult: result.mult });
+  });
+
+  it("montre le ×Multi d'une 1re édition à part, avant les ×Multi des Outils", () => {
+    const first = card({ id: 'first', bestDamage: 30 });
+    const result = scoreHand(
+      scoreInput([instance(1, first, 'firstEdition')], [first], {
+        tools: [tool(9, 'badgeCase')],
+        fightsWon: 10,
+      }),
+    );
+    const kinds = result.steps.map((step) => step.kind);
+    expect(kinds).toEqual(['combo', 'card', 'cardTimes', 'tool']);
+    expect(result.running[2]?.mult).toBeCloseTo(1.5);
+    expect(result.running[3]?.mult).toBeCloseTo(3);
+  });
+});

@@ -21,6 +21,7 @@ import {
   buySlot,
   keepBoosterCard,
   keepBoosterEnergy,
+  keepBoosterTool,
   openFreeBooster,
   openShop,
   requireBooster,
@@ -180,6 +181,13 @@ function closeBooster(state: RunState, events: GameEvent[]): void {
   else state.phase = 'shop';
 }
 
+/** Un choix de fait ; le booster se referme quand il n'en reste plus. */
+function afterKeep(state: RunState, events: GameEvent[]): void {
+  const booster = requireBooster(state);
+  booster.keeps -= 1;
+  if (booster.keeps <= 0 || booster.cards.length === 0) closeBooster(state, events);
+}
+
 function reorderTools(state: RunState, uids: readonly number[]): void {
   if (state.phase === 'won' || state.phase === 'lost') {
     throw new IllegalActionError('runOver');
@@ -243,10 +251,14 @@ export function applyAction(state: RunState, action: Action, index: CardIndex): 
       break;
     case 'keepBoosterCard':
       keepBoosterCard(next, index, action.index, action.evolveUid);
-      closeBooster(next, events);
+      afterKeep(next, events);
       break;
     case 'keepBoosterEnergy':
       keepBoosterEnergy(next, action.index, action.targetUid);
+      closeBooster(next, events);
+      break;
+    case 'keepBoosterTool':
+      keepBoosterTool(next, action.index);
       closeBooster(next, events);
       break;
     case 'skipBooster':

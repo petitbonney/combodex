@@ -5,7 +5,7 @@ Roguelite de deckbuilding web et mobile inspiré de Balatro, basé sur les vraie
 ## Avant de coder
 
 1. Lire [`docs/game-design.md`](docs/game-design.md) : c'est la source de vérité des règles. Toutes les questions de conception y sont tranchées (section Décisions).
-2. Lire le fichier de la phase en cours dans [`docs/phases/`](docs/phases/). Phase actuelle : [phase 1, prototype des règles](docs/phases/phase-1-prototype.md).
+2. Lire le fichier de la phase en cours dans [`docs/phases/`](docs/phases/). Phase actuelle : [phase 2, tranche verticale](docs/phases/phase-2-tranche-verticale.md).
 3. Une règle absente ou ambiguë dans le document de game design se demande à l'utilisateur ; ne pas l'inventer en silence.
 
 ## Conventions
@@ -13,12 +13,14 @@ Roguelite de deckbuilding web et mobile inspiré de Balatro, basé sur les vraie
 - Documentation et échanges en français ; identifiants de code en anglais.
 - TypeScript strict. Le moteur de règles (`src/engine/`) reste pur : pas d'entrées-sorties, pas de `Math.random()`, un générateur à graine injecté.
 - Tout texte affiché au joueur passe par les fichiers de traduction fr et en, jamais en dur.
+- L'interface (`src/ui/`) ne contient aucune règle : elle demande au moteur si une action est légale. `src/ui/logic/` reste sans DOM ni Svelte pour se tester avec Vitest.
+- Un `RunState` ne passe jamais par `$state` : le proxy casse le `structuredClone` du moteur. Utiliser `$state.raw`.
 - Chaque règle implémentée a son test. Les valeurs d'équilibrage changées sont reportées dans `docs/game-design.md`.
 - Cocher les tâches terminées dans le fichier de la phase.
 
 ## Commandes
 
-`npm test`, `npm run typecheck`, `npm run lint`, `npm run build:data`, `npm run play`, `npm run sim`. Node exécute le TypeScript directement : les imports gardent leur extension `.ts`, et seule la syntaxe effaçable est permise.
+`npm run dev`, `npm run build`, `npm test`, `npm run typecheck`, `npm run lint`, `npm run build:data`, `npm run build:icons`, `npm run play`, `npm run sim`. Node exécute le TypeScript directement : les imports gardent leur extension `.ts`, et seule la syntaxe effaçable est permise.
 
 ## Données TCGdex
 

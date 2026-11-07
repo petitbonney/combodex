@@ -21,7 +21,168 @@ export interface Messages {
   families: Record<AbilityFamily, { name: string; effect: string }>;
   illegal: Record<IllegalReason, string>;
   ui: UiMessages;
+  app: AppMessages;
   sim: SimMessages;
+}
+
+/** Textes de l'interface graphique ; `ui` sert aussi au texte des événements. */
+export interface AppMessages {
+  tagline: string;
+  continueRun: string;
+  newRun: string;
+  seedLabel: string;
+  seedHint: string;
+  howToPlay: string;
+  settings: string;
+  about: string;
+  close: string;
+  back: string;
+  menu: string;
+  deck: string;
+  deckTitle: (count: number) => string;
+  deckPlayed: string;
+  saveFailed: string;
+  loadFailed: string;
+  // Réglages
+  language: string;
+  animationSpeed: string;
+  speedNormal: string;
+  speedFast: string;
+  speedInstant: string;
+  textSize: string;
+  textNormal: string;
+  textLarge: string;
+  backToTitle: string;
+  abandonRun: string;
+  abandonConfirm: string;
+  abandonYes: string;
+  abandonNo: string;
+  // Crédits
+  aboutGame: string;
+  aboutData: string;
+  aboutLegal: string;
+  aboutLicense: string;
+  aboutSource: string;
+  aboutVersion: (version: string) => string;
+  // Aide
+  helpGoal: string;
+  helpFormula: string;
+  helpGestures: string;
+  helpKeyboard: string;
+  helpCombos: string;
+  helpGoalTitle: string;
+  helpGesturesTitle: string;
+  helpKeyboardTitle: string;
+  helpCombosTitle: string;
+  // Parcours
+  arenaTitle: (arena: number, type: string) => string;
+  arenaProgress: (arena: number, total: number) => string;
+  nextOpponent: string;
+  championEffect: string;
+  championStatuses: string;
+  fight: string;
+  skipFight: string;
+  skipHint: string;
+  // Combat
+  hp: string;
+  weaknessShort: string;
+  resistanceShort: string;
+  noneShort: string;
+  turn: string;
+  retreat: string;
+  turnValue: (turn: number, max: number) => string;
+  statusNow: string;
+  statusNext: string;
+  statusNone: string;
+  permanentEffect: string;
+  damageLabel: string;
+  multLabel: string;
+  pickCards: string;
+  estimate: (score: string) => string;
+  estimateHidden: string;
+  play: string;
+  discard: string;
+  discardCost: (cost: number) => string;
+  swap: string;
+  sortByType: string;
+  sortByLine: string;
+  skip: string;
+  emptyToolSlot: string;
+  toolDisabled: string;
+  toolSlotLabel: (position: number, name: string) => string;
+  hiddenCard: string;
+  paralyzedCard: string;
+  forcedCard: string;
+  selectedCount: (count: number, max: number) => string;
+  scouted: string;
+  searchTitle: string;
+  searchHint: string;
+  drawPile: (count: number) => string;
+  poison: (percent: number) => string;
+  // Scoring
+  silenced: string;
+  demoted: (from: string, to: string) => string;
+  scoreLine: (damage: string, mult: string) => string;
+  turnBanner: (turn: number) => string;
+  statusComing: string;
+  coinHeads: string;
+  coinTails: string;
+  rollDie: (rolled: number) => string;
+  rollSuccess: string;
+  rollFailure: string;
+  statusApplied: string;
+  // Fin de combat
+  victory: string;
+  defeat: string;
+  arenaCleared: (arena: number) => string;
+  gainVictory: string;
+  gainTurns: string;
+  gainInterest: string;
+  gainPicnic: string;
+  gainReward: string;
+  gainTotal: string;
+  continueLabel: string;
+  // Boutique
+  shop: string;
+  nextFight: string;
+  reroll: (cost: number) => string;
+  sold: string;
+  buy: (price: number) => string;
+  addToDeck: string;
+  evolveInto: (name: string) => string;
+  evolveHint: string;
+  yourTools: string;
+  sellFor: (price: number) => string;
+  boosterNames: Record<'set' | 'energy' | 'trainer' | 'premium', string>;
+  boosterContents: Record<'set' | 'energy' | 'trainer' | 'premium', string>;
+  // Booster
+  boosterFree: string;
+  openBooster: string;
+  tapToReveal: string;
+  revealAll: string;
+  pickKeep: (left: number) => string;
+  keep: string;
+  skipBooster: string;
+  pickTarget: string;
+  toolsFull: string;
+  // Carte
+  stage: string;
+  variant: string;
+  talent: string;
+  energies: string;
+  damageStat: string;
+  retreatStat: string;
+  closeZoom: string;
+  // Fin de run
+  runWon: string;
+  runLost: string;
+  statFights: string;
+  statBestHand: string;
+  statHands: string;
+  statFavorite: string;
+  statSeed: string;
+  playAgain: string;
+  toTitle: string;
 }
 
 export interface UiMessages {
@@ -81,6 +242,7 @@ export interface UiMessages {
   stepCard: (name: string, parts: string) => string;
   stepSilenced: (name: string) => string;
   stepTool: (name: string, parts: string) => string;
+  stepCardTimes: (times: number) => string;
   stepFurnace: (amount: number) => string;
   stepLoss: (amount: number) => string;
   stepCounterAttack: (amount: number) => string;
@@ -127,6 +289,8 @@ export interface UiMessages {
   shopReroll: (cost: number) => string;
   boosterSet: string;
   boosterEnergy: string;
+  boosterTrainer: string;
+  boosterPremium: string;
   ownedTools: string;
   runOver: (won: boolean, fights: number, best: number) => string;
   deckHeader: (count: number) => string;

@@ -85,7 +85,7 @@ export interface ShopToolSlot {
 }
 
 export type ShopSlot = ShopCardSlot | ShopToolSlot;
-export type BoosterKind = 'set' | 'energy';
+export type BoosterKind = 'set' | 'energy' | 'trainer' | 'premium';
 
 export interface ShopBooster {
   kind: BoosterKind;
@@ -102,6 +102,10 @@ export interface OpenBooster {
   kind: BoosterKind;
   cards: { cardId: string; variant: Variant }[];
   energies: PokemonType[];
+  /** Outils du booster Dresseur, avec leur prix de référence pour la revente. */
+  tools: { toolId: ToolId; type: PokemonType | null; price: number }[];
+  /** Choix qu'il reste à faire avant que le booster se referme. */
+  keeps: number;
   /** Ouvert gratuitement après avoir passé un combat. */
   free: boolean;
 }
@@ -155,6 +159,7 @@ export type Action =
   | { type: 'leaveShop' }
   | { type: 'keepBoosterCard'; index: number; evolveUid?: number }
   | { type: 'keepBoosterEnergy'; index: number; targetUid: number }
+  | { type: 'keepBoosterTool'; index: number }
   | { type: 'skipBooster' };
 
 export type GameEvent =

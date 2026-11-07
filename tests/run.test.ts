@@ -313,8 +313,22 @@ describe('boutique', () => {
 
   it('propose 2 emplacements, 2 boosters et une relance à 5 ₽', () => {
     expect(opened.shop?.slots).toHaveLength(2);
-    expect(opened.shop?.boosters.map((booster) => booster?.kind)).toEqual(['set', 'energy']);
+    expect(opened.shop?.boosters).toHaveLength(2);
     expect(opened.shop?.rerollCost).toBe(5);
+  });
+
+  it("tire 2 boosters différents, le Premium plus rare que le booster d'extension", () => {
+    const counts: Record<string, number> = {};
+    for (let seed = 1; seed <= 600; seed++) {
+      const run: RunState = { ...nearlyWon('trainer'), rng: createRng(seed) };
+      const kinds = act(run, { type: 'play', uids: [0] }).state.shop?.boosters.map(
+        (booster) => booster?.kind as string,
+      );
+      expect(new Set(kinds).size).toBe(2);
+      for (const kind of kinds ?? []) counts[kind] = (counts[kind] ?? 0) + 1;
+    }
+    expect(Object.keys(counts).sort()).toEqual(['energy', 'premium', 'set', 'trainer']);
+    expect(counts.premium as number).toBeLessThan(counts.set as number);
   });
 
   it("ne vend jamais de TAG TEAM à l'unité", () => {
@@ -443,6 +457,94 @@ describe('boutique', () => {
     expect(() => act(state, { type: 'reroll' })).toThrow(/notEnoughMoney/);
   });
 
+  describe('booster Premium', () => {
+    const premium = { boosters: [{ kind: 'premium' as const, price: 8 }] };
+
+    it('coûte 8 ₽ et contient 5 Pokémon dont 1 holo garanti', () => {
+      for (let seed = 1; seed <= 200; seed++) {
+        const run: RunState = { ...shopRun(8, premium), rng: createRng(seed) };
+        const { state } = act(run, { type: 'buyBooster', index: 0 });
+        expect(state.money).toBe(0);
+        expect(state.booster?.cards).toHaveLength(5);
+        const holo = state.booster?.cards.at(-1);
+        expect(holo?.variant).toBe('holo');
+        expect(index.byId.get(holo?.cardId ?? '')?.variants).toContain('holo');
+      }
+    });
+
+    it('laisse garder 2 cartes, puis se referme', () => {
+      const { state } = act(shopRun(8, premium), { type: 'buyBooster', index: 0 });
+      const second = state.booster?.cards[1];
+      const once = act(state, { type: 'keepBoosterCard', index: 0 }).state;
+      expect(once.phase).toBe('booster');
+      expect(once.booster?.cards).toHaveLength(4);
+      expect(once.booster?.cards[0]).toEqual(second);
+      const twice = act(once, { type: 'keepBoosterCard', index: 0 }).state;
+      expect(twice.phase).toBe('shop');
+      expect(twice.deck).toHaveLength(22);
+    });
+
+    it('se referme sans la seconde carte si le joueur renonce', () => {
+      const { state } = act(shopRun(8, premium), { type: 'buyBooster', index: 0 });
+      const once = act(state, { type: 'keepBoosterCard', index: 0 }).state;
+      const after = act(once, { type: 'skipBooster' }).state;
+      expect(after.phase).toBe('shop');
+      expect(after.deck).toHaveLength(21);
+    });
+  });
+
+  describe('booster Dresseur', () => {
+    const trainer = { boosters: [{ kind: 'trainer' as const, price: 6 }] };
+
+    it('coûte 6 ₽ et propose 3 Outils différents, dont 1 gardé', () => {
+      const { state } = act(shopRun(6, trainer), { type: 'buyBooster', index: 0 });
+      expect(state.money).toBe(0);
+      const tools = state.booster?.tools ?? [];
+      expect(tools).toHaveLength(3);
+      expect(new Set(tools.map((tool) => `${tool.toolId}${tool.type}`)).size).toBe(3);
+      const after = act(state, { type: 'keepBoosterTool', index: 1 }).state;
+      expect(after.phase).toBe('shop');
+      expect(after.tools).toHaveLength(1);
+      expect(after.tools[0]?.toolId).toBe(tools[1]?.toolId);
+      expect(after.tools[0]?.price).toBe(tools[1]?.price);
+    });
+
+    it('ne propose ni un Outil possédé ni un Outil en vitrine', () => {
+      for (let seed = 1; seed <= 100; seed++) {
+        const slots = [{ kind: 'tool' as const, toolId: 'prism' as const, type: null, price: 5 }];
+        const owned = [{ uid: 99, toolId: 'picnic' as const, type: null, price: 4, stacks: 0 }];
+        const run: RunState = {
+          ...shopRun(6, { ...trainer, slots }),
+          tools: owned,
+          rng: createRng(seed),
+        };
+        const ids = act(run, { type: 'buyBooster', index: 0 }).state.booster?.tools.map(
+          (tool) => tool.toolId,
+        );
+        expect(ids).not.toContain('prism');
+        expect(ids).not.toContain('picnic');
+      }
+    });
+
+    it('refuse un Outil de plus quand les emplacements sont pleins, sauf après une revente', () => {
+      const owned = Array.from({ length: 5 }, (_, uid) => ({
+        uid: 100 + uid,
+        toolId: 'picnic' as const,
+        type: null,
+        price: 4,
+        stacks: 0,
+      }));
+      const run: RunState = { ...shopRun(6, trainer), tools: owned };
+      const { state } = act(run, { type: 'buyBooster', index: 0 });
+      expect(() => act(state, { type: 'keepBoosterTool', index: 0 })).toThrow(/toolSlotsFull/);
+      const sold = act(state, { type: 'sellTool', uid: 100 }).state;
+      expect(sold.money).toBe(2);
+      expect(sold.phase).toBe('booster');
+      const after = act(sold, { type: 'keepBoosterTool', index: 0 }).state;
+      expect(after.tools).toHaveLength(5);
+    });
+  });
+
   describe("booster d'extension", () => {
     it('coûte 4 ₽ et révèle 5 Pokémon, dont 1 gardé', () => {
       const { state } = act(shopRun(4), { type: 'buyBooster', index: 0 });
@@ -478,6 +580,8 @@ describe('boutique', () => {
           kind: 'set',
           cards: [{ cardId: tagTeam?.id as string, variant: 'holo' }],
           energies: [],
+          tools: [],
+          keeps: 1,
           free: false,
         },
       };

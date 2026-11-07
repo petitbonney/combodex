@@ -1,18 +1,25 @@
-/** Boutique simplifiée du prototype : cartes et Outils à l'unité, boosters, relance. */
+/** Boutique : cartes et Outils à l'unité, boosters, relance et revente. */
 import {
+  BOOSTER_WEIGHTS,
   CARD_PRICES,
   ENERGY_BOOSTER_PRICE,
   ENERGY_BOOSTER_SIZE,
   MAX_TAG_TEAMS,
+  PREMIUM_BOOSTER_KEEPS,
+  PREMIUM_BOOSTER_PRICE,
+  PREMIUM_BOOSTER_SIZE,
   RARITY_WEIGHTS,
   REROLL_BASE_COST,
   SET_BOOSTER_PRICE,
   SET_BOOSTER_SIZE,
+  SHOP_BOOSTERS,
   SHOP_SLOTS,
   SHOP_TOOL_CHANCE,
   TOOL_PRICES,
   TOOL_RARITY_WEIGHTS,
   TOOL_SLOTS,
+  TRAINER_BOOSTER_PRICE,
+  TRAINER_BOOSTER_SIZE,
   VARIANT_WEIGHTS,
 } from '../content/balance.ts';
 import { TOOL_OFFERS, TOOLS } from '../content/tools.ts';
@@ -20,13 +27,23 @@ import type { CardData, CardIndex, PokemonType, Rarity, Variant } from './cards.
 import { cardOf, evolvesFrom } from './cards.ts';
 import { nextFloat, pick, sample, weightedPick } from './rng.ts';
 import {
+  type BoosterKind,
   IllegalActionError,
   instanceOf,
   type OpenBooster,
   type RunState,
+  type ShopBooster,
   type ShopSlot,
   type ShopState,
+  type ShopToolSlot,
 } from './state.ts';
+
+const BOOSTER_PRICES: Record<BoosterKind, number> = {
+  set: SET_BOOSTER_PRICE,
+  energy: ENERGY_BOOSTER_PRICE,
+  trainer: TRAINER_BOOSTER_PRICE,
+  premium: PREMIUM_BOOSTER_PRICE,
+};
 
 /** Énergies de base : il n'existe pas d'énergie de base Dragon ni Incolore. */
 const BASIC_ENERGIES: readonly PokemonType[] = [
@@ -72,7 +89,7 @@ function offerCard(state: RunState, index: CardIndex): ShopSlot {
   };
 }
 
-function offerTool(state: RunState, taken: readonly ShopSlot[]): ShopSlot | null {
+function offerTool(state: RunState, taken: readonly ShopSlot[]): ShopToolSlot | null {
   const sameOffer =
     (a: { toolId: string; type: PokemonType | null }) =>
     (b: { toolId: string; type: PokemonType | null }) =>
@@ -103,13 +120,25 @@ function fillSlots(state: RunState, index: CardIndex): ShopSlot[] {
   return slots;
 }
 
+/** Des boosters tous différents, tirés selon leurs poids. */
+function drawBoosters(state: RunState): ShopBooster[] {
+  const kinds = Object.keys(BOOSTER_WEIGHTS) as BoosterKind[];
+  const boosters: ShopBooster[] = [];
+  while (boosters.length < SHOP_BOOSTERS) {
+    const remaining = kinds.filter((kind) => !boosters.some((entry) => entry.kind === kind));
+    const kind = weightedPick(
+      state.rng,
+      remaining.map((value) => [value, BOOSTER_WEIGHTS[value]] as const),
+    );
+    boosters.push({ kind, price: BOOSTER_PRICES[kind] });
+  }
+  return boosters;
+}
+
 export function openShop(state: RunState, index: CardIndex): void {
   const shop: ShopState = {
     slots: fillSlots(state, index),
-    boosters: [
-      { kind: 'set', price: SET_BOOSTER_PRICE },
-      { kind: 'energy', price: ENERGY_BOOSTER_PRICE },
-    ],
+    boosters: drawBoosters(state),
     rerollCost: REROLL_BASE_COST,
   };
   state.shop = shop;
@@ -180,8 +209,11 @@ export function buySlot(
   shop.slots[slotIndex] = null;
 }
 
+/** La revente reste possible pendant l'ouverture d'un booster acheté, pour libérer un emplacement. */
 export function sellTool(state: RunState, uid: number): void {
-  requireShop(state);
+  if (!state.shop || (state.phase !== 'shop' && state.phase !== 'booster')) {
+    throw new IllegalActionError('noShop');
+  }
   const tool = state.tools.find((candidate) => candidate.uid === uid);
   if (!tool) throw new IllegalActionError('unknownTool');
   state.tools = state.tools.filter((candidate) => candidate !== tool);
@@ -200,7 +232,53 @@ function setBooster(state: RunState, index: CardIndex, free: boolean): OpenBoost
     const card = drawCard(state, index.set.cards);
     return { cardId: card.id, variant: drawVariant(state, card) };
   });
-  return { kind: 'set', cards, energies: [], free };
+  return { kind: 'set', cards, energies: [], tools: [], keeps: 1, free };
+}
+
+/** Le dernier Pokémon est une holo garantie, tirée parmi les cartes qui existent en holo. */
+function premiumBooster(state: RunState, index: CardIndex): OpenBooster {
+  const cards = Array.from({ length: PREMIUM_BOOSTER_SIZE - 1 }, () => {
+    const card = drawCard(state, index.set.cards);
+    return { cardId: card.id, variant: drawVariant(state, card) };
+  });
+  const holos = index.set.cards.filter((card) => card.variants.includes('holo'));
+  cards.push({ cardId: drawCard(state, holos).id, variant: 'holo' });
+  return {
+    kind: 'premium',
+    cards,
+    energies: [],
+    tools: [],
+    keeps: PREMIUM_BOOSTER_KEEPS,
+    free: false,
+  };
+}
+
+function trainerBooster(state: RunState, shop: ShopState): OpenBooster {
+  const taken = shop.slots.filter((slot) => slot !== null);
+  const tools: ShopToolSlot[] = [];
+  for (let i = 0; i < TRAINER_BOOSTER_SIZE; i++) {
+    const tool = offerTool(state, [...taken, ...tools]);
+    if (tool) tools.push(tool);
+  }
+  return {
+    kind: 'trainer',
+    cards: [],
+    energies: [],
+    tools: tools.map(({ toolId, type, price }) => ({ toolId, type, price })),
+    keeps: 1,
+    free: false,
+  };
+}
+
+function energyBooster(state: RunState): OpenBooster {
+  return {
+    kind: 'energy',
+    cards: [],
+    energies: sample(state.rng, BASIC_ENERGIES, ENERGY_BOOSTER_SIZE),
+    tools: [],
+    keeps: 1,
+    free: false,
+  };
 }
 
 export function openFreeBooster(state: RunState, index: CardIndex): void {
@@ -214,15 +292,13 @@ export function buyBooster(state: RunState, index: CardIndex, boosterIndex: numb
   if (!booster) throw new IllegalActionError('boosterSold');
   pay(state, booster.price);
   shop.boosters[boosterIndex] = null;
-  state.booster =
-    booster.kind === 'set'
-      ? setBooster(state, index, false)
-      : {
-          kind: 'energy',
-          cards: [],
-          energies: sample(state.rng, BASIC_ENERGIES, ENERGY_BOOSTER_SIZE),
-          free: false,
-        };
+  const open = {
+    set: () => setBooster(state, index, false),
+    energy: () => energyBooster(state),
+    trainer: () => trainerBooster(state, shop),
+    premium: () => premiumBooster(state, index),
+  };
+  state.booster = open[booster.kind]();
   state.phase = 'booster';
 }
 
@@ -239,13 +315,22 @@ export function keepBoosterCard(
   cardIndex: number,
   evolveUid: number | undefined,
 ): void {
-  const card = requireBooster(state).cards[cardIndex];
+  const booster = requireBooster(state);
+  const card = booster.cards[cardIndex];
   if (!card) throw new IllegalActionError('invalidBoosterChoice');
   addCard(state, index, card.cardId, card.variant, evolveUid);
+  booster.cards.splice(cardIndex, 1);
 }
 
 export function keepBoosterEnergy(state: RunState, energyIndex: number, targetUid: number): void {
   const energy = requireBooster(state).energies[energyIndex];
   if (!energy) throw new IllegalActionError('invalidBoosterChoice');
   instanceOf(state, targetUid).energies.push(energy);
+}
+
+export function keepBoosterTool(state: RunState, toolIndex: number): void {
+  const tool = requireBooster(state).tools[toolIndex];
+  if (!tool) throw new IllegalActionError('invalidBoosterChoice');
+  if (state.tools.length >= TOOL_SLOTS) throw new IllegalActionError('toolSlotsFull');
+  state.tools.push({ uid: state.nextUid++, ...tool, stacks: 0 });
 }

@@ -89,6 +89,9 @@ export function scoreInput(
     rules: { ...defaultRules(), ...rules },
     comboCounts: {},
     seenDexIds: [],
+    money: 0,
+    retreatPoints: 4,
+    fightsWon: 0,
     rng: null,
     ...rest,
   };

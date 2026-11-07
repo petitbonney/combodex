@@ -2,24 +2,33 @@
 
 Roguelite de deckbuilding gratuit, jouable sur navigateur et mobile : « Balatro, mais les mains de poker sont des équipes Pokémon ». On enchaîne des combos de vraies cartes du JCC Pokémon pour battre 8 Arènes, puis la Ligue.
 
-**Statut** : [phase 1](docs/phases/phase-1-prototype.md) développée : le prototype en texte se joue dans le terminal, sa porte de sortie reste à franchir.
+**Statut** : [phase 2](docs/phases/phase-2-tranche-verticale.md) développée : une run de 3 Arènes se joue dans le navigateur et s'installe en PWA. Sa session de test reste à mener.
 
-## Jouer au prototype
+## Jouer
 
 Il faut Node 22.18 ou plus.
 
 ```sh
 npm ci
+npm run dev
+```
+
+Le prototype en texte reste jouable dans le terminal :
+
+```sh
 npm run play -- --seed=42
 ```
 
 | Commande | Rôle |
 | --- | --- |
+| `npm run dev` | lancer le jeu en local |
+| `npm run build`, `npm run preview` | construire la PWA dans `dist/` et la servir |
 | `npm run play` | jouer une run dans le terminal (`--seed`, `--lang=fr` ou `en`, `--arenas`) |
 | `npm run sim` | simuler des runs avec un bot (`--runs`, `--seed`, `--arenas`, `--json`) |
 | `npm test` | lancer les tests |
 | `npm run typecheck`, `npm run lint` | vérifier les types et le style |
 | `npm run build:data` | régénérer `data/sm12.json` depuis TCGdex (`--market` pour relever prix et variantes) |
+| `npm run build:icons` | régénérer les icônes de la PWA, avec ImageMagick |
 
 ## Documentation
 

@@ -14,6 +14,7 @@ import {
   type GameEvent,
   instanceOf,
   isHidden,
+  isPreviewMasked,
   isStrong,
   type OpenBooster,
   type RunState,
@@ -231,8 +232,7 @@ export function renderPreview(
   result: ScoreResult,
 ): string {
   const { ui, combos } = view.text;
-  const masked = currentRules(fight).hideCombo || uids.some((uid) => isHidden(fight, uid));
-  if (masked) return ui.previewHidden;
+  if (isPreviewMasked(fight, uids)) return ui.previewHidden;
   return ui.previewLine(combos[result.countedCombo], result.score, result.damage, result.mult);
 }
 
@@ -264,6 +264,8 @@ function renderStep(view: View, state: RunState, step: ScoreStep): string {
       if (step.source === 'counterAttack') return ui.stepCounterAttack(step.amount);
       if (step.source === 'resistance') return ui.stepResistance(step.amount);
       return ui.stepLoss(step.amount);
+    case 'cardTimes':
+      return ui.stepCardTimes(step.times);
     case 'multChange':
       return ui.stepPenalty(step.amount);
     case 'weakness':
@@ -364,8 +366,13 @@ export function renderShop(view: View, state: RunState, shop: ShopState): string
   });
   shop.boosters.forEach((booster, position) => {
     if (!booster) return;
-    const name = booster.kind === 'set' ? ui.boosterSet : ui.boosterEnergy;
-    lines.push(ui.shopBooster(position + 1, name, booster.price));
+    const names = {
+      set: ui.boosterSet,
+      energy: ui.boosterEnergy,
+      trainer: ui.boosterTrainer,
+      premium: ui.boosterPremium,
+    };
+    lines.push(ui.shopBooster(position + 1, names[booster.kind], booster.price));
   });
   lines.push(ui.shopReroll(shop.rerollCost));
   if (state.tools.length > 0) {
@@ -378,7 +385,13 @@ export function renderShop(view: View, state: RunState, shop: ShopState): string
 }
 
 export function renderBooster(view: View, booster: OpenBooster): string[] {
-  const { types } = view.text;
+  const { types, tools, ui } = view.text;
+  if (booster.kind === 'trainer') {
+    return booster.tools.map(
+      (tool, position) =>
+        `  ${position + 1}. ${ui.labeled(toolName(view, tool), tools[tool.toolId].effect)}`,
+    );
+  }
   if (booster.kind === 'energy') {
     return booster.energies.map((energy, position) => `  ${position + 1}. ${types[energy]}`);
   }

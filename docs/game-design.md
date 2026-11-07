@@ -279,6 +279,15 @@ Les Outils et Stades sont les jokers du jeu : 5 emplacements d'effets passifs qu
 | Illustrateur fétiche | Atelier | ×2 Multi si toutes les cartes jouées ont le même illustrateur | Rare |
 | Grand banc | Combinaison | permet de poser 6 cartes ; la 6e marque si elle entre dans la combinaison | Rare |
 | La Cote | Collection | +Multi égal au prix Cardmarket de la carte en euros, plafonné à 50 | Légendaire |
+| Tirelire | Économie | +1 Multi par tranche de 5 ₽ détenus | Commune |
+| Sieste | Défausse | +2 Multi par point de Retraite restant | Commune |
+| Duo | Combinaison | +6 Multi sur une Paire ou une Famille | Commune |
+| Pierre d'évolution | Lignée | +3 Multi par carte Niveau 1 ou Niveau 2 jouée | Commune |
+| Poids lourd | Tank | +4 Multi par carte à retraite 3 ou plus jouée | Peu commune |
+| Palette | Arc-en-ciel | ×2 Multi sur un Arc-en-ciel | Peu commune |
+| Boîte à badges | Montée en puissance | ×0,1 Multi de plus par combat gagné | Rare |
+
+Le catalogue compte 20 Outils, soit 30 offres en boutique avec les 11 Feux de camp. Les 7 derniers ont été ajoutés en phase 2 et restent à valider par le jeu.
 
 **Synergies cassées recherchées**
 
@@ -387,7 +396,7 @@ Chaque victoire rapporte des Pokédollars (₽), dépensés dans une boutique qu
 - +1 ₽ par Tour non utilisé.
 - Intérêts : +1 ₽ par tranche de 5 ₽ détenus, plafonnés à 5 ₽ par combat.
 
-**Contenu de la boutique** : 2 emplacements de cartes ou d'Outils, 2 boosters et 1 consommable. Relancer coûte 5 ₽, puis 1 ₽ de plus à chaque relance.
+**Contenu de la boutique** : 2 emplacements de cartes ou d'Outils, 2 boosters différents tirés au hasard et 1 consommable. Relancer coûte 5 ₽, puis 1 ₽ de plus à chaque relance ; la relance ne change que les emplacements. Le consommable et les Stades attendent la phase 3.
 
 | Booster | Prix | Contenu | Cartes gardées |
 | --- | --- | --- | --- |
@@ -410,6 +419,7 @@ Le booster d'extension reprend le visuel du vrai booster quand TCGdex le fournit
 | Variante d'une carte | Normale 75, Reverse 18, Holo 6, 1re édition 1, parmi celles qui existent |
 | Rareté d'un Outil | Commun 55, Peu commun 30, Rare 13, Légendaire 2 |
 | Emplacement de boutique | une chance sur deux de proposer un Outil plutôt qu'une carte |
+| Booster de boutique | Extension 40, Énergie 30, Dresseur 20, Premium 10 |
 
 **Cartes TAG TEAM** : elles ne sont jamais vendues à l'unité et sortent uniquement des boosters, au taux d'une Ultra rare (environ 1 booster sur 10). Un deck en contient au plus 2.
 
@@ -461,7 +471,7 @@ Les détails techniques (lecture du dépôt sans exécuter ses fichiers, index d
 **Stack proposée**
 
 - Moteur de règles en TypeScript pur, sans interface : testable, déterministe grâce à une graine aléatoire.
-- Interface en Svelte ou React, cartes rendues en DOM et CSS ; effet holo en CSS.
+- Interface en Svelte 5 avec Vite, cartes rendues en DOM et CSS ; effet holo en CSS.
 - PWA : service worker pour le hors-ligne et le cache des images déjà vues.
 - Sauvegarde locale en IndexedDB.
 - Hébergement statique gratuit : GitHub Pages, Cloudflare Pages ou Netlify.
@@ -527,12 +537,16 @@ Toutes les questions ouvertes de la phase de conception sont tranchées.
 | Statuts par Tour | Annoncés un Tour d'avance, tirés au début du Tour, versions renforcées à partir de l'Arène 5 |
 | Extension à moins de 8 types | Les types reviennent, avec l'autre forme d'effet que lors de leur première apparition |
 | NG+ et enjeux | Deux axes séparés, débloqués à part et combinés avant la run |
-| Extension du prototype | Éclipse Cosmique (sm12, 2019) : 11 types, 14 lignées complètes, 64 talents, images complètes en français et en anglais |
+| Extension du prototype | Éclipse Cosmique (sm12, 2019) : 11 types, 14 lignées complètes, 64 talents, images en français et en anglais (une seule manque en français) |
 | Cartes TAG TEAM | Comptent comme chacun des Pokémon qu'elles réunissent ; obtenues uniquement en booster (environ 1 sur 10), 2 au maximum par deck |
 | Prix des Outils | Commun 4 ₽, Peu commun 5 ₽, Rare 7 ₽, Légendaire 10 ₽ |
 | Outil Colosse | Toutes les cartes qui marquent comptent leurs PV |
 | Effet permanent Psy | Chaque carte tirée a une chance sur deux d'arriver face cachée |
-| Boutique du prototype | 2 emplacements cartes ou Outils, 1 booster d'extension, 1 booster Énergie, relance |
+| Boutique de la tranche verticale | 2 emplacements cartes ou Outils, 2 boosters tirés parmi Extension, Énergie, Dresseur et Premium, relance, revente |
+| Framework d'interface | Svelte 5, avec Vite |
+| Images des cartes | Appel direct à `assets.tcgdex.net`, mises en cache par le service worker à mesure qu'elles sont vues : Combodex n'héberge aucun visuel |
+| Crédits | Mention « non affilié » sur l'accueil et dans la fiche À propos, avec le crédit TCGdex et la licence |
+| Catalogue de la tranche verticale | 20 Outils pour 30 offres, avec 7 Outils ajoutés sur les archétypes existants |
 
 **Précisions du prototype** : le document laissait ces points ouverts. Le moteur les tranche ainsi, en attendant une validation.
 
@@ -560,6 +574,19 @@ Toutes les questions ouvertes de la phase de conception sont tranchées.
 | Attraction | La carte désignée ne peut pas non plus être défaussée |
 | Passer un combat | Le booster gratuit est un booster d'extension |
 | Évolution permanente | Un Niveau 2 peut aussi se poser sur son Niveau 1 |
+
+**Précisions de la tranche verticale** : même statut, en attendant une validation.
+
+| Point | Lecture retenue |
+| --- | --- |
+| Booster Premium | La holo garantie est la dernière carte révélée, tirée parmi les cartes qui existent en holo. Renoncer à la seconde carte referme le booster |
+| Booster Dresseur | 3 Outils différents, ni possédés ni en vitrine, jamais de Stade pour l'instant. L'Outil gardé se revend sur son prix de boutique |
+| Revente | Possible aussi pendant l'ouverture d'un booster acheté, pour libérer un emplacement |
+| Tirelire, Sieste | Regardent les ₽ et les points de Retraite au moment de jouer la main |
+| Duo, Palette | Regardent la combinaison détectée, avant Colère, comme Entraînement |
+| Boîte à badges | Compte les combats déjà gagnés, pas celui en cours |
+| Sauvegarde | Après chaque action, pas seulement après chaque combat : une run reprend là où elle s'est arrêtée, et perdre un combat ne se rattrape pas en fermant le jeu |
+| Sélection | L'interface limite la sélection au nombre de cartes posables, défausse comprise ; défausser davantage se fait en deux fois |
 
 ## Roadmap
 

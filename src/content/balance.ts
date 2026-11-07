@@ -61,6 +61,15 @@ export const SET_BOOSTER_PRICE = 4;
 export const SET_BOOSTER_SIZE = 5;
 export const ENERGY_BOOSTER_PRICE = 4;
 export const ENERGY_BOOSTER_SIZE = 3;
+export const TRAINER_BOOSTER_PRICE = 6;
+export const TRAINER_BOOSTER_SIZE = 3;
+export const PREMIUM_BOOSTER_PRICE = 8;
+export const PREMIUM_BOOSTER_SIZE = 5;
+/** Cartes gardées dans un booster Premium ; 1 pour les autres. */
+export const PREMIUM_BOOSTER_KEEPS = 2;
+/** Boosters proposés dans une boutique, tous différents. */
+export const SHOP_BOOSTERS = 2;
+export const BOOSTER_WEIGHTS = { set: 40, energy: 30, trainer: 20, premium: 10 } as const;
 /** Chance qu'un emplacement de boutique propose un Outil plutôt qu'une carte. */
 export const SHOP_TOOL_CHANCE = 0.5;
 

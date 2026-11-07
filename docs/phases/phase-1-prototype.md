@@ -1,6 +1,6 @@
 # Phase 1 · Prototype des règles
 
-**Statut** : développement terminé ; il reste à jouer des runs à la main pour franchir la porte de sortie.
+**Statut** : terminée. La porte de sortie est franchie : des runs jouées à la main ont donné envie de continuer.
 **But** : prouver que le scoring est amusant, en texte et sans visuels, avant tout travail d'interface.
 **Porte de sortie** : une run en texte donne-t-elle envie de rejouer ?
 
@@ -65,7 +65,7 @@ combodex/
 
 - Format d'URL : `https://assets.tcgdex.net/<langue>/<série>/<extension>/<numéro>/<low|high>.webp`, par exemple `…/fr/sm/sm12/1/low.webp`.
 - L'index `https://assets.tcgdex.net/datas.json` liste les images disponibles par langue, série et extension.
-- Pour Éclipse Cosmique, les 271 images existent en français et en anglais.
+- Pour Éclipse Cosmique, les images existent en français et en anglais, sauf le visuel français de la carte 72 (404 en novembre 2026) : l'interface se replie sur l'autre langue.
 
 **Accès réseau** : dans les sessions Claude, `api.tcgdex.net` et `assets.tcgdex.net` peuvent être bloqués par la liste de domaines autorisés ; GitHub reste accessible. L'API REST de TCGdex reste une alternative valable pour un build lancé sur une machine de développement.
 

@@ -64,6 +64,10 @@ export interface ScoreInput {
   rules: HandRules;
   comboCounts: Partial<Record<string, number>>;
   seenDexIds: readonly number[];
+  /** ₽ détenus, points de Retraite restants et combats gagnés, lus par certains Outils. */
+  money: number;
+  retreatPoints: number;
+  fightsWon: number;
   /** `null` : estimation sans jet. */
   rng: Rng | null;
 }
@@ -80,6 +84,8 @@ export type ScoreStep =
     }
   | { kind: 'silenced'; uid: number }
   | { kind: 'tool'; uid: number; addMult: number; timesMult: number }
+  /** Les ×Multi des cartes (1re édition, Pile ou face), appliqués avant ceux des Outils. */
+  | { kind: 'cardTimes'; times: number }
   | {
       kind: 'damageChange';
       source: 'furnace' | 'loss' | 'counterAttack' | 'resistance';
@@ -97,6 +103,8 @@ export interface ScoreResult {
   playedUids: number[];
   scoringUids: number[];
   steps: ScoreStep[];
+  /** Dégâts et Multi après chaque étape, dans le même ordre que `steps`. */
+  running: { damage: number; mult: number }[];
   damage: number;
   mult: number;
   /** Score de la main, retiré des PV. */
@@ -203,14 +211,19 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   const marking = scoring.filter((position) => !silenced.has(position));
 
   const steps: ScoreStep[] = [];
+  const running: ScoreResult['running'] = [];
   const mostPlayed = mostPlayedCombos(input.comboCounts).has(combo);
   const comboFactor = mostPlayed ? rules.mostPlayedFactor : 1;
   const comboDamage = Math.floor(COMBO_VALUES[countedCombo].damage * comboFactor);
   const comboMult = Math.max(1, Math.floor(COMBO_VALUES[countedCombo].mult * comboFactor));
-  steps.push({ kind: 'combo', combo: countedCombo, damage: comboDamage, mult: comboMult });
 
   let damage = comboDamage;
   let mult = comboMult;
+  const record = (step: ScoreStep) => {
+    steps.push(step);
+    running.push({ damage, mult });
+  };
+  record({ kind: 'combo', combo: countedCombo, damage: comboDamage, mult: comboMult });
   let cardTimes = 1;
   let flatDamage = 0;
   const effects: TalentEffect[] = [];
@@ -225,7 +238,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     const card = cards[position] as PlayedCard;
     const { instance, data } = card;
     if (silenced.has(position)) {
-      steps.push({ kind: 'silenced', uid: instance.uid });
+      record({ kind: 'silenced', uid: instance.uid });
       return;
     }
     const talent = data.abilityFamily;
@@ -268,7 +281,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     damage += cardDamage;
     mult += addMult;
     cardTimes *= timesMult;
-    steps.push({
+    record({
       kind: 'card',
       uid: instance.uid,
       damage: cardDamage,
@@ -283,7 +296,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   const multPenalty = rules.multPenalty + mostPlayedPenalty;
   if (multPenalty > 0) {
     mult = Math.max(1, mult - multPenalty);
-    steps.push({ kind: 'multChange', source: 'penalty', amount: -multPenalty });
+    record({ kind: 'multChange', source: 'penalty', amount: -multPenalty });
   }
 
   // Les Outils se déclenchent de gauche à droite : les +Multi, puis les ×Multi.
@@ -298,30 +311,37 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     colorlessWild,
     variantsOff: rules.variantsOff,
     distinctPokemon: distinct.size,
+    money: input.money,
+    retreatPoints: input.retreatPoints,
+    fightsWon: input.fightsWon,
   });
   const toolAdd = (tool: ToolInstance) => TOOLS[tool.toolId].addMult?.(contextFor(tool)) ?? 0;
   const toolTimes = (tool: ToolInstance) => TOOLS[tool.toolId].timesMult?.(contextFor(tool)) ?? 1;
   const triggerAdd = (tool: ToolInstance) => {
     const addMult = toolAdd(tool);
     mult += addMult;
-    if (addMult !== 0) steps.push({ kind: 'tool', uid: tool.uid, addMult, timesMult: 1 });
+    if (addMult !== 0) record({ kind: 'tool', uid: tool.uid, addMult, timesMult: 1 });
   };
   const triggerTimes = (tool: ToolInstance) => {
     const timesMult = toolTimes(tool);
     mult *= timesMult;
-    if (timesMult !== 1) steps.push({ kind: 'tool', uid: tool.uid, addMult: 0, timesMult });
+    if (timesMult !== 1) record({ kind: 'tool', uid: tool.uid, addMult: 0, timesMult });
+  };
+  const applyCardTimes = () => {
+    mult *= cardTimes;
+    if (cardTimes !== 1) record({ kind: 'cardTimes', times: cardTimes });
   };
 
   if (rules.toolOrder === 'normal') {
     tools.forEach(triggerAdd);
-    mult *= cardTimes;
+    applyCardTimes();
     tools.forEach(triggerTimes);
   } else if (rules.toolOrder === 'timesFirst') {
-    mult *= cardTimes;
+    applyCardTimes();
     tools.forEach(triggerTimes);
     tools.forEach(triggerAdd);
   } else {
-    mult *= cardTimes;
+    applyCardTimes();
     for (const tool of rng ? shuffle(rng, tools) : tools) {
       triggerAdd(tool);
       triggerTimes(tool);
@@ -333,12 +353,12 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     const exposed = cards.filter((card) => !card.shielded).length;
     const amount = rules.damagePenaltyPerCard * exposed;
     damage -= amount;
-    steps.push({ kind: 'damageChange', source: 'furnace', amount: -amount });
+    record({ kind: 'damageChange', source: 'furnace', amount: -amount });
   }
   if (rules.damageLoss > 0) {
     const amount = Math.floor(damage * rules.damageLoss);
     damage -= amount;
-    steps.push({ kind: 'damageChange', source: 'loss', amount: -amount });
+    record({ kind: 'damageChange', source: 'loss', amount: -amount });
   }
   const hitsWeakness = cards.some((card) =>
     card.types.some((type) => opponent.weaknesses.includes(type)),
@@ -346,14 +366,14 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   if (rules.counterAttackLoss > 0 && !hitsWeakness) {
     const amount = Math.floor(damage * rules.counterAttackLoss);
     damage -= amount;
-    steps.push({ kind: 'damageChange', source: 'counterAttack', amount: -amount });
+    record({ kind: 'damageChange', source: 'counterAttack', amount: -amount });
   }
 
   // Faiblesse puis résistance.
   if (hitsWeakness && !rules.weaknessOff) {
     const times = Math.max(WEAKNESS_TIMES, ...defs.map((def) => def.weaknessTimes ?? 0));
     mult *= times;
-    steps.push({ kind: 'weakness', times });
+    record({ kind: 'weakness', times });
   }
   const resisted = cards.filter(
     (card) =>
@@ -363,7 +383,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   if (resisted > 0) {
     const amount = rules.resistanceDamage * rules.resistanceFactor * resisted;
     damage -= amount;
-    steps.push({ kind: 'damageChange', source: 'resistance', amount: -amount });
+    record({ kind: 'damageChange', source: 'resistance', amount: -amount });
   }
 
   damage = Math.max(0, damage);
@@ -375,6 +395,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     playedUids: cards.map((card) => card.instance.uid),
     scoringUids: marking.map((position) => (cards[position] as PlayedCard).instance.uid),
     steps,
+    running,
     damage,
     mult,
     score,

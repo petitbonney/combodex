@@ -4,10 +4,10 @@ import { scoreHand } from '../src/engine/scoring.ts';
 import { card, fillers, instance, scoreInput, tool } from './helpers.ts';
 
 describe('catalogue', () => {
-  it('propose 13 Outils, dont un Feu de camp par type', () => {
-    expect(TOOL_IDS).toHaveLength(13);
+  it('propose 20 Outils, dont un Feu de camp par type, soit 30 offres', () => {
+    expect(TOOL_IDS).toHaveLength(20);
     expect(TOOL_OFFERS.filter((offer) => offer.toolId === 'campfire')).toHaveLength(11);
-    expect(TOOL_OFFERS).toHaveLength(23);
+    expect(TOOL_OFFERS).toHaveLength(30);
   });
 
   it('respecte les raretés du game design', () => {
@@ -210,5 +210,67 @@ describe('La Cote', () => {
   it('se replie sur la rareté si le prix manque', () => {
     const data = card({ id: 'v', cardmarketPrice: null, rarity: 'Ultra Rare' });
     expect(scoreHand(scoreInput([data], [data], { tools })).mult).toBe(1 + 10);
+  });
+});
+
+describe('Outils de la phase 2', () => {
+  const single = card({ id: 'single', types: ['Fire'], bestDamage: 50, retreat: 1 });
+
+  it('Tirelire : +1 Multi par tranche de 5 ₽ détenus', () => {
+    const result = scoreHand(
+      scoreInput([single], [single], { tools: [tool(9, 'piggyBank')], money: 14 }),
+    );
+    expect(result.mult).toBe(1 + 2);
+  });
+
+  it('Sieste : +2 Multi par point de Retraite restant', () => {
+    const result = scoreHand(
+      scoreInput([single], [single], { tools: [tool(9, 'nap')], retreatPoints: 3 }),
+    );
+    expect(result.mult).toBe(1 + 6);
+  });
+
+  it('Duo : +6 Multi sur une Paire, rien sur une carte seule', () => {
+    const [a, b] = fillers(2, { dexIds: [920] });
+    const pair = scoreHand(
+      scoreInput([a, b] as never, [a, b] as never, { tools: [tool(9, 'duo')] }),
+    );
+    expect(pair.mult).toBe(2 + 6);
+    const alone = scoreHand(scoreInput([single], [single], { tools: [tool(9, 'duo')] }));
+    expect(alone.mult).toBe(1);
+  });
+
+  it("Pierre d'évolution : +3 Multi par carte évoluée jouée, même hors combinaison", () => {
+    const basic = card({ id: 'b', stage: 'Basic' });
+    const stage1 = card({ id: 's1', stage: 'Stage1', evolveFrom: 'b' });
+    const stage2 = card({ id: 's2', stage: 'Stage2', evolveFrom: 's1' });
+    const cards = [basic, stage1, stage2];
+    const result = scoreHand(scoreInput(cards, cards, { tools: [tool(9, 'evolutionStone')] }));
+    expect(result.mult).toBe(4 + 6);
+  });
+
+  it('Poids lourd : +4 Multi par carte à retraite 3 ou plus jouée', () => {
+    const heavy = card({ id: 'h', retreat: 3, bestDamage: 90 });
+    const huge = card({ id: 'u', retreat: 4, bestDamage: 80 });
+    const cards = [heavy, huge, single];
+    const result = scoreHand(scoreInput(cards, cards, { tools: [tool(9, 'heavyweight')] }));
+    expect(result.mult).toBe(1 + 8);
+  });
+
+  it('Palette : ×2 Multi sur un Arc-en-ciel, rien sinon', () => {
+    const types = ['Fire', 'Water', 'Grass', 'Psychic', 'Metal'] as const;
+    const cards = types.map((type) => card({ id: `r-${type}`, types: [type] }));
+    const rainbow = scoreHand(scoreInput(cards, cards, { tools: [tool(9, 'palette')] }));
+    expect(rainbow.combo).toBe('rainbow');
+    expect(rainbow.mult).toBe(4 * 2);
+    const alone = scoreHand(scoreInput([single], [single], { tools: [tool(9, 'palette')] }));
+    expect(alone.mult).toBe(1);
+  });
+
+  it('Boîte à badges : ×0,1 Multi de plus par combat gagné', () => {
+    const result = scoreHand(
+      scoreInput([single], [single], { tools: [tool(9, 'badgeCase')], fightsWon: 5 }),
+    );
+    expect(result.mult).toBeCloseTo(1.5);
   });
 });

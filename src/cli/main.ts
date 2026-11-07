@@ -222,6 +222,12 @@ async function boosterTurn(state: RunState): Promise<RunState | null> {
   const booster = state.booster;
   if (!booster) return state;
   print(renderBooster(view, booster));
+  if (booster.kind === 'trainer') {
+    const answer = await ask(ui.boosterPrompt);
+    if (answer === null) return null;
+    if (answer === '') return perform(state, { type: 'skipBooster' });
+    return perform(state, { type: 'keepBoosterTool', index: Number(answer) - 1 });
+  }
   if (booster.kind === 'energy') {
     print(deckOrder(view, state).map((entry, position) => cardLine(view, entry, position + 1)));
     const answer = await ask(ui.boosterEnergyPrompt);

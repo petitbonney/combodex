@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import {
   createView,
+  renderBooster,
   renderEvent,
   renderFight,
   renderPreview,
@@ -138,6 +139,30 @@ describe('rendu en texte', () => {
     expect(text).toContain('Colosse (Peu commune)');
     expect(text).toContain('(vendu)');
     expect(text).toContain('Booster Énergie');
+  });
+
+  it('liste les Outils d’un booster Dresseur et nomme les quatre boosters', () => {
+    const tools = [{ toolId: 'palette' as const, type: null, price: 5 }];
+    const booster = {
+      kind: 'trainer' as const,
+      cards: [],
+      energies: [],
+      tools,
+      keeps: 1,
+      free: false,
+    };
+    expect(renderBooster(view, booster).join('\n')).toContain('Palette');
+    const shop = {
+      slots: [],
+      boosters: [
+        { kind: 'trainer' as const, price: 6 },
+        { kind: 'premium' as const, price: 8 },
+      ],
+      rerollCost: 5,
+    };
+    const text = renderShop(view, createRun(index, { seed: 6 }), shop).join('\n');
+    expect(text).toContain('Booster Dresseur');
+    expect(text).toContain('Booster Premium');
   });
 });
 
