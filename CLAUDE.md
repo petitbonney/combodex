@@ -16,10 +16,14 @@ Roguelite de deckbuilding web et mobile inspiré de Balatro, basé sur les vraie
 - Chaque règle implémentée a son test. Les valeurs d'équilibrage changées sont reportées dans `docs/game-design.md`.
 - Cocher les tâches terminées dans le fichier de la phase.
 
+## Commandes
+
+`npm test`, `npm run typecheck`, `npm run lint`, `npm run build:data`, `npm run play`, `npm run sim`. Node exécute le TypeScript directement : les imports gardent leur extension `.ts`, et seule la syntaxe effaçable est permise.
+
 ## Données TCGdex
 
 - Source : dépôt [`tcgdex/cards-database`](https://github.com/tcgdex/cards-database), cloné dans `vendor/` (ignoré par git) et épinglé sur un commit.
-- Ne jamais exécuter les fichiers `.ts` de ce dépôt : les lire avec l'API du compilateur TypeScript et convertir l'arbre syntaxique en valeurs.
+- Ne jamais exécuter les fichiers `.ts` de ce dépôt : les lire avec l'API du compilateur TypeScript et convertir l'arbre syntaxique en valeurs. TypeScript reste épinglé en version 6 : la version 7 n'expose plus cette API.
 - `api.tcgdex.net` et `assets.tcgdex.net` peuvent être inaccessibles depuis une session Claude ; GitHub l'est.
 - Extension du prototype : Éclipse Cosmique (`sm12`, `data/Sun & Moon/Cosmic Eclipse/`).
 - Ne pas recopier les textes des cartes (attaques, talents) dans la documentation ; les garder dans les données générées.

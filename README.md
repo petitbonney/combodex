@@ -2,7 +2,24 @@
 
 Roguelite de deckbuilding gratuit, jouable sur navigateur et mobile : « Balatro, mais les mains de poker sont des équipes Pokémon ». On enchaîne des combos de vraies cartes du JCC Pokémon pour battre 8 Arènes, puis la Ligue.
 
-**Statut** : conception terminée, [phase 1](docs/phases/phase-1-prototype.md) (prototype des règles en texte) à démarrer.
+**Statut** : [phase 1](docs/phases/phase-1-prototype.md) développée : le prototype en texte se joue dans le terminal, sa porte de sortie reste à franchir.
+
+## Jouer au prototype
+
+Il faut Node 22.18 ou plus.
+
+```sh
+npm ci
+npm run play -- --seed=42
+```
+
+| Commande | Rôle |
+| --- | --- |
+| `npm run play` | jouer une run dans le terminal (`--seed`, `--lang=fr` ou `en`, `--arenas`) |
+| `npm run sim` | simuler des runs avec un bot (`--runs`, `--seed`, `--arenas`, `--json`) |
+| `npm test` | lancer les tests |
+| `npm run typecheck`, `npm run lint` | vérifier les types et le style |
+| `npm run build:data` | régénérer `data/sm12.json` depuis TCGdex (`--market` pour relever prix et variantes) |
 
 ## Documentation
 

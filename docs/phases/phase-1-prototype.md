@@ -1,6 +1,6 @@
 # Phase 1 · Prototype des règles
 
-**Statut** : à démarrer.
+**Statut** : développement terminé ; il reste à jouer des runs à la main pour franchir la porte de sortie.
 **But** : prouver que le scoring est amusant, en texte et sans visuels, avant tout travail d'interface.
 **Porte de sortie** : une run en texte donne-t-elle envie de rejouer ?
 
@@ -42,12 +42,12 @@ combodex/
 │   └── sim/         # simulateur de runs et stratégies de bot
 ├── scripts/
 │   └── build-data.ts  # TCGdex -> data/sm12.json
-├── data/            # JSON de cartes généré (versionné ou non, à décider)
+├── data/            # JSON de cartes généré et relevé de marché, versionnés
 ├── tests/
 └── docs/
 ```
 
-- **Langage** : TypeScript strict, Node 22 ou plus.
+- **Langage** : TypeScript strict, Node 22.18 ou plus, qui exécute le TypeScript sans étape de build. TypeScript reste épinglé en version 6 : la version 7 n'expose plus `createSourceFile`.
 - **Tests** : Vitest. Chaque règle du document de game design a au moins un test.
 - **Aléatoire** : un générateur à graine (par exemple mulberry32) injecté partout ; jamais `Math.random()` dans le moteur. Une graine rejoue une run à l'identique.
 - **État** : le moteur expose des fonctions pures du type `état + action → nouvel état + événements`. Les événements (carte marquée, Outil déclenché, statut appliqué) servent au CLI aujourd'hui et aux animations en phase 2.
@@ -69,7 +69,9 @@ combodex/
 
 **Accès réseau** : dans les sessions Claude, `api.tcgdex.net` et `assets.tcgdex.net` peuvent être bloqués par la liste de domaines autorisés ; GitHub reste accessible. L'API REST de TCGdex reste une alternative valable pour un build lancé sur une machine de développement.
 
-**Champs à produire par carte** : `id`, `localId`, `name {fr, en}`, `dexIds[]`, `types[]`, `stage`, `evolveFrom`, `hp`, `retreat`, `bestDamage`, `weaknesses`, `resistances`, `rarity`, `variants`, `illustrator`, `abilityFamily`, `isTagTeam`, `cardmarketId`.
+**Champs à produire par carte** : `id`, `localId`, `name {fr, en}`, `dexIds[]`, `types[]`, `stage`, `evolveFrom`, `hp`, `retreat`, `bestDamage`, `weaknesses`, `resistances`, `rarity`, `variants`, `illustrator`, `abilityFamily`, `ability`, `isTagTeam`, `cardmarketId`, `cardmarketPrice`.
+
+**Pièges des données** : Éclipse Cosmique n'a pas de champ `variants`, les GX évolués n'ont pas de `stage`, les TAG TEAM non plus (ce sont des Base), et `evolveFrom` n'existe qu'en anglais. Le script gère ces cas ; `--market` relève prix et variantes sur l'API.
 
 ## Pourquoi Éclipse Cosmique
 
@@ -101,21 +103,40 @@ Analyse des 219 extensions de la base TCGdex, novembre 2026. Les quatre finalist
 
 Ordre conseillé ; chaque étape se termine par des tests verts.
 
-- [ ] Initialiser le projet : `package.json`, TypeScript strict, Vitest, ESLint ou Biome, scripts `test`, `build:data`, `play`, `sim`.
-- [ ] `scripts/build-data.ts` : cloner ou mettre à jour `vendor/cards-database` à un commit épinglé, lire Éclipse Cosmique sans exécuter les fichiers, produire `data/sm12.json`.
-- [ ] Classement des talents par familles, avec un fichier de corrections manuelles ; afficher le taux de reconnaissance au build.
-- [ ] Générateur aléatoire à graine et utilitaires (mélange, pile ou face, dé).
-- [ ] Modèle de combat : deck, main de 8, pose de 1 à 5 cartes, défausse payée en points de Retraite, 4 Tours.
-- [ ] Détection des combinaisons, en comptant les Pokémon (règle TAG TEAM) ; tests sur chaque combinaison et sur les cas limites.
-- [ ] Calcul du score dans l'ordre de résolution : cartes, variantes, énergies, Outils (+Multi puis ×Multi), faiblesse, résistance.
-- [ ] Outils du catalogue initial, branchés sur des points d'accroche du calcul.
-- [ ] Familles de talents dans le calcul (y compris les effets « en main »).
-- [ ] Champions : choix entre effet permanent et statuts, annonce un Tour d'avance, jet au début du Tour, versions renforcées.
-- [ ] Run de 3 Arènes : Dresseur, Dresseur d'élite, Champion ; gains, intérêts, boutique simplifiée, limite de 2 TAG TEAM.
-- [ ] Deck de départ généré : 2 lignées complètes de types différents et 10 Pokémon de Base.
-- [ ] Interface texte : afficher la main, le Champion, le statut annoncé, le détail du score, la boutique.
-- [ ] Simulateur : N runs avec une graine de départ, un bot glouton (meilleur score immédiat), rapport des taux de victoire par Arène et des scores médians.
-- [ ] Mettre à jour le document de game design avec les valeurs ajustées.
+- [x] Initialiser le projet : `package.json`, TypeScript strict, Vitest, ESLint ou Biome, scripts `test`, `build:data`, `play`, `sim`.
+- [x] `scripts/build-data.ts` : cloner ou mettre à jour `vendor/cards-database` à un commit épinglé, lire Éclipse Cosmique sans exécuter les fichiers, produire `data/sm12.json`.
+- [x] Classement des talents par familles, avec un fichier de corrections manuelles ; afficher le taux de reconnaissance au build.
+- [x] Générateur aléatoire à graine et utilitaires (mélange, pile ou face, dé).
+- [x] Modèle de combat : deck, main de 8, pose de 1 à 5 cartes, défausse payée en points de Retraite, 4 Tours.
+- [x] Détection des combinaisons, en comptant les Pokémon (règle TAG TEAM) ; tests sur chaque combinaison et sur les cas limites.
+- [x] Calcul du score dans l'ordre de résolution : cartes, variantes, énergies, Outils (+Multi puis ×Multi), faiblesse, résistance.
+- [x] Outils du catalogue initial, branchés sur des points d'accroche du calcul.
+- [x] Familles de talents dans le calcul (y compris les effets « en main »).
+- [x] Champions : choix entre effet permanent et statuts, annonce un Tour d'avance, jet au début du Tour, versions renforcées.
+- [x] Run de 3 Arènes : Dresseur, Dresseur d'élite, Champion ; gains, intérêts, boutique simplifiée, limite de 2 TAG TEAM.
+- [x] Deck de départ généré : 2 lignées complètes de types différents et 10 Pokémon de Base.
+- [x] Interface texte : afficher la main, le Champion, le statut annoncé, le détail du score, la boutique.
+- [x] Simulateur : N runs avec une graine de départ, un bot glouton (meilleur score immédiat), rapport des taux de victoire par Arène et des scores médians.
+- [x] Mettre à jour le document de game design avec les valeurs ajustées.
+
+## Bilan de l'équilibrage
+
+Simulateur, bot glouton, 1 000 runs de 3 Arènes, graines 1 à 1 000, après relèvement des PV des Arènes 1 à 3.
+
+| Mesure | Résultat |
+| --- | --- |
+| Runs gagnées | 60 % |
+| Arène 1, 2 et 3 vaincues une fois atteintes | 84 %, 81 % et 86 % |
+| Tours consommés par un Champion | environ 2 sur 4 |
+| Meilleure main médiane d'une run | 8 960 |
+| Meilleure main de toutes | 107 640 |
+
+- **PV d'origine** : le même bot gagnait 87 % des runs, avec 1,3 Tour par combat. Les Tours et la Retraite ne servaient à rien.
+- **Courbe sur 8 Arènes** : 5 % de runs gagnées hors Ligue, à la borne basse de la cible de la phase 3. Les Arènes 4 et suivantes n'ont pas changé.
+- **La boutique compte** : sans aucun achat, le bot tombe à 7 % de victoires ; en n'achetant que des Outils, à 49 %.
+- **Les combos explosent** : le 99e centile des mains vaut 18 fois la main médiane, contre 6 fois sans boutique.
+
+Le bot est un plancher : il ne choisit pas ses achats selon son deck. Un joueur doit faire mieux, ce que seules des runs à la main peuvent confirmer.
 
 ## Porte de sortie
 

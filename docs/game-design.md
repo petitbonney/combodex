@@ -152,7 +152,7 @@ Chaque main jouée inflige (Dégâts de la combinaison + dégâts des cartes) ×
 
 Les familles très fréquentes dans les textes (Banc, Défausse, Pile ou face) passent en dernier, pour ne pas capter des talents qui relèvent d'une famille plus précise.
 
-**Test sur Éclipse Cosmique** : 83 % des 64 talents sont reconnus, et 98 % tombent dans la même famille en français et en anglais. Les autres reçoivent l'effet Générique ou passent par la liste de corrections.
+**Test sur Éclipse Cosmique** : 82 % des 62 talents gardés au build sont reconnus (2 cartes à talent sans attaque sont écartées), et 98 % tombent dans la même famille en français et en anglais. Les autres reçoivent l'effet Générique ou passent par la liste de corrections.
 
 **Glossaire français → anglais**
 
@@ -269,7 +269,7 @@ Les Outils et Stades sont les jokers du jeu : 5 emplacements d'effets passifs qu
 | Feu de camp (une version par type, 11 au total) | Monotype | +4 Multi par carte de ce type jouée | Commune |
 | Pique-nique | Économie | +2 ₽ par Tour non utilisé en fin de combat | Commune |
 | Sac léger | Défausse | défausser une carte à retraite 0 rapporte 1 ₽ | Commune |
-| Colosse | Tank | une carte compte ses PV au lieu de ses dégâts | Peu commune |
+| Colosse | Tank | les cartes qui marquent comptent leurs PV au lieu de leurs dégâts | Peu commune |
 | Contre-type | Faiblesse | la faiblesse du boss donne ×3 au lieu de ×2 | Peu commune |
 | Prisme | Arc-en-ciel | les cartes Incolore comptent comme n'importe quel type | Peu commune |
 | Arbre généalogique | Lignée | une carte rejoue ses dégâts si sa pré-évolution est aussi jouée | Rare |
@@ -291,19 +291,21 @@ Une run sur dix peut « casser » le jeu. C'est le plaisir recherché, comme dan
 
 ## Champions d'Arène et difficulté
 
-Les PV du Champion passent de 600 à 100 000 sur les 8 Arènes, puis 150 000 pour le Maître de la Ligue. La courbe s'inspire de celle de Balatro.
+Les PV du Champion passent de 2 000 à 100 000 sur les 8 Arènes, puis 150 000 pour le Maître de la Ligue. La courbe s'inspire de celle de Balatro.
 
 | Étape | PV du Champion (valeurs provisoires) |
 | --- | --- |
-| Arène 1 | 600 |
-| Arène 2 | 1 600 |
-| Arène 3 | 4 000 |
+| Arène 1 | 2 000 |
+| Arène 2 | 4 000 |
+| Arène 3 | 7 000 |
 | Arène 4 | 10 000 |
 | Arène 5 | 22 000 |
 | Arène 6 | 40 000 |
 | Arène 7 | 70 000 |
 | Arène 8 | 100 000 |
 | Ligue | 150 000 |
+
+Les Arènes 1 à 3 ont été relevées au simulateur (600, 1 600 et 4 000 à l'origine) : une première main valait déjà 1 100 de médiane, et les combats se finissaient en 1,3 Tour. Un Champion demande maintenant environ 2 Tours.
 
 Le Dresseur a la moitié des PV du Champion, le Dresseur d'élite les trois quarts. En mode infini, les PV augmentent de 60 % par Arène. La main de l'exemple chiffré (40 280) suffit à battre seule le Champion de l'Arène 6 : c'est le niveau de puissance visé en milieu de run.
 
@@ -364,7 +366,7 @@ Chances : pile ou face et dé 1 à 3 = 50 % ; dé 1 à 4 = 67 % ; aucun jet = to
 | --- | --- |
 | Eau | les cartes Feu ne marquent rien |
 | Électrique | le combat ne dure que 3 Tours au lieu de 4 |
-| Psy | les cartes sont piochées face cachée |
+| Psy | chaque carte tirée a une chance sur deux d'arriver face cachée, main de départ comprise |
 | Plante | le Champion récupère 10 % de ses PV à chaque Tour |
 | Combat | seules les 3 premières cartes posées marquent |
 | Obscurité | un Outil au hasard est désactivé pendant le combat |
@@ -397,6 +399,17 @@ Chaque victoire rapporte des Pokédollars (₽), dépensés dans une boutique qu
 Le booster d'extension reprend le visuel du vrai booster quand TCGdex le fournit (champ `boosters`). Son ouverture est le moment fort de la boutique : animation, révélation carte par carte.
 
 **Prix à l'unité** : 2 ₽ pour une Commune, 3 ₽ pour une Peu commune, 5 ₽ pour une Rare, 8 ₽ pour une Ultra rare. Le prix Cardmarket ne sert qu'à l'Outil La Cote, car il manque pour une partie des cartes.
+
+**Prix des Outils** : 4 ₽ pour un Commun, 5 ₽ pour un Peu commun, 7 ₽ pour un Rare, 10 ₽ pour un Légendaire.
+
+**Tirages** (valeurs provisoires)
+
+| Tirage | Poids |
+| --- | --- |
+| Rareté d'une carte | Commune 60, Peu commune 28, Rare 10, Ultra rare 1,4, Secrète 0,6 |
+| Variante d'une carte | Normale 75, Reverse 18, Holo 6, 1re édition 1, parmi celles qui existent |
+| Rareté d'un Outil | Commun 55, Peu commun 30, Rare 13, Légendaire 2 |
+| Emplacement de boutique | une chance sur deux de proposer un Outil plutôt qu'une carte |
 
 **Cartes TAG TEAM** : elles ne sont jamais vendues à l'unité et sortent uniquement des boosters, au taux d'une Ultra rare (environ 1 booster sur 10). Un deck en contient au plus 2.
 
@@ -437,9 +450,11 @@ Les données viennent de TCGdex, figées au build dans un JSON léger ; seules l
 
 1. Un script Node lit les données TCGdex au moment du build : dépôt open source [`tcgdex/cards-database`](https://github.com/tcgdex/cards-database) (épinglé sur un commit) ou API REST.
 2. Il garde les cartes Pokémon qui ont une image et au moins une attaque.
-3. Il normalise les dégâts (« 30+ » devient 30) et applique une liste d'exclusion manuelle.
+3. Il normalise les dégâts (« 30+ » devient 30), déduit le stade des GX évolués (absent des données) et applique une liste d'exclusion manuelle.
 4. Il exporte un fichier de cartes par extension jouable, avec les textes en français et en anglais.
 5. On relance le script à la sortie d'une nouvelle extension. Le jeu n'appelle jamais l'API.
+
+**Prix et variantes** : le dépôt ne donne pas les prix, et Éclipse Cosmique n'a aucun champ `variants` (l'API répond « normale » pour toutes ses cartes). `npm run build:data -- --market` relève donc sur l'API le prix Cardmarket (`trend`) et déduit les variantes réelles des clés de prix TCGplayer, puis fige le tout dans un fichier versionné. Sans relevé, les variantes se replient sur la rareté.
 
 Les détails techniques (lecture du dépôt sans exécuter ses fichiers, index des images) sont dans [la phase 1](phases/phase-1-prototype.md#données-tcgdex).
 
@@ -514,6 +529,37 @@ Toutes les questions ouvertes de la phase de conception sont tranchées.
 | NG+ et enjeux | Deux axes séparés, débloqués à part et combinés avant la run |
 | Extension du prototype | Éclipse Cosmique (sm12, 2019) : 11 types, 14 lignées complètes, 64 talents, images complètes en français et en anglais |
 | Cartes TAG TEAM | Comptent comme chacun des Pokémon qu'elles réunissent ; obtenues uniquement en booster (environ 1 sur 10), 2 au maximum par deck |
+| Prix des Outils | Commun 4 ₽, Peu commun 5 ₽, Rare 7 ₽, Légendaire 10 ₽ |
+| Outil Colosse | Toutes les cartes qui marquent comptent leurs PV |
+| Effet permanent Psy | Chaque carte tirée a une chance sur deux d'arriver face cachée |
+| Boutique du prototype | 2 emplacements cartes ou Outils, 1 booster d'extension, 1 booster Énergie, relance |
+
+**Précisions du prototype** : le document laissait ces points ouverts. Le moteur les tranche ainsi, en attendant une validation.
+
+| Point | Lecture retenue |
+| --- | --- |
+| Cartes qui marquent | Carte seule : la plus forte. Paire : la plus forte s'il y en a deux. Lignée de 5 cartes : les 3 de la lignée. Les autres cartes posées comptent pour la faiblesse, la résistance et les Outils « par carte jouée » |
+| Ordre du calcul | Comme la formule : tous les +Multi, puis tous les ×Multi. Le ×1,5 de la 1re édition passe avec les ×Multi, avant ceux des Outils |
+| Bornes | Le Multi ne descend pas sous 1 après les malus, les Dégâts pas sous 0 ; le score est arrondi à l'entier inférieur |
+| Dresseurs | Ni effet ni statut ; un Pokémon du type de l'Arène, dont ils gardent la vraie faiblesse et la vraie résistance |
+| Champion | Tiré parmi les 3 plus gros PV de son type |
+| Cartes jouées et défaussées | Les cartes jouées sortent du combat. Seules les cartes défaussées vont en défausse, sans remélange. Deck et main vides : fin de run |
+| Colère | Quinte → Carré → Brelan → Paire → Carte seule ; Lignée monotype → Lignée ; Famille, Lignée, Monotype et Arc-en-ciel → Brelan |
+| Combinaison la plus jouée | Celles à égalité comptent toutes ; aucune si rien n'a été joué. Le −50 % du Métal porte sur les Dégâts et le Multi de la combinaison |
+| Protection | Ignore les statuts et la résistance, pas les effets permanents |
+| Copie | Garde ses dégâts si la main est plus faible |
+| Récupération | Rend la dernière carte défaussée |
+| Récompense | Exige que la main batte l'adversaire : une fin de Tour par Affliction ne compte pas |
+| Évolution | Une Base à plusieurs évolutions, comme Évoli, suit la carte qui déclenche le talent |
+| Agilité | Cumulable si plusieurs cartes sont en main |
+| Sac léger, Statique | Regardent la retraite imprimée, pas le coût du moment |
+| La Cote | Par carte qui marque, plafonné à 50 par carte ; prix `trend`, arrondi à l'entier inférieur |
+| Illustrateur fétiche | S'applique aussi à une carte posée seule |
+| Pokédex, Entraînement | Comptent la main en cours |
+| Paralysie | Laisse toujours au moins une carte jouable |
+| Attraction | La carte désignée ne peut pas non plus être défaussée |
+| Passer un combat | Le booster gratuit est un booster d'extension |
+| Évolution permanente | Un Niveau 2 peut aussi se poser sur son Niveau 1 |
 
 ## Roadmap
 

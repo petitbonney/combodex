@@ -1,0 +1,25 @@
+{
+  "name": "combodex",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Roguelite de deckbuilding basé sur les vraies cartes du JCC Pokémon",
+  "license": "GPL-3.0-or-later",
+  "type": "module",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome check .",
+    "build:data": "node scripts/build-data.ts",
+    "play": "node src/cli/main.ts",
+    "sim": "node src/sim/main.ts"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.6.6",
+    "@types/node": "^26.6.6",
+    "typescript": "6.0.3",
+    "vitest": "^5.1.0"
+  }
+}
