@@ -1,6 +1,6 @@
 # Phase 3 · Version 1.0 publique
 
-**Statut** : développement terminé. Démarrée à la demande, avant la session de test de la [phase 2](phase-2-tranche-verticale.md), que l'hébergement rend possible. Il reste la vérification à la main et le nom de domaine éventuel.
+**Statut** : développement terminé. Démarrée à la demande, avant la session de test de la [phase 2](phase-2-tranche-verticale.md), que l'hébergement rend possible. Le jeu est en ligne sur [petitbonney.github.io/combodex](https://petitbonney.github.io/combodex/). Il reste la vérification à la main et le nom de domaine éventuel.
 **But** : le jeu complet, publié gratuitement sur le web.
 **Porte de sortie** : avec l'enjeu de base, le simulateur gagne entre 5 et 15 % des runs.
 
@@ -52,6 +52,7 @@ Navigateur intégré, sans téléphone réel. Le bot joue à travers la vraie se
 | Boutique en paysage à 1280 × 760 | tient sans défilement |
 | Parcours d'une extension, objectifs, deck custom, défi du jour, crédits | affichés en français ; accueil et défi du jour relus en anglais |
 | Rechargement de la page | la progression et la run sont conservées |
+| Site en ligne | le jeu s'ouvre, une run démarre, les 9 visuels du combat se chargent ; service worker actif, 13 fichiers en cache |
 
 ## Bilan de l'équilibrage
 

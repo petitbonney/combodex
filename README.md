@@ -4,6 +4,8 @@ Roguelite de deckbuilding gratuit, jouable sur navigateur et mobile : « Balatro
 
 **Statut** : [phase 3](docs/phases/phase-3-version-1.md) développée : 3 extensions, 8 Arènes et la Ligue, Classeur, défi du jour et codes de run, en français et en anglais. Le jeu s'installe en PWA et marche hors-ligne.
 
+**Jouer en ligne** : [petitbonney.github.io/combodex](https://petitbonney.github.io/combodex/).
+
 ## Jouer
 
 Il faut Node 22.18 ou plus.
