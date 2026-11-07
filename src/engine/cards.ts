@@ -1,4 +1,5 @@
 /** Modèle des cartes : données figées au build et instances possédées par le joueur. */
+import type { SpecialEnergyId } from '../content/consumables.ts';
 
 export const POKEMON_TYPES = [
   'Grass',
@@ -87,6 +88,8 @@ export interface CardInstance {
   cardId: string;
   variant: Variant;
   energies: PokemonType[];
+  /** Énergies spéciales attachées. */
+  specials?: SpecialEnergyId[];
 }
 
 export interface CardIndex {

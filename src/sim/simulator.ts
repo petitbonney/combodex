@@ -1,4 +1,6 @@
 /** Simulateur de runs : N runs jouées par le bot, agrégées pour l'équilibrage. */
+import { LOCKABLE_TOOLS } from '../content/objectives.ts';
+import type { ToolId } from '../content/tools.ts';
 import {
   applyAction,
   type CardIndex,
@@ -31,8 +33,13 @@ export interface RunRecord {
   comboCounts: Partial<Record<string, number>>;
 }
 
-export function simulateRun(index: CardIndex, seed: number, arenaCount: number): RunRecord {
-  let state: RunState = createRun(index, { seed, arenaCount });
+export function simulateRun(
+  index: CardIndex,
+  seed: number,
+  arenaCount: number,
+  lockedTools: readonly ToolId[] = LOCKABLE_TOOLS,
+): RunRecord {
+  let state: RunState = createRun(index, { seed, arenaCount, lockedTools });
   const fights: FightRecord[] = [];
   let currentBest = 0;
   for (let step = 0; step < MAX_ACTIONS_PER_RUN; step++) {
@@ -109,20 +116,25 @@ export function simulate(
   runs: number,
   seed: number,
   arenas: number,
+  lockedTools: readonly ToolId[] = LOCKABLE_TOOLS,
 ): SimulationReport {
   const records = Array.from({ length: runs }, (_, offset) =>
-    simulateRun(index, seed + offset, arenas),
+    simulateRun(index, seed + offset, arenas, lockedTools),
   );
-  const kinds: OpponentKind[] = ['trainer', 'elite', 'champion'];
+  const kinds: OpponentKind[] = ['trainer', 'elite', 'champion', 'league'];
   const fightReports: FightReport[] = [];
   const arenaReports: ArenaReport[] = [];
-  for (let arena = 0; arena < arenas; arena++) {
+  // La Ligue compte comme une étape de plus.
+  for (let arena = 0; arena <= arenas; arena++) {
     const inArena = records.filter((record) =>
       record.fights.some((fight) => fight.arena === arena),
     );
     const cleared = inArena.filter((record) =>
       record.fights.some(
-        (fight) => fight.arena === arena && fight.kind === 'champion' && fight.won,
+        (fight) =>
+          fight.arena === arena &&
+          (fight.kind === 'champion' || fight.kind === 'league') &&
+          fight.won,
       ),
     );
     arenaReports.push({ arena, reached: inArena.length, cleared: cleared.length });
@@ -130,6 +142,7 @@ export function simulate(
       const fights = records.flatMap((record) =>
         record.fights.filter((fight) => fight.arena === arena && fight.kind === kind),
       );
+      if (fights.length === 0) continue;
       fightReports.push({
         arena,
         kind,

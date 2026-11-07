@@ -7,7 +7,7 @@ import {
 } from '../content/balance.ts';
 import { STATUSES, type StatusId } from '../content/statuses.ts';
 import type { PokemonType } from './cards.ts';
-import type { ActiveStatus, FightState } from './state.ts';
+import type { ActiveStatus, FightState, Opponent } from './state.ts';
 
 export type ToolOrder = 'normal' | 'timesFirst' | 'random';
 
@@ -218,10 +218,17 @@ export function applyStatusRules(rules: HandRules, id: StatusId, strong: boolean
   }
 }
 
+/** Type de l'effet permanent actif, y compris celui qu'emprunte le Maître de la Ligue. */
+export function permanentType(opponent: Opponent): PokemonType | null {
+  if (opponent.leagueEffect) return opponent.leagueEffect;
+  return opponent.form === 'permanent' ? opponent.type : null;
+}
+
 /** Règles de la main en cours du combat. */
 export function currentRules(fight: FightState): HandRules {
   const rules = defaultRules();
-  if (fight.opponent.form === 'permanent') applyPermanentRules(rules, fight.opponent.type);
+  const permanent = permanentType(fight.opponent);
+  if (permanent) applyPermanentRules(rules, permanent);
   const active: ActiveStatus | null = fight.activeStatus;
   if (active) applyStatusRules(rules, active.id, active.strong);
   rules.damageLoss = 1 - (1 - rules.damageLoss) * (1 - fight.poisonPercent);

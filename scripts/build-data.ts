@@ -1,13 +1,13 @@
 /**
- * TCGdex -> data/sm12.json.
+ * TCGdex -> data/<extension>.json, pour chaque extension jouable.
  *
  * Les fichiers du dépôt `tcgdex/cards-database` sont des données téléchargées : ils ne sont
  * jamais exécutés. On les lit avec l'API du compilateur TypeScript et on convertit l'objet
  * littéral en valeur JavaScript en parcourant l'arbre syntaxique.
  *
- * Le dépôt ne donne ni les prix ni, pour Éclipse Cosmique, les variantes. `--market` les relève
- * sur l'API REST et les fige dans data/sm12-market.json, versionné ; un build ordinaire ne
- * touche pas au réseau de TCGdex.
+ * Le dépôt ne donne ni les prix ni, pour ces extensions, les variantes. `--market` les relève
+ * sur l'API REST et les fige dans data/<extension>-market.json, versionné ; un build ordinaire
+ * ne touche pas au réseau de TCGdex.
  */
 import { execFileSync } from 'node:child_process';
 import { existsSync, readdirSync, readFileSync, writeFileSync } from 'node:fs';
@@ -30,16 +30,19 @@ const REPOSITORY = 'https://github.com/tcgdex/cards-database.git';
 const PINNED_COMMIT = 'a8fe5736aef9bd6be2436e3be730109030f4c6e2';
 const VENDOR_DIR = 'vendor/cards-database';
 const SERIES_DIR = 'data/Sun & Moon';
-const SET_DIR = join(VENDOR_DIR, SERIES_DIR, 'Cosmic Eclipse');
-const SET_ID = 'sm12';
-const OUTPUT_FILE = `data/${SET_ID}.json`;
-const MARKET_FILE = `data/${SET_ID}-market.json`;
 const API_BASE = 'https://api.tcgdex.net/v2/en/cards';
+
+/** Extensions jouables : identifiant TCGdex et dossier dans le dépôt. */
+const SETS: readonly { id: string; folder: string }[] = [
+  { id: 'sm12', folder: 'Cosmic Eclipse' },
+  { id: 'sm1', folder: 'Sun & Moon' },
+  { id: 'sm2', folder: 'Guardians Rising' },
+];
 
 /** Dégâts d'une carte sans attaque chiffrée. */
 const DEFAULT_DAMAGE = 20;
 
-/** Cartes écartées à la main ; vide pour Éclipse Cosmique. */
+/** Cartes écartées à la main ; vide pour les extensions actuelles. */
 const EXCLUDED_CARDS: readonly string[] = [];
 
 /** Variantes de repli quand le relevé de marché ne connaît pas la carte. */
@@ -155,8 +158,13 @@ function classify(cardId: string, effect: LocalizedText): ClassifiedAbility {
   };
 }
 
-function toCard(raw: RawObject, localId: string, market: MarketData): CardData | null {
-  const id = `${SET_ID}-${localId}`;
+function toCard(
+  raw: RawObject,
+  setId: string,
+  localId: string,
+  market: MarketData,
+): CardData | null {
+  const id = `${setId}-${localId}`;
   const attacks = (raw.attacks as RawObject[] | undefined) ?? [];
   if (raw.category !== 'Pokemon' || attacks.length === 0 || EXCLUDED_CARDS.includes(id)) {
     return null;
@@ -202,10 +210,11 @@ function inferMissingStages(cards: CardData[]): void {
   }
 }
 
-function cardFiles(): { localId: string; path: string }[] {
-  return readdirSync(SET_DIR)
+function cardFiles(folder: string): { localId: string; path: string }[] {
+  const directory = join(VENDOR_DIR, SERIES_DIR, folder);
+  return readdirSync(directory)
     .filter((file) => file.endsWith('.ts'))
-    .map((file) => ({ localId: file.slice(0, -3), path: join(SET_DIR, file) }))
+    .map((file) => ({ localId: file.slice(0, -3), path: join(directory, file) }))
     .sort((a, b) => a.localId.localeCompare(b.localId, 'en', { numeric: true }));
 }
 
@@ -221,10 +230,10 @@ function variantsFromPricing(tcgplayer: Record<string, unknown> | undefined): Va
   return variants;
 }
 
-async function refreshMarket(localIds: string[]): Promise<void> {
+async function refreshMarket(setId: string, localIds: string[], file: string): Promise<void> {
   const market: MarketData = {};
   for (const localId of localIds) {
-    const id = `${SET_ID}-${localId}`;
+    const id = `${setId}-${localId}`;
     const response = await fetch(`${API_BASE}/${id}`);
     if (!response.ok) throw new Error(`${id} : HTTP ${response.status}`);
     const card = (await response.json()) as {
@@ -239,12 +248,12 @@ async function refreshMarket(localIds: string[]): Promise<void> {
     if (variants.length === 0) continue;
     market[id] = { price: card.pricing?.cardmarket?.trend ?? null, variants };
   }
-  writeFileSync(MARKET_FILE, `${JSON.stringify(market, null, 1)}\n`);
-  console.log(`Relevé de marché : ${Object.keys(market).length} cartes dans ${MARKET_FILE}`);
+  writeFileSync(file, `${JSON.stringify(market, null, 1)}\n`);
+  console.log(`Relevé de marché : ${Object.keys(market).length} cartes dans ${file}`);
 }
 
-function readSetName(): LocalizedText {
-  const path = join(VENDOR_DIR, SERIES_DIR, 'Cosmic Eclipse.ts');
+function readSetName(folder: string): LocalizedText {
+  const path = join(VENDOR_DIR, SERIES_DIR, `${folder}.ts`);
   return localized(readCardFile(path).name);
 }
 
@@ -270,28 +279,43 @@ function reportAbilities(cards: CardData[]): void {
   console.log(`  familles : ${summary.map(([family, n]) => `${family} ${n}`).join(', ')}`);
 }
 
-async function main(): Promise<void> {
-  ensureVendor();
-  const files = cardFiles();
+async function buildSet(id: string, folder: string): Promise<void> {
+  const files = cardFiles(folder);
+  const marketFile = `data/${id}-market.json`;
+  const outputFile = `data/${id}.json`;
   if (process.argv.includes('--market')) {
-    await refreshMarket(files.map((file) => file.localId));
+    await refreshMarket(
+      id,
+      files.map((file) => file.localId),
+      marketFile,
+    );
   }
-  const market: MarketData = existsSync(MARKET_FILE)
-    ? JSON.parse(readFileSync(MARKET_FILE, 'utf8'))
+  const market: MarketData = existsSync(marketFile)
+    ? JSON.parse(readFileSync(marketFile, 'utf8'))
     : {};
   const cards = files
-    .map((file) => toCard(readCardFile(file.path), file.localId, market))
+    .map((file) => toCard(readCardFile(file.path), id, file.localId, market))
     .filter((card) => card !== null);
   inferMissingStages(cards);
   const set: CardSet = {
-    id: SET_ID,
-    name: readSetName(),
+    id,
+    name: readSetName(folder),
     sourceCommit: PINNED_COMMIT,
     cards,
   };
-  writeFileSync(OUTPUT_FILE, `${JSON.stringify(set, null, 1)}\n`);
-  console.log(`${cards.length} cartes écrites dans ${OUTPUT_FILE}`);
+  writeFileSync(outputFile, `${JSON.stringify(set, null, 1)}\n`);
+  console.log(`${cards.length} cartes écrites dans ${outputFile}`);
   reportAbilities(cards);
+}
+
+async function main(): Promise<void> {
+  ensureVendor();
+  // `--only=sm1,sm2` limite le build, et donc le relevé de marché, à ces extensions.
+  const only = process.argv.find((arg) => arg.startsWith('--only='))?.slice('--only='.length);
+  const wanted = only?.split(',');
+  for (const { id, folder } of SETS) {
+    if (!wanted || wanted.includes(id)) await buildSet(id, folder);
+  }
 }
 
 await main();

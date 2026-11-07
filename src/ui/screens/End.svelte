@@ -1,10 +1,13 @@
 <script lang="ts">
 import Skull from '@lucide/svelte/icons/skull';
 import Trophy from '@lucide/svelte/icons/trophy';
-import { type ComboId, type RunState } from '../../engine/index.ts';
+import Copy from '@lucide/svelte/icons/copy';
+import { type ComboId, encodeRunCode, lockedTools, type RunState } from '../../engine/index.ts';
 import { formatNumber } from '../logic/format.ts';
-import { session } from '../logic/game.ts';
+import { progress, session } from '../logic/game.ts';
+import { menuScreen } from '../logic/panels.ts';
 import { texts } from '../logic/texts.ts';
+import { showToast } from '../logic/toasts.ts';
 
 interface Props {
   run: RunState;
@@ -22,8 +25,35 @@ const favorite = $derived.by(() => {
   return entries.sort((a, b) => b[1] - a[1])[0]?.[0] ?? null;
 });
 
+const code = $derived(encodeRunCode(run));
+const shareText = $derived(
+  run.dailyDate
+    ? app.dailyShare(run.dailyDate, formatNumber(run.stats.bestHand, language), code)
+    : code,
+);
+
+/** Même extension et même type de deck, sur une nouvelle graine. */
 function again(): void {
-  session.newRun(Date.now() % 2147483647);
+  session.newRun({
+    setId: run.setId,
+    seed: Date.now() % 2147483647,
+    lockedTools: lockedTools(progress.current),
+    starterLines: run.starterLines,
+  });
+}
+
+function toTitle(): void {
+  menuScreen.set('title');
+  session.leave();
+}
+
+async function copy(): Promise<void> {
+  try {
+    await navigator.clipboard.writeText(shareText);
+    showToast(app.copied);
+  } catch {
+    showToast(app.copyFailed);
+  }
 }
 </script>
 
@@ -39,11 +69,15 @@ function again(): void {
     {#if favorite}
       <div><dt>{app.statFavorite}</dt><dd>{text.combos[favorite]}</dd></div>
     {/if}
-    <div><dt>{app.statSeed}</dt><dd>{run.seed}</dd></div>
+    <div><dt>{app.statCode}</dt><dd>{code}</dd></div>
   </dl>
+  {#if run.dailyDate}<p class="daily">{app.dailyTag(run.dailyDate)}</p>{/if}
   <div class="actions">
     <button class="btn primary" type="button" onclick={again}>{app.playAgain}</button>
-    <button class="btn" type="button" onclick={() => session.leave()}>{app.toTitle}</button>
+    <button class="btn" type="button" onclick={copy}>
+      <Copy size={16} aria-hidden="true" />{app.copyCode}
+    </button>
+    <button class="btn" type="button" onclick={toTitle}>{app.toTitle}</button>
   </div>
 </main>
 
@@ -92,6 +126,12 @@ function again(): void {
     margin: 0;
     font-family: var(--font-display);
     font-weight: 500;
+  }
+
+  .daily {
+    color: var(--gold);
+    font-family: var(--font-display);
+    text-align: center;
   }
 
   .actions {

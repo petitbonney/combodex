@@ -2,10 +2,17 @@
 import Info from '@lucide/svelte/icons/info';
 import Settings from '@lucide/svelte/icons/settings';
 import { onMount } from 'svelte';
-import { type RunState, seedFromText } from '../../engine/index.ts';
-import { session } from '../logic/game.ts';
-import { panel } from '../logic/panels.ts';
+import { STARTING_SET } from '../../content/sets.ts';
+import {
+  decodeRunCode,
+  lockedTools,
+  type RunState,
+  seedFromText,
+} from '../../engine/index.ts';
+import { progress, session } from '../logic/game.ts';
+import { menuScreen, panel } from '../logic/panels.ts';
 import { texts } from '../logic/texts.ts';
+import { showToast } from '../logic/toasts.ts';
 
 const app = $derived($texts.text.app);
 // Sans proxy : l'état repart tel quel dans le moteur, qui le clone.
@@ -21,10 +28,21 @@ onMount(() => {
     });
 });
 
-function start(): void {
+/** Un code rejoue une run à l'identique ; un texte libre donne une graine sur la première extension. */
+function startFromCode(): void {
   const text = seedText.trim();
-  const numeric = /^\d+$/.test(text) ? Number(text) : seedFromText(text);
-  session.newRun(text ? numeric : Date.now() % 2147483647);
+  if (!text) return;
+  const code = decodeRunCode(text);
+  if (code) {
+    session.newRun(code);
+    return;
+  }
+  if (text.includes('-')) {
+    showToast(app.invalidCode);
+    return;
+  }
+  const seed = /^\d+$/.test(text) ? Number(text) : seedFromText(text);
+  session.newRun({ setId: STARTING_SET, seed, lockedTools: lockedTools(progress.current) });
 }
 </script>
 
@@ -49,7 +67,11 @@ function start(): void {
         {app.continueRun}
       </button>
     {/if}
-    <button class="btn" class:primary={!saved} type="button" onclick={start}>{app.newRun}</button>
+    <button class="btn" class:primary={!saved} type="button" onclick={() => menuScreen.set('setup')}>
+      {app.newRun}
+    </button>
+    <button class="btn" type="button" onclick={() => panel.set('daily')}>{app.daily}</button>
+    <button class="btn" type="button" onclick={() => menuScreen.set('binder')}>{app.binder}</button>
     <button class="btn" type="button" onclick={() => panel.set('help')}>{app.howToPlay}</button>
     <details>
       <summary>{app.seedLabel}</summary>
@@ -58,6 +80,9 @@ function start(): void {
         <input bind:value={seedText} autocomplete="off" inputmode="text" maxlength="32" />
       </label>
       <p class="hint">{app.seedHint}</p>
+      <button class="btn code" type="button" disabled={!seedText.trim()} onclick={startFromCode}>
+        {app.startRun}
+      </button>
     </details>
   </div>
 
@@ -122,6 +147,11 @@ function start(): void {
   .hint {
     margin-top: 4px;
     font-size: 0.82rem;
+  }
+
+  .code {
+    width: 100%;
+    margin-top: 6px;
   }
 
   .legal {

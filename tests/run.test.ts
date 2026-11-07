@@ -28,6 +28,7 @@ function shopRun(money: number, shop: Partial<ShopState> = {}): RunState {
         { kind: 'set', price: 4 },
         { kind: 'energy', price: 4 },
       ],
+      consumable: null,
       rerollCost: 5,
       ...shop,
     },
@@ -55,11 +56,14 @@ describe('création de la run', () => {
     expect(createRun(index, { seed: 99 }).deck).not.toEqual(createRun(index, { seed: 7 }).deck);
   });
 
-  it("prépare 3 Arènes de types distincts, avec une forme d'effet chacune", () => {
+  it("prépare 8 Arènes de types distincts, avec une forme d'effet chacune, puis la Ligue", () => {
     const { arenas } = createRun(index, { seed: 5 });
-    expect(arenas).toHaveLength(3);
-    expect(new Set(arenas.map((arena) => arena.type)).size).toBe(3);
+    expect(arenas).toHaveLength(9);
+    const gyms = arenas.slice(0, 8);
+    expect(new Set(gyms.map((arena) => arena.type)).size).toBe(8);
     for (const arena of arenas) expect(['permanent', 'statuses']).toContain(arena.form);
+    expect(arenas.at(-1)?.league).toBe(true);
+    expect(gyms.every((arena) => !arena.league)).toBe(true);
   });
 
   it('tire effet permanent ou statuts avec une chance sur deux', () => {
@@ -72,7 +76,7 @@ describe('création de la run', () => {
   });
 
   it("un type qui revient prend l'autre forme d'effet", () => {
-    const { arenas } = createRun(index, { seed: 8, arenaCount: 13 });
+    const { arenas } = createRun(index, { seed: 8, arenaCount: 13, league: false });
     const seen = new Map<string, string>();
     for (const arena of arenas) {
       const earlier = seen.get(arena.type);
@@ -256,7 +260,11 @@ describe('gains', () => {
 describe('enchaînement des combats', () => {
   it("passe du Dresseur à l'élite puis au Champion", () => {
     let state = createRun(index, { seed: 2 });
-    state = { ...state, phase: 'shop', shop: { slots: [], boosters: [], rerollCost: 5 } };
+    state = {
+      ...state,
+      phase: 'shop',
+      shop: { slots: [], boosters: [], consumable: null, rerollCost: 5 },
+    };
     state = act(state, { type: 'leaveShop' }).state;
     expect(state).toMatchObject({ stageIndex: 1, arenaIndex: 0, phase: 'intro' });
   });
@@ -269,7 +277,7 @@ describe('enchaînement des combats', () => {
       arenaBanishedUids: [1],
       arenaEvolutionUsed: true,
       phase: 'shop',
-      shop: { slots: [], boosters: [], rerollCost: 5 },
+      shop: { slots: [], boosters: [], consumable: null, rerollCost: 5 },
     };
     const { state: after, events } = act(state, { type: 'leaveShop' });
     expect(after).toMatchObject({
@@ -281,9 +289,9 @@ describe('enchaînement des combats', () => {
     expect(events).toContainEqual({ type: 'arenaCleared', arenaIndex: 0 });
   });
 
-  it('la run est gagnée après le dernier Champion', () => {
+  it('la run est gagnée après la dernière étape', () => {
     const state = nearlyWon('champion');
-    state.arenaIndex = 2;
+    state.arenaIndex = state.arenas.length - 1;
     const { state: after, events } = act(state, { type: 'play', uids: [0] });
     expect(after.phase).toBe('won');
     expect(events).toContainEqual({ type: 'runWon' });

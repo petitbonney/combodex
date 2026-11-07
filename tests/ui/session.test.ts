@@ -1,13 +1,15 @@
 import { describe, expect, it, vi } from 'vitest';
 import { messagesFor } from '../../src/content/i18n/index.ts';
 import { chooseAction } from '../../src/sim/bot.ts';
-import { cardIndex } from '../../src/ui/logic/data.ts';
+import { indexOfSet } from '../../src/ui/logic/data.ts';
 import { memoryStore, type SaveFile } from '../../src/ui/logic/save.ts';
 import { Session, type SessionView } from '../../src/ui/logic/session.ts';
 
+const cardIndex = indexOfSet('sm12');
+
 function newSession(store = memoryStore()) {
   const session = new Session({
-    index: cardIndex,
+    indexFor: indexOfSet,
     store,
     speed: () => 1000,
     texts: () => ({ language: 'fr', text: messagesFor('fr') }),
@@ -37,8 +39,8 @@ async function act(
 describe('session', () => {
   it('joue une run entière du bot jusqu’à son terme, sans action refusée', async () => {
     const { session, view, store } = newSession();
-    session.newRun(3);
-    for (let i = 0; i < 400; i++) {
+    session.newRun({ setId: 'sm12', seed: 3 });
+    for (let i = 0; i < 2000; i++) {
       const state = view().state;
       if (!state || state.phase === 'won' || state.phase === 'lost') break;
       const reason = await act(session, view, chooseAction(state, cardIndex));
@@ -48,11 +50,11 @@ describe('session', () => {
     expect(['won', 'lost']).toContain(view().state?.phase);
     await session.flush();
     expect(await store.read()).toBeNull();
-  }, 30000);
+  }, 60000);
 
   it('sauvegarde après chaque action et reprend au même point', async () => {
     const { session, view, store } = newSession();
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await act(session, view, { type: 'startFight' });
     await session.flush();
     const saved = await store.read();
@@ -65,7 +67,7 @@ describe('session', () => {
 
   it('rend la raison d’un refus sans changer l’état', async () => {
     const { session, view } = newSession();
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await act(session, view, { type: 'startFight' });
     const before = view().state;
     expect(session.refusal({ type: 'play', uids: [] })).toBe('invalidCount');
@@ -75,7 +77,7 @@ describe('session', () => {
 
   it('ne garde pas l’état de l’animation une fois celle-ci passée', async () => {
     const { session, view } = newSession();
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await act(session, view, { type: 'startFight' });
     await act(session, view, { type: 'play', uids: view().state?.fight?.hand.slice(0, 1) ?? [] });
     expect(view().stage.beat).toBeNull();
@@ -86,14 +88,14 @@ describe('session', () => {
     const store = memoryStore();
     store.write = vi.fn().mockRejectedValue(new Error('quota'));
     const { session, view } = newSession(store);
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await session.flush();
     expect(view().saveFailed).toBe(true);
   });
 
   it('abandonner efface la sauvegarde', async () => {
     const { session, store } = newSession();
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await session.abandon();
     expect(await store.read()).toBeNull();
     expect(session.state).toBeNull();
@@ -101,7 +103,7 @@ describe('session', () => {
 
   it('passer une animation la termine aussitôt', async () => {
     const { session, view } = newSession();
-    session.newRun(5);
+    session.newRun({ setId: 'sm12', seed: 5 });
     await act(session, view, { type: 'startFight' });
     const done = session.dispatch({
       type: 'play',

@@ -152,7 +152,7 @@ Chaque main jouée inflige (Dégâts de la combinaison + dégâts des cartes) ×
 
 Les familles très fréquentes dans les textes (Banc, Défausse, Pile ou face) passent en dernier, pour ne pas capter des talents qui relèvent d'une famille plus précise.
 
-**Test sur Éclipse Cosmique** : 82 % des 62 talents gardés au build sont reconnus (2 cartes à talent sans attaque sont écartées), et 98 % tombent dans la même famille en français et en anglais. Les autres reçoivent l'effet Générique ou passent par la liste de corrections.
+**Test sur les extensions jouables** : les mots-clés seuls reconnaissent 82 % des 62 talents d'Éclipse Cosmique, 72 % des 25 de Soleil et Lune et 86 % des 28 de Gardiens Ascendants, et 93 à 100 % tombent dans la même famille en français et en anglais. Les autres reçoivent l'effet Générique ou passent par la liste de corrections, qui compte 42 entrées. Le piège le plus courant : « évolu » ou « marqueurs » décrit souvent la condition du talent, pas son effet.
 
 **Glossaire français → anglais**
 
@@ -200,7 +200,7 @@ Un combat se joue avec une main de 8 cartes, 4 Tours et 4 points de Retraite. On
 
 | Ressource | Départ | Rôle | Équivalent Balatro |
 | --- | --- | --- | --- |
-| Main | 8 cartes | piochées dans le deck mélangé, complétée après chaque action | main |
+| Main | 8 cartes, 9 ou 10 avec certains Outils | piochées dans le deck mélangé, complétée après chaque action | main |
 | Cartes posées | 1 à 5 par Tour, 6 avec l'Outil Grand banc | forment la combinaison | cartes jouées |
 | Tours | 4 par combat | nombre de mains jouables | mains |
 | Retraites | 4 points par combat | défausser une carte coûte sa valeur de retraite (0 à 4) | défausses |
@@ -224,13 +224,23 @@ Le deck progresse de quatre façons entre les combats : évolution, énergies, v
 
 - Un Niveau 1 acheté se pose sur une Base de la même lignée dans le deck.
 - La carte devient le Niveau 1 et garde ses énergies et sa variante.
-- Un objet rare permet de passer directement de la Base au Niveau 2.
+- Le consommable Saut d'évolution permet de passer directement de la Base au Niveau 2.
 
 **Énergies attachées** (consommables)
 
 - Une énergie de base ajoute son type à la carte, qui devient double type, et +10 Dégâts.
 - Cela facilite les Monotype et les Arc-en-ciel.
-- Une énergie spéciale a un effet unique, écrit à la main.
+- Une énergie spéciale a un effet unique, écrit à la main. Elle ne donne ni type ni +10 Dégâts.
+
+| Énergie spéciale | Effet (quand la carte marque, sauf mention) |
+| --- | --- |
+| Double | +30 Dégâts |
+| Multicolore | la carte compte comme tous les types pour les combinaisons |
+| Force | +4 Multi |
+| Bouclier | la carte ignore la résistance et les statuts |
+| Légère | la défausse de la carte ne coûte rien |
+| Fortune | +1 ₽ |
+| Écho | ×1,25 Multi |
 
 **Variantes** (équivalent des éditions de Balatro)
 
@@ -246,9 +256,20 @@ Une carte n'apparaît que dans une variante qui existe pour elle, d'après le ch
 **ACE SPEC** (équivalent des cartes spectrales)
 
 - Consommables surpuissants, un seul en réserve à la fois.
-- Exemples : toutes les cartes de la main deviennent holo ; duplique une carte du deck avec ses bonus ; détruit 3 cartes du deck et ajoute un emplacement d'Outil.
+- Achetés dans l'emplacement consommable de la boutique, utilisés au moment choisi par le joueur.
 
-**Centre Pokémon** : une fois par Arène, retire gratuitement une carte du deck. Un deck plus fin pioche plus souvent ses combos.
+| ACE SPEC | Effet | Moment |
+| --- | --- | --- |
+| Main d'or | toutes les cartes de la main deviennent holo | combat |
+| Pluie d'énergie | chaque carte de la main reçoit une énergie de son type | combat |
+| Second souffle | +2 Tours et +2 points de Retraite pour ce combat | combat |
+| Duplicateur | duplique une carte du deck avec ses bonus | hors combat |
+| Grand ménage | détruit 3 cartes du deck et ajoute un emplacement d'Outil | hors combat |
+| Presse d'imprimerie | une carte du deck passe en 1re édition | hors combat |
+| Gros lot | double les ₽, jusqu'à +20 ₽ | à tout moment |
+| Tirage légendaire | ajoute au deck une carte Ultra rare ou Secrète, en holo | hors combat |
+
+**Centre Pokémon** : une fois par Arène, retire gratuitement une carte du deck depuis la boutique. Un deck plus fin pioche plus souvent ses combos. Le deck ne descend pas sous 8 cartes.
 
 ## Outils et Stades
 
@@ -262,7 +283,7 @@ Les Outils et Stades sont les jokers du jeu : 5 emplacements d'effets passifs qu
 - Achetés en boutique, revendus pour la moitié de leur prix.
 - Visuels originaux, pas les cartes Dresseur réelles : leur texte imprimé contredirait l'effet en jeu.
 
-**Catalogue initial**
+**Catalogue**
 
 | Outil | Archétype | Effet | Rareté |
 | --- | --- | --- | --- |
@@ -286,8 +307,53 @@ Les Outils et Stades sont les jokers du jeu : 5 emplacements d'effets passifs qu
 | Poids lourd | Tank | +4 Multi par carte à retraite 3 ou plus jouée | Peu commune |
 | Palette | Arc-en-ciel | ×2 Multi sur un Arc-en-ciel | Peu commune |
 | Boîte à badges | Montée en puissance | ×0,1 Multi de plus par combat gagné | Rare |
+| Pierre à aiguiser | Base | +40 Dégâts à chaque main | Commune |
+| Mégaphone | Base | +4 Multi à chaque main | Commune |
+| Dernier carré | Tempo | +10 Multi au dernier Tour du combat | Commune |
+| Petit comité | Combinaison | +10 Multi si 3 cartes ou moins sont posées | Commune |
+| Équipe complète | Combinaison | +6 Multi si 5 cartes ou plus sont posées | Commune |
+| Poids plume | Défausse | +3 Multi par carte à retraite 0 ou 1 jouée | Commune |
+| Trio | Combinaison | +10 Multi sur un Brelan ou une Famille | Commune |
+| Débutant | Lignée | +2 Multi par carte de Base jouée | Commune |
+| Pépite | Économie | +2 ₽ à chaque combat gagné | Commune |
+| Bon de réduction | Économie | les relances coûtent 2 ₽ de moins | Commune |
+| Sac à dos | Défausse | +1 point de Retraite à chaque combat | Commune |
+| Nuancier | Arc-en-ciel | +3 Multi par type différent joué | Peu commune |
+| Monochrome | Monotype | ×2 Multi sur un Monotype | Peu commune |
+| Héritage | Lignée | ×2 Multi sur une Lignée | Peu commune |
+| Pochette reverse | Collection | +30 Dégâts par carte reverse jouée | Peu commune |
+| Batterie | Énergie | +2 Multi par énergie attachée aux cartes jouées | Peu commune |
+| Concours de talents | Talents | +3 Multi par carte à talent jouée | Peu commune |
+| Analyse | Faiblesse | +10 Multi si une carte jouée touche la faiblesse | Peu commune |
+| Perce-armure | Faiblesse | la résistance du boss ne s'applique pas | Peu commune |
+| Compte épargne | Économie | les intérêts sont plafonnés à 10 ₽ au lieu de 5 | Peu commune |
+| Carte de fidélité | Économie | les boosters coûtent 1 ₽ de moins | Peu commune |
+| Deck épuré | Deck fin | +2 Multi par carte de moins que 20 dans le deck | Peu commune |
+| Grand chelem | Combinaison | ×3 Multi sur un Carré ou une Quinte | Rare |
+| Rivalité | Boss | ×1,5 Multi contre un Champion ou la Ligue | Rare |
+| Coup de grâce | Boss | ×2 Multi si le boss a moins de 25 % de ses PV | Rare |
+| Collier de croissance | Montée en puissance | gagne +1 Multi permanent à chaque combat gagné | Rare |
+| Carnet de combos | Montée en puissance | +1 Multi par main de cette combinaison déjà jouée pendant la run | Rare |
+| Chaussures de course | Main | main de 9 cartes | Rare |
+| Sablier | Tempo | +1 Tour à chaque combat | Légendaire |
+| Médaille d'or | Base | ×2 Multi à chaque main | Légendaire |
 
-Le catalogue compte 20 Outils, soit 30 offres en boutique avec les 11 Feux de camp. Les 7 derniers ont été ajoutés en phase 2 et restent à valider par le jeu.
+Le catalogue compte 50 Outils, soit 60 offres en boutique avec les 11 Feux de camp. Les 30 derniers ont été ajoutés en phase 3 et restent à valider par le jeu.
+
+**Stades**
+
+| Stade | Effet | Rareté |
+| --- | --- | --- |
+| Terrain d'entraînement | +2 points de Retraite à chaque combat | Peu commune |
+| Place du marché | les relances et les boosters coûtent 2 ₽ de moins | Peu commune |
+| Sanctuaire | un statut qui réussit son jet échoue une fois sur deux | Peu commune |
+| Palais des lignées | ×3 Multi sur une Lignée | Rare |
+| Temple des types | ×3 Multi sur un Monotype | Rare |
+| Pont arc-en-ciel | ×3 Multi sur un Arc-en-ciel | Rare |
+| Dojo | ×4 Multi quand une seule carte est posée | Rare |
+| Serre | main de 10 cartes | Rare |
+
+Un Stade occupe un des emplacements et s'achète comme un Outil. Le nouveau Stade prend la place de l'ancien, sans remboursement.
 
 **Synergies cassées recherchées**
 
@@ -300,23 +366,23 @@ Une run sur dix peut « casser » le jeu. C'est le plaisir recherché, comme dan
 
 ## Champions d'Arène et difficulté
 
-Les PV du Champion passent de 2 000 à 100 000 sur les 8 Arènes, puis 150 000 pour le Maître de la Ligue. La courbe s'inspire de celle de Balatro.
+Les PV du Champion passent de 2 000 à 200 000 sur les 8 Arènes, puis 400 000 pour le Maître de la Ligue. La courbe s'inspire de celle de Balatro.
 
-| Étape | PV du Champion (valeurs provisoires) |
+| Étape | PV du Champion |
 | --- | --- |
 | Arène 1 | 2 000 |
 | Arène 2 | 4 000 |
-| Arène 3 | 7 000 |
-| Arène 4 | 10 000 |
-| Arène 5 | 22 000 |
-| Arène 6 | 40 000 |
-| Arène 7 | 70 000 |
-| Arène 8 | 100 000 |
-| Ligue | 150 000 |
+| Arène 3 | 9 000 |
+| Arène 4 | 18 000 |
+| Arène 5 | 35 000 |
+| Arène 6 | 65 000 |
+| Arène 7 | 120 000 |
+| Arène 8 | 200 000 |
+| Ligue | 400 000 |
 
-Les Arènes 1 à 3 ont été relevées au simulateur (600, 1 600 et 4 000 à l'origine) : une première main valait déjà 1 100 de médiane, et les combats se finissaient en 1,3 Tour. Un Champion demande maintenant environ 2 Tours.
+Les Arènes 1 à 3 ont été relevées au simulateur (600, 1 600 et 4 000 à l'origine) : une première main valait déjà 1 100 de médiane, et les combats se finissaient en 1,3 Tour. Un Champion demande maintenant environ 2 Tours. Les Arènes 3 à 8 et la Ligue ont été relevées en phase 3 (7 000, 10 000, 22 000, 40 000, 70 000, 100 000 et 150 000 à l'origine) : avec le catalogue complet, un bot qui choisit ses Outils gagnait 32 à 39 % des runs.
 
-Le Dresseur a la moitié des PV du Champion, le Dresseur d'élite les trois quarts. En mode infini, les PV augmentent de 60 % par Arène. La main de l'exemple chiffré (40 280) suffit à battre seule le Champion de l'Arène 6 : c'est le niveau de puissance visé en milieu de run.
+Le Dresseur a la moitié des PV du Champion, le Dresseur d'élite les trois quarts. En mode infini, les PV augmentent de 60 % par Arène. La main de l'exemple chiffré (40 280) suffit à battre seule le Champion de l'Arène 5 : c'est le niveau de puissance visé en milieu de run.
 
 **Le Champion** est une vraie carte Pokémon à gros PV, du type de l'Arène. Sa vraie faiblesse et sa vraie résistance s'appliquent. Chaque run tire ses Arènes parmi les types présents dans l'extension, dans un ordre aléatoire. S'il y en a moins de 8, des types reviennent pour compléter, avec l'autre forme d'effet (permanent ou statuts) que lors de leur première apparition.
 
@@ -396,7 +462,14 @@ Chaque victoire rapporte des Pokédollars (₽), dépensés dans une boutique qu
 - +1 ₽ par Tour non utilisé.
 - Intérêts : +1 ₽ par tranche de 5 ₽ détenus, plafonnés à 5 ₽ par combat.
 
-**Contenu de la boutique** : 2 emplacements de cartes ou d'Outils, 2 boosters différents tirés au hasard et 1 consommable. Relancer coûte 5 ₽, puis 1 ₽ de plus à chaque relance ; la relance ne change que les emplacements. Le consommable et les Stades attendent la phase 3.
+**Contenu de la boutique** : 2 emplacements de cartes ou d'Outils, 2 boosters différents tirés au hasard, 1 consommable et le Centre Pokémon. Relancer coûte 5 ₽, puis 1 ₽ de plus à chaque relance ; la relance ne change que les 2 emplacements.
+
+| Consommable | Prix | Poids | Effet |
+| --- | --- | --- | --- |
+| Énergie de base | 2 ₽ | 40 | s'attache à la carte choisie |
+| Énergie spéciale | 4 ₽ | 30 | s'attache à la carte choisie |
+| Saut d'évolution | 5 ₽ | 15 | une Base du deck devient le Niveau 2 de sa lignée |
+| ACE SPEC | 7 ₽ | 15 | part en réserve, un seul à la fois |
 
 | Booster | Prix | Contenu | Cartes gardées |
 | --- | --- | --- | --- |
@@ -427,13 +500,26 @@ Le booster d'extension reprend le visuel du vrai booster quand TCGdex le fournit
 
 Entre les runs, le joueur garde un Classeur : chaque carte vue s'y ajoute et débloque de la variété, jamais de la puissance brute.
 
-- **Classeur** : toutes les cartes vues ou gagnées, classées par extension, avec un taux de complétion.
-- **Decks de départ** : compléter 25 % d'une extension débloque son deck de départ.
-- **Outils à débloquer** : certains n'apparaissent en boutique qu'après un exploit, par exemple gagner une run avec un deck monotype.
+- **Classeur** : un menu pour parcourir les extensions et leurs cartes, avec un taux de complétion. Une carte vue ou gagnée s'y affiche, les autres restent de dos.
+- **Extensions** : seule Éclipse Cosmique est ouverte au départ. Les suivantes s'ouvrent par des objectifs : certains sont explicites, d'autres restent mystérieux jusqu'à ce qu'on les atteigne.
+- **Deck custom** : découvrir 25 % d'une extension permet d'y choisir les 2 lignées du deck de départ. Le reste du deck reste tiré au hasard. En New Game+, ce même écran servira à composer un deck à partir de plusieurs extensions.
+- **Outils à débloquer** : certains n'apparaissent en boutique qu'après un exploit.
 - **Enjeux de difficulté** : battre la Ligue débloque l'enjeu suivant, 8 niveaux comme les mises de Balatro.
 - **New Game+** : une fois la Ligue battue, de nouvelles runs mélangent 2 extensions (NG+), puis 3 (NG++), et ainsi de suite. Le NG+ et l'enjeu de difficulté sont deux axes séparés : chacun se débloque à part, et le joueur combine les deux avant la run.
-- **Défi du jour** : même graine pour tous, une extension imposée, classement par meilleur score en une main.
-- **Graines partageables** : une run se rejoue à l'identique avec un code court.
+- **Défi du jour** : même graine pour tous, une extension imposée, record par meilleur score en une main. En version 1.0, le record reste local ; le classement partagé attend la phase 4.
+- **Codes de run** : une run se rejoue à l'identique avec un code de 12 caractères, qui porte l'extension, la graine, les Outils verrouillés et les lignées choisies.
+
+| Objectif | Condition | Visible | Récompense |
+| --- | --- | --- | --- |
+| Montée en puissance | vaincre 4 Champions au cours d'une même run | oui | extension Soleil et Lune |
+| Sang pur | jouer une Lignée monotype | non | extension Gardiens Ascendants |
+| Maître de la Ligue | gagner une run | oui | Outil Sablier |
+| Spécialiste | gagner une run avec deux tiers du deck d'un même type | oui | Outil Médaille d'or |
+| Cinq sur cinq | jouer une Quinte | non | Outil Grand chelem |
+| Coup de maître | marquer 100 000 en une seule main | oui | Stade Dojo |
+| Vétéran | jouer 200 mains au total | oui | Outil Carnet de combos |
+| Huit badges | vaincre 8 Champions au cours d'une même run | oui | Outil Chaussures de course |
+| Bas de laine | détenir 40 ₽ en même temps | non | Outil Collier de croissance |
 
 ## Données et technique
 
@@ -461,10 +547,10 @@ Les données viennent de TCGdex, figées au build dans un JSON léger ; seules l
 1. Un script Node lit les données TCGdex au moment du build : dépôt open source [`tcgdex/cards-database`](https://github.com/tcgdex/cards-database) (épinglé sur un commit) ou API REST.
 2. Il garde les cartes Pokémon qui ont une image et au moins une attaque.
 3. Il normalise les dégâts (« 30+ » devient 30), déduit le stade des GX évolués (absent des données) et applique une liste d'exclusion manuelle.
-4. Il exporte un fichier de cartes par extension jouable, avec les textes en français et en anglais.
+4. Il exporte un fichier de cartes par extension jouable, avec les textes en français et en anglais. `--only=sm1,sm2` limite le build à ces extensions.
 5. On relance le script à la sortie d'une nouvelle extension. Le jeu n'appelle jamais l'API.
 
-**Prix et variantes** : le dépôt ne donne pas les prix, et Éclipse Cosmique n'a aucun champ `variants` (l'API répond « normale » pour toutes ses cartes). `npm run build:data -- --market` relève donc sur l'API le prix Cardmarket (`trend`) et déduit les variantes réelles des clés de prix TCGplayer, puis fige le tout dans un fichier versionné. Sans relevé, les variantes se replient sur la rareté.
+**Prix et variantes** : le dépôt ne donne pas les prix, et les extensions jouables n'ont aucun champ `variants` (l'API répond « normale » pour toutes leurs cartes). `npm run build:data -- --market` relève donc sur l'API le prix Cardmarket (`trend`) et déduit les variantes réelles des clés de prix TCGplayer, puis fige le tout dans un fichier versionné. Sans relevé, les variantes se replient sur la rareté.
 
 Les détails techniques (lecture du dépôt sans exécuter ses fichiers, index des images) sont dans [la phase 1](phases/phase-1-prototype.md#données-tcgdex).
 
@@ -547,6 +633,10 @@ Toutes les questions ouvertes de la phase de conception sont tranchées.
 | Images des cartes | Appel direct à `assets.tcgdex.net`, mises en cache par le service worker à mesure qu'elles sont vues : Combodex n'héberge aucun visuel |
 | Crédits | Mention « non affilié » sur l'accueil et dans la fiche À propos, avec le crédit TCGdex et la licence |
 | Catalogue de la tranche verticale | 20 Outils pour 30 offres, avec 7 Outils ajoutés sur les archétypes existants |
+| Extensions de la version 1.0 | Éclipse Cosmique, Soleil et Lune (sm1) et Gardiens Ascendants (sm2) : 11 types et images complètes en français et en anglais sur leurs cartes jouables |
+| Ouverture des extensions | Une seule au départ, les suivantes par des objectifs explicites ou mystères ; un menu parcourt extensions et cartes |
+| Deck de départ à 25 % | Il devient un deck custom : le joueur y choisit ses 2 lignées, et le New Game+ s'en servira pour mélanger les extensions |
+| Hébergement | GitHub Pages, publié par un workflow à chaque poussée sur master |
 
 **Précisions du prototype** : le document laissait ces points ouverts. Le moteur les tranche ainsi, en attendant une validation.
 
@@ -587,6 +677,25 @@ Toutes les questions ouvertes de la phase de conception sont tranchées.
 | Boîte à badges | Compte les combats déjà gagnés, pas celui en cours |
 | Sauvegarde | Après chaque action, pas seulement après chaque combat : une run reprend là où elle s'est arrêtée, et perdre un combat ne se rattrape pas en fermant le jeu |
 | Sélection | L'interface limite la sélection au nombre de cartes posables, défausse comprise ; défausser davantage se fait en deux fois |
+
+**Précisions de la version 1.0** : même statut, en attendant une validation.
+
+| Point | Lecture retenue |
+| --- | --- |
+| Ligue | Un seul combat, après la boutique du 8e Champion, sans Dresseur ni passage possible |
+| Maître de la Ligue | Tiré parmi les 3 plus gros PV de l'extension. L'effet d'Arène est tiré une fois par combat, parmi les Arènes de la run, et s'ajoute aux statuts renforcés de tous les types |
+| Faiblesse de la Ligue | Tirée à chaque Tour parmi les types sauf Incolore, en remplacement de sa faiblesse imprimée |
+| Stades | Ils occupent un emplacement d'Outil et se revendent comme lui ; un booster Dresseur peut en contenir |
+| Énergies spéciales | Vendues dans l'emplacement consommable ; le booster Énergie reste en énergies de base |
+| Grand ménage | Le joueur choisit les 3 cartes détruites |
+| Duplicateur | La copie compte dans la limite de 2 TAG TEAM |
+| Saut d'évolution | Une Base à plusieurs lignées, comme Évoli, prend la première trouvée |
+| Bonus de main | Lianes réduit la main de base ; les cartes en plus des Outils s'y ajoutent |
+| Sanctuaire | Le jet du statut a lieu, puis un second pile ou face peut le faire échouer |
+| Cartes vues | Le deck, les cartes de boutique et de booster, les adversaires et les Champions annoncés de la run |
+| Défi du jour | Jour UTC ; les extensions tournent chaque jour, même verrouillées ; les Outils à débloquer en sont absents pour que la boutique soit la même pour tous ; rejouable, le meilleur score compte |
+| Codes de run | Ils peuvent ouvrir une extension verrouillée le temps de la run, sans la débloquer |
+| Graine en texte libre | Une graine qui n'est pas un code démarre sur Éclipse Cosmique |
 
 ## Roadmap
 

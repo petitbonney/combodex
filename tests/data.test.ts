@@ -2,13 +2,16 @@ import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { ABILITY_CORRECTIONS } from '../src/content/ability-corrections.ts';
 import { classifyAbility, normalizeText } from '../src/content/ability-families.ts';
+import { SETS } from '../src/content/sets.ts';
 import type { CardSet } from '../src/engine/cards.ts';
 import { ABILITY_FAMILIES, indexCards, POKEMON_TYPES } from '../src/engine/cards.ts';
 import { completeLines } from '../src/engine/starter-deck.ts';
 
-const set: CardSet = JSON.parse(readFileSync('data/sm12.json', 'utf8'));
+const readSet = (id: string): CardSet => JSON.parse(readFileSync(`data/${id}.json`, 'utf8'));
+const set = readSet('sm12');
 const index = indexCards(set);
-const byId = (id: string) => index.byId.get(id);
+const allCards = SETS.flatMap(({ id }) => readSet(id).cards);
+const byId = (id: string) => allCards.find((card) => card.id === id);
 
 describe('classement des talents', () => {
   it('ignore les majuscules et les accents', () => {
@@ -109,5 +112,33 @@ describe('données Éclipse Cosmique', () => {
     const lines = completeLines(index);
     expect(lines.length).toBeGreaterThanOrEqual(10);
     expect(new Set(lines.map((line) => line.type)).size).toBeGreaterThanOrEqual(2);
+  });
+});
+
+describe.each(SETS.map(({ id }) => id))('extension %s', (id) => {
+  const data = readSet(id);
+  const lines = completeLines(indexCards(data));
+
+  it('couvre les 11 types', () => {
+    const types = new Set(data.cards.flatMap((card) => card.types));
+    expect([...types].sort()).toEqual([...POKEMON_TYPES].sort());
+  });
+
+  it('a de quoi former un deck de départ', () => {
+    expect(new Set(lines.map((line) => line.type)).size).toBeGreaterThanOrEqual(2);
+  });
+
+  it('a ses noms et ses variantes dans les deux langues', () => {
+    for (const card of data.cards) {
+      expect(card.name.fr).not.toBe('');
+      expect(card.name.en).not.toBe('');
+      expect(card.variants.length).toBeGreaterThan(0);
+      expect(card.id.startsWith(`${id}-`)).toBe(true);
+    }
+  });
+
+  it('ne garde que les raretés connues', () => {
+    const rarities = ['Common', 'Uncommon', 'Rare', 'Ultra Rare', 'Secret Rare'];
+    for (const card of data.cards) expect(rarities).toContain(card.rarity);
   });
 });

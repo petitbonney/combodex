@@ -1,7 +1,9 @@
-/** `npm run sim -- --runs=1000 --seed=1 --arenas=3 --lang=fr` */
+/** `npm run sim -- --runs=1000 --seed=1 --set=sm12 --lang=fr` */
 import { parseArgs } from 'node:util';
 import { DEFAULT_ARENA_COUNT } from '../content/balance.ts';
 import { type Language, messagesFor } from '../content/i18n/index.ts';
+import { LOCKABLE_TOOLS } from '../content/objectives.ts';
+import { STARTING_SET } from '../content/sets.ts';
 import { loadCards } from '../data.ts';
 import { simulate } from './simulator.ts';
 
@@ -11,6 +13,9 @@ const { values } = parseArgs({
     seed: { type: 'string', default: '1' },
     arenas: { type: 'string', default: String(DEFAULT_ARENA_COUNT) },
     lang: { type: 'string', default: 'fr' },
+    set: { type: 'string', default: STARTING_SET },
+    // Par défaut, les Outils à débloquer restent absents, comme pour un nouveau joueur.
+    unlocked: { type: 'boolean', default: false },
     json: { type: 'boolean', default: false },
   },
 });
@@ -23,10 +28,11 @@ function integerOption(name: 'runs' | 'seed' | 'arenas'): number {
 
 const start = performance.now();
 const report = simulate(
-  loadCards(),
+  loadCards(values.set),
   integerOption('runs'),
   integerOption('seed'),
   integerOption('arenas'),
+  values.unlocked ? [] : LOCKABLE_TOOLS,
 );
 const seconds = ((performance.now() - start) / 1000).toFixed(1);
 

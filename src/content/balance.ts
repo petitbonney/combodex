@@ -11,14 +11,16 @@ export const TOOL_SLOTS = 5;
 export const MAX_TAG_TEAMS = 2;
 
 /** PV du Champion par Arène. */
-export const ARENA_HP = [2000, 4000, 7000, 10000, 22000, 40000, 70000, 100000] as const;
+export const ARENA_HP = [2000, 4000, 9000, 18000, 35000, 65000, 120000, 200000] as const;
+/** PV du Maître de la Ligue. */
+export const LEAGUE_HP = 400000;
 /** Part des PV du Champion pour le Dresseur et le Dresseur d'élite. */
 export const TRAINER_HP_RATIO = 0.5;
 export const ELITE_HP_RATIO = 0.75;
 /** Les statuts renforcés commencent à l'Arène 5 (indice 4). */
 export const STRONG_STATUS_ARENA_INDEX = 4;
-/** Prototype : run courte. */
-export const DEFAULT_ARENA_COUNT = 3;
+/** Une run complète : 8 Arènes, puis la Ligue. */
+export const DEFAULT_ARENA_COUNT = 8;
 /** Le Champion est tiré parmi les N plus gros PV de son type. */
 export const CHAMPION_POOL_SIZE = 3;
 
@@ -49,7 +51,7 @@ export const METAL_COMBO_FACTOR = 0.5;
 export const PSYCHIC_FACE_DOWN_CHANCE = 0.5;
 
 // Économie
-export const WIN_MONEY = { trainer: 3, elite: 4, champion: 5 } as const;
+export const WIN_MONEY = { trainer: 3, elite: 4, champion: 5, league: 5 } as const;
 export const UNUSED_TURN_MONEY = 1;
 export const INTEREST_STEP = 5;
 export const INTEREST_CAP = 5;
@@ -122,6 +124,28 @@ export const RARITY_PRICE_FALLBACK: Record<Rarity, number> = {
   'Secret Rare': 20,
 };
 export const PRICE_MULT_CAP = 50;
+
+// Consommables
+/** Le dernier emplacement de la boutique : poids de chaque sorte de consommable. */
+export const CONSUMABLE_WEIGHTS = { energy: 40, special: 30, leap: 15, ace: 15 } as const;
+export const CONSUMABLE_PRICES = { energy: 2, special: 4, leap: 5, ace: 7 } as const;
+/** ACE SPEC : gain maximal du Gros lot. */
+export const JACKPOT_CAP = 20;
+/** ACE SPEC : Tours et points de Retraite rendus par Second souffle. */
+export const SECOND_WIND_TURNS = 2;
+export const SECOND_WIND_RETREAT = 2;
+/** ACE SPEC : cartes détruites par le Grand ménage. */
+export const CLEANUP_CARDS = 3;
+
+// Énergies spéciales
+export const DOUBLE_ENERGY_DAMAGE = 30;
+export const FORCE_ENERGY_MULT = 4;
+export const ECHO_ENERGY_TIMES = 1.25;
+export const FORTUNE_ENERGY_MONEY = 1;
+
+// Centre Pokémon
+/** Sous cette taille, le deck ne perd plus de carte : une main doit rester possible. */
+export const MIN_DECK_SIZE = 8;
 
 // Deck de départ
 export const STARTER_LINES = 2;

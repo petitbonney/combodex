@@ -1,5 +1,4 @@
 <script lang="ts">
-import { TOOL_SLOTS } from '../../content/balance.ts';
 import type { ToolInstance } from '../../content/tools.ts';
 import { pressable } from '../actions/pressable.ts';
 import { toolLabel } from '../logic/labels.ts';
@@ -8,6 +7,8 @@ import ToolTile from './ToolTile.svelte';
 
 interface Props {
   tools: readonly ToolInstance[];
+  /** Emplacements de la run. */
+  slots: number;
   disabledUids?: readonly number[];
   litUid?: number | null;
   popup?: string | null;
@@ -18,6 +19,7 @@ interface Props {
 
 const {
   tools,
+  slots,
   disabledUids = [],
   litUid = null,
   popup = null,
@@ -27,7 +29,7 @@ const {
 }: Props = $props();
 
 const app = $derived($texts.text.app);
-const empty = $derived(Math.max(0, TOOL_SLOTS - tools.length));
+const empty = $derived(Math.max(0, slots - tools.length));
 
 function find(id: string): ToolInstance | undefined {
   return tools.find((tool) => String(tool.uid) === id);
@@ -44,6 +46,7 @@ function reorder(from: number, to: number): void {
 
 <div
   class="row"
+  style:--slots={Math.max(slots, tools.length)}
   use:pressable={{
     disabled: locked,
     onReorder: reorder,
@@ -78,7 +81,7 @@ function reorder(from: number, to: number): void {
 <style>
   .row {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--slots), minmax(0, 1fr));
     gap: 6px;
     touch-action: none;
   }

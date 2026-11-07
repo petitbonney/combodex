@@ -82,6 +82,7 @@ function label(entry: HandEntry): string {
           card={entry.card}
           variant={entry.instance.variant}
           energies={entry.instance.energies}
+            specials={entry.instance.specials}
           hidden={entry.hidden}
           {maskDamage}
           paralyzed={entry.paralyzed}

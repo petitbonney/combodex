@@ -2,7 +2,7 @@
 
 Roguelite de deckbuilding gratuit, jouable sur navigateur et mobile : « Balatro, mais les mains de poker sont des équipes Pokémon ». On enchaîne des combos de vraies cartes du JCC Pokémon pour battre 8 Arènes, puis la Ligue.
 
-**Statut** : [phase 2](docs/phases/phase-2-tranche-verticale.md) développée : une run de 3 Arènes se joue dans le navigateur et s'installe en PWA. Sa session de test reste à mener.
+**Statut** : [phase 3](docs/phases/phase-3-version-1.md) développée : 3 extensions, 8 Arènes et la Ligue, Classeur, défi du jour et codes de run, en français et en anglais. Le jeu s'installe en PWA et marche hors-ligne.
 
 ## Jouer
 
@@ -23,11 +23,11 @@ npm run play -- --seed=42
 | --- | --- |
 | `npm run dev` | lancer le jeu en local |
 | `npm run build`, `npm run preview` | construire la PWA dans `dist/` et la servir |
-| `npm run play` | jouer une run dans le terminal (`--seed`, `--lang=fr` ou `en`, `--arenas`) |
-| `npm run sim` | simuler des runs avec un bot (`--runs`, `--seed`, `--arenas`, `--json`) |
+| `npm run play` | jouer une run dans le terminal (`--seed`, `--lang=fr` ou `en`, `--set`, `--arenas`) |
+| `npm run sim` | simuler des runs avec un bot (`--runs`, `--seed`, `--set`, `--arenas`, `--unlocked`, `--json`) |
 | `npm test` | lancer les tests |
 | `npm run typecheck`, `npm run lint` | vérifier les types et le style |
-| `npm run build:data` | régénérer `data/sm12.json` depuis TCGdex (`--market` pour relever prix et variantes) |
+| `npm run build:data` | régénérer `data/<extension>.json` depuis TCGdex (`--market` pour relever prix et variantes, `--only=sm1,sm2` pour limiter) |
 | `npm run build:icons` | régénérer les icônes de la PWA, avec ImageMagick |
 
 ## Documentation

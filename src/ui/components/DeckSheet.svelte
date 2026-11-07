@@ -9,13 +9,17 @@ import Sheet from './Sheet.svelte';
 interface Props {
   run: RunState;
   title?: string;
+  hint?: string;
   /** Limite le choix à ces cartes, et ferme sur un toucher. */
   candidates?: readonly CardInstance[];
   onPick?: (instance: CardInstance) => void;
+  /** Choix de plusieurs cartes, validé par un bouton. */
+  pickCount?: number;
+  onPickMany?: (instances: CardInstance[]) => void;
   onClose: () => void;
 }
 
-const { run, title, candidates, onPick, onClose }: Props = $props();
+const { run, title, hint, candidates, onPick, pickCount = 0, onPickMany, onClose }: Props = $props();
 
 const app = $derived($texts.text.app);
 const language = $derived($texts.language);
@@ -33,6 +37,26 @@ const inPlay = $derived.by(() => {
 });
 
 let detail = $state<CardInstance | null>(null);
+let chosen = $state<number[]>([]);
+
+const picking = $derived(onPick !== undefined || onPickMany !== undefined);
+
+function tap(instance: CardInstance): void {
+  if (onPick) {
+    onPick(instance);
+    return;
+  }
+  if (!onPickMany) {
+    detail = instance;
+    return;
+  }
+  if (chosen.includes(instance.uid)) chosen = chosen.filter((uid) => uid !== instance.uid);
+  else if (chosen.length < pickCount) chosen = [...chosen, instance.uid];
+}
+
+function confirm(): void {
+  onPickMany?.(run.deck.filter((card) => chosen.includes(card.uid)));
+}
 </script>
 
 {#if detail}
@@ -40,29 +64,49 @@ let detail = $state<CardInstance | null>(null);
     card={cardOf(cardIndex, detail)}
     variant={detail.variant}
     energies={detail.energies}
+    specials={detail.specials}
     onClose={() => (detail = null)}
   />
 {:else}
-  <Sheet title={title ?? app.deckTitle(run.deck.length)} {onClose}>
-    {#if inPlay && !onPick}<p class="hint">{app.deckPlayed}</p>{/if}
+  <Sheet
+    title={title ?? app.deckTitle(run.deck.length)}
+    {onClose}
+    actions={onPickMany ? confirmAction : undefined}
+  >
+    {#if hint}<p class="hint">{hint}</p>{/if}
+    {#if inPlay && !picking}<p class="hint">{app.deckPlayed}</p>{/if}
     <div class="grid">
       {#each entries as instance (instance.uid)}
         <button
           type="button"
-          class:out={!onPick && inPlay && !inPlay.has(instance.uid)}
+          class:out={!picking && inPlay && !inPlay.has(instance.uid)}
+          class:chosen={chosen.includes(instance.uid)}
           aria-label={cardOf(cardIndex, instance).name[language]}
-          onclick={() => (onPick ? onPick(instance) : (detail = instance))}
+          aria-pressed={onPickMany ? chosen.includes(instance.uid) : undefined}
+          onclick={() => tap(instance)}
         >
           <GameCard
             card={cardOf(cardIndex, instance)}
             variant={instance.variant}
             energies={instance.energies}
+            specials={instance.specials}
           />
         </button>
       {/each}
     </div>
   </Sheet>
 {/if}
+
+{#snippet confirmAction()}
+  <button
+    class="btn primary"
+    type="button"
+    disabled={chosen.length !== pickCount}
+    onclick={confirm}
+  >
+    {app.confirmTargets} ({chosen.length}/{pickCount})
+  </button>
+{/snippet}
 
 <style>
   .hint {
@@ -85,5 +129,11 @@ let detail = $state<CardInstance | null>(null);
 
   .out {
     opacity: 0.4;
+  }
+
+  .chosen {
+    border-radius: 8px;
+    outline: 3px solid var(--gold);
+    outline-offset: 1px;
   }
 </style>

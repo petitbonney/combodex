@@ -1,17 +1,20 @@
 /** État d'une run, actions du joueur et événements émis par le moteur. */
+import type { AceSpecId, SpecialEnergyId } from '../content/consumables.ts';
 import type { StatusId } from '../content/statuses.ts';
 import type { ToolId, ToolInstance } from '../content/tools.ts';
 import type { CardInstance, PokemonType, Variant } from './cards.ts';
 import type { Rng } from './rng.ts';
 import type { ScoreResult } from './scoring.ts';
 
-export type OpponentKind = 'trainer' | 'elite' | 'champion';
+export type OpponentKind = 'trainer' | 'elite' | 'champion' | 'league';
 export type BossForm = 'permanent' | 'statuses';
 
 export interface Arena {
   type: PokemonType;
   form: BossForm;
   championCardId: string;
+  /** Dernière étape de la run : le Maître de la Ligue, en un seul combat. */
+  league?: boolean;
 }
 
 export interface Opponent {
@@ -24,6 +27,8 @@ export interface Opponent {
   resistances: PokemonType[];
   /** Forme d'effet active ; `null` pour les Dresseurs. */
   form: BossForm | null;
+  /** Maître de la Ligue : effet permanent emprunté à une Arène, en plus de ses statuts. */
+  leagueEffect?: PokemonType;
 }
 
 export interface ActiveStatus {
@@ -68,6 +73,8 @@ export interface FightState {
   turnDisabledToolUids: number[];
   /** Outil désactivé pendant tout le combat (effet permanent Obscurité). */
   fightDisabledToolUids: number[];
+  /** Cartes en plus dans la main, données par les Outils au début du combat. */
+  handBonus: number;
 }
 
 export interface ShopCardSlot {
@@ -92,9 +99,17 @@ export interface ShopBooster {
   price: number;
 }
 
+/** Le dernier emplacement de la boutique. */
+export type ShopConsumable =
+  | { kind: 'energy'; energy: PokemonType; price: number }
+  | { kind: 'special'; special: SpecialEnergyId; price: number }
+  | { kind: 'leap'; price: number }
+  | { kind: 'ace'; ace: AceSpecId; price: number };
+
 export interface ShopState {
   slots: (ShopSlot | null)[];
   boosters: (ShopBooster | null)[];
+  consumable: ShopConsumable | null;
   rerollCost: number;
 }
 
@@ -120,10 +135,20 @@ export interface RunStats {
   bestHand: number;
   handsPlayed: number;
   fightsWon: number;
+  /** Champions et Maître de la Ligue vaincus. */
+  championsBeaten: number;
 }
 
 export interface RunState {
+  /** Extension de la run. */
+  setId: string;
   seed: number;
+  /** Outils que cette run ne propose pas : ceux que le joueur n'a pas encore débloqués. */
+  lockedTools: ToolId[];
+  /** Lignées choisies pour le deck de départ, par position dans `completeLines`. */
+  starterLines: number[] | null;
+  /** Date du défi du jour, si la run en est un. */
+  dailyDate: string | null;
   rng: Rng;
   phase: RunPhase;
   arenas: Arena[];
@@ -132,12 +157,18 @@ export interface RunState {
   stageIndex: number;
   deck: CardInstance[];
   tools: ToolInstance[];
+  /** Emplacements d'Outils. */
+  toolSlots: number;
+  /** ACE SPEC en réserve : un seul à la fois. */
+  aceSpec: AceSpecId | null;
   money: number;
   stats: RunStats;
   /** Cartes retirées du deck jusqu'à la fin de l'Arène. */
   arenaBanishedUids: number[];
   /** Le talent Évolution a servi dans cette Arène. */
   arenaEvolutionUsed: boolean;
+  /** Le Centre Pokémon a servi dans cette Arène. */
+  arenaCenterUsed: boolean;
   nextUid: number;
   fight: FightState | null;
   shop: ShopState | null;
@@ -154,6 +185,9 @@ export type Action =
   | { type: 'reorderTools'; uids: number[] }
   | { type: 'buySlot'; index: number; evolveUid?: number }
   | { type: 'buyBooster'; index: number }
+  | { type: 'buyConsumable'; targetUid?: number }
+  | { type: 'useAce'; targetUids?: number[] }
+  | { type: 'removeCard'; uid: number }
   | { type: 'sellTool'; uid: number }
   | { type: 'reroll' }
   | { type: 'leaveShop' }
@@ -176,6 +210,9 @@ export type GameEvent =
   | { type: 'handReturned'; uids: number[] }
   | { type: 'handPlayed'; result: ScoreResult }
   | { type: 'opponentDamaged'; amount: number; hp: number }
+  | { type: 'weaknessChanged'; weakness: PokemonType }
+  | { type: 'moneyGained'; amount: number }
+  | { type: 'aceUsed'; id: AceSpecId }
   | { type: 'afflictionTick'; amount: number }
   | { type: 'discarded'; uids: number[]; cost: number; money: number }
   | { type: 'cardRecovered'; uid: number }
@@ -195,6 +232,8 @@ export interface FightGains {
   interest: number;
   picnic: number;
   reward: number;
+  /** ₽ donnés par les Outils à chaque victoire. */
+  bonus: number;
   total: number;
 }
 
@@ -205,8 +244,12 @@ export interface ActionResult {
 
 /** Raison d'un refus ; son texte est dans les fichiers de traduction. */
 export type IllegalReason =
+  | 'aceNotNow'
+  | 'aceReserveFull'
   | 'boosterSold'
+  | 'centerUsed'
   | 'championCannotBeSkipped'
+  | 'deckTooSmall'
   | 'duplicateCard'
   | 'emptyDeck'
   | 'emptySlot'
@@ -215,7 +258,9 @@ export type IllegalReason =
   | 'invalidCount'
   | 'invalidEvolution'
   | 'invalidSearch'
+  | 'invalidTarget'
   | 'invalidToolOrder'
+  | 'noAce'
   | 'noBooster'
   | 'noFight'
   | 'noFightToStart'

@@ -76,8 +76,22 @@ function pickBasics(rng: Rng, index: CardIndex, lineTypes: readonly PokemonType[
   return basics;
 }
 
-export function generateStarterDeck(rng: Rng, index: CardIndex): StarterCard[] {
-  const lines = pickLines(rng, completeLines(index));
+/** Vrai si ces lignées, désignées par leur position, peuvent former un deck de départ. */
+export function validStarterLines(index: CardIndex, chosen: readonly number[]): boolean {
+  const lines = completeLines(index);
+  const picked = chosen.map((position) => lines[position]);
+  const types = new Set(picked.map((line) => line?.type));
+  return chosen.length === STARTER_LINES && types.size === STARTER_LINES && picked.every(Boolean);
+}
+
+/** `chosen` : positions des lignées du deck custom ; sans elles, le tirage décide. */
+export function generateStarterDeck(
+  rng: Rng,
+  index: CardIndex,
+  chosen: readonly number[] | null = null,
+): StarterCard[] {
+  const all = completeLines(index);
+  const lines = chosen ? chosen.flatMap((position) => all[position] ?? []) : pickLines(rng, all);
   if (lines.length < STARTER_LINES) throw new Error('Pas assez de lignées pour le deck de départ');
   const cards: CardData[] = [];
   for (const line of lines) {

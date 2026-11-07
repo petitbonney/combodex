@@ -5,20 +5,27 @@
 import {
   COIN_FLIP_TIMES,
   COUNTERS_PERCENT,
+  DOUBLE_ENERGY_DAMAGE,
+  ECHO_ENERGY_TIMES,
   ENERGY_DAMAGE,
   FIRST_EDITION_TIMES,
+  FORCE_ENERGY_MULT,
+  FORTUNE_ENERGY_MONEY,
   GENERIC_MULT,
   HOLO_MULT,
+  MAX_TURNS,
   POWER_DAMAGE,
   REVERSE_DAMAGE,
   WEAKNESS_TIMES,
 } from '../content/balance.ts';
+import type { SpecialEnergyId } from '../content/consumables.ts';
 import { TOOLS, type ToolContext, type ToolInstance } from '../content/tools.ts';
 import type { AbilityFamily, CardData, CardIndex, CardInstance, PokemonType } from './cards.ts';
 import { cardOf, evolvesFrom } from './cards.ts';
 import { COMBO_VALUES, type ComboCard, type ComboId, demoteCombo, detectCombo } from './combos.ts';
 import { coinFlip, type Rng, sample, shuffle } from './rng.ts';
 import type { HandRules } from './rules.ts';
+import type { OpponentKind } from './state.ts';
 
 /** Effets de talents à appliquer une fois la main résolue. */
 export type TalentEffect = Extract<
@@ -53,6 +60,9 @@ export interface ScoreInput {
   /** Cartes restées en main. */
   hand: readonly CardInstance[];
   opponent: {
+    kind?: OpponentKind;
+    /** PV avant cette main ; `maxHp` s'il manque. */
+    hp?: number;
     maxHp: number;
     weaknesses: readonly PokemonType[];
     resistances: readonly PokemonType[];
@@ -68,6 +78,11 @@ export interface ScoreInput {
   money: number;
   retreatPoints: number;
   fightsWon: number;
+  /** Tour en cours et nombre de Tours du combat. */
+  turn?: number;
+  maxTurns?: number;
+  /** Cartes du deck. */
+  deckSize?: number;
   /** `null` : estimation sans jet. */
   rng: Rng | null;
 }
@@ -83,7 +98,7 @@ export type ScoreStep =
       talent: AbilityFamily | null;
     }
   | { kind: 'silenced'; uid: number }
-  | { kind: 'tool'; uid: number; addMult: number; timesMult: number }
+  | { kind: 'tool'; uid: number; addMult: number; timesMult: number; addDamage: number }
   /** Les ×Multi des cartes (1re édition, Pile ou face), appliqués avant ceux des Outils. */
   | { kind: 'cardTimes'; times: number }
   | {
@@ -111,6 +126,8 @@ export interface ScoreResult {
   score: number;
   /** Dégâts hors calcul (Marqueurs). */
   flatDamage: number;
+  /** ₽ gagnés pendant la main (Énergie Fortune). */
+  moneyGained: number;
   effects: TalentEffect[];
 }
 
@@ -143,6 +160,14 @@ export function activeTools(input: {
     if (rules.weaknessToolsOff && def.weakness) return false;
     return true;
   });
+}
+
+export function hasSpecial(instance: CardInstance, special: SpecialEnergyId): boolean {
+  return instance.specials?.includes(special) ?? false;
+}
+
+function countSpecial(instance: CardInstance, special: SpecialEnergyId): number {
+  return instance.specials?.filter((entry) => entry === special).length ?? 0;
 }
 
 interface PlayedCard {
@@ -187,6 +212,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   const countsHp = defs.some((def) => def.countsHp);
   const colorlessWild = defs.some((def) => def.colorlessWildcard);
   const replaysEvolution = defs.some((def) => def.replaysEvolution);
+  const ignoresResistance = defs.some((def) => def.ignoresResistance);
 
   const ordered = rules.shufflePlayed && rng ? shuffle(rng, input.played) : [...input.played];
   const cards: PlayedCard[] = ordered.map((instance) => {
@@ -195,14 +221,17 @@ export function scoreHand(input: ScoreInput): ScoreResult {
       instance,
       data,
       types: effectiveTypes(data, instance, rules),
-      shielded: data.abilityFamily === 'shield',
+      shielded: data.abilityFamily === 'shield' || hasSpecial(instance, 'shield'),
     };
   });
 
-  const comboCards: ComboCard[] = cards.map(({ data, types }) => ({
+  const comboCards: ComboCard[] = cards.map(({ data, types, instance }) => ({
     data,
     types,
-    wildcard: data.abilityFamily === 'versatile' || (colorlessWild && types.includes('Colorless')),
+    wildcard:
+      data.abilityFamily === 'versatile' ||
+      hasSpecial(instance, 'rainbow') ||
+      (colorlessWild && types.includes('Colorless')),
     strength: countsHp ? data.hp : data.bestDamage,
   }));
   const { combo, scoring } = detectCombo(comboCards);
@@ -226,6 +255,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   record({ kind: 'combo', combo: countedCombo, damage: comboDamage, mult: comboMult });
   let cardTimes = 1;
   let flatDamage = 0;
+  let moneyGained = 0;
   const effects: TalentEffect[] = [];
 
   const strongestInHand = Math.max(0, ...hand.map((card) => cardOf(index, card).bestDamage));
@@ -265,7 +295,11 @@ export function scoreHand(input: ScoreInput): ScoreResult {
 
     if (!rules.energyDamageOff || card.shielded) {
       cardDamage += ENERGY_DAMAGE * instance.energies.length;
+      cardDamage += DOUBLE_ENERGY_DAMAGE * countSpecial(instance, 'double');
     }
+    addMult += FORCE_ENERGY_MULT * countSpecial(instance, 'force');
+    timesMult *= ECHO_ENERGY_TIMES ** countSpecial(instance, 'echo');
+    moneyGained += FORTUNE_ENERGY_MONEY * countSpecial(instance, 'fortune');
 
     for (const source of powerSources) {
       const sameType = source.types.some((type) => card.types.includes(type));
@@ -302,30 +336,46 @@ export function scoreHand(input: ScoreInput): ScoreResult {
   // Les Outils se déclenchent de gauche à droite : les +Multi, puis les ×Multi.
   const distinct = new Set(input.seenDexIds);
   for (const { data } of cards) for (const dexId of data.dexIds) distinct.add(dexId);
+  const hitsWeakness = cards.some((card) =>
+    card.types.some((type) => opponent.weaknesses.includes(type)),
+  );
   const contextFor = (tool: ToolInstance): ToolContext => ({
     tool,
     index,
     combo,
     played: cards,
     scoring: marking.map((position) => cards[position] as PlayedCard),
+    hitsWeakness,
     colorlessWild,
     variantsOff: rules.variantsOff,
     distinctPokemon: distinct.size,
     money: input.money,
     retreatPoints: input.retreatPoints,
     fightsWon: input.fightsWon,
+    turn: input.turn ?? 1,
+    maxTurns: input.maxTurns ?? MAX_TURNS,
+    deckSize: input.deckSize ?? 0,
+    opponentKind: opponent.kind ?? 'champion',
+    opponentHpRatio: (opponent.hp ?? opponent.maxHp) / opponent.maxHp,
+    comboCount: input.comboCounts[combo] ?? 0,
   });
   const toolAdd = (tool: ToolInstance) => TOOLS[tool.toolId].addMult?.(contextFor(tool)) ?? 0;
   const toolTimes = (tool: ToolInstance) => TOOLS[tool.toolId].timesMult?.(contextFor(tool)) ?? 1;
+  const toolDamage = (tool: ToolInstance) => TOOLS[tool.toolId].addDamage?.(contextFor(tool)) ?? 0;
   const triggerAdd = (tool: ToolInstance) => {
     const addMult = toolAdd(tool);
+    const addDamage = toolDamage(tool);
     mult += addMult;
-    if (addMult !== 0) record({ kind: 'tool', uid: tool.uid, addMult, timesMult: 1 });
+    damage += addDamage;
+    if (addMult !== 0 || addDamage !== 0) {
+      record({ kind: 'tool', uid: tool.uid, addMult, timesMult: 1, addDamage });
+    }
   };
   const triggerTimes = (tool: ToolInstance) => {
     const timesMult = toolTimes(tool);
     mult *= timesMult;
-    if (timesMult !== 1) record({ kind: 'tool', uid: tool.uid, addMult: 0, timesMult });
+    if (timesMult !== 1)
+      record({ kind: 'tool', uid: tool.uid, addMult: 0, timesMult, addDamage: 0 });
   };
   const applyCardTimes = () => {
     mult *= cardTimes;
@@ -360,9 +410,6 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     damage -= amount;
     record({ kind: 'damageChange', source: 'loss', amount: -amount });
   }
-  const hitsWeakness = cards.some((card) =>
-    card.types.some((type) => opponent.weaknesses.includes(type)),
-  );
   if (rules.counterAttackLoss > 0 && !hitsWeakness) {
     const amount = Math.floor(damage * rules.counterAttackLoss);
     damage -= amount;
@@ -375,11 +422,14 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     mult *= times;
     record({ kind: 'weakness', times });
   }
-  const resisted = cards.filter(
-    (card) =>
-      !card.shielded &&
-      (rules.resistanceAllTypes || card.types.some((type) => opponent.resistances.includes(type))),
-  ).length;
+  const resisted = ignoresResistance
+    ? 0
+    : cards.filter(
+        (card) =>
+          !card.shielded &&
+          (rules.resistanceAllTypes ||
+            card.types.some((type) => opponent.resistances.includes(type))),
+      ).length;
   if (resisted > 0) {
     const amount = rules.resistanceDamage * rules.resistanceFactor * resisted;
     damage -= amount;
@@ -400,6 +450,7 @@ export function scoreHand(input: ScoreInput): ScoreResult {
     mult,
     score,
     flatDamage,
+    moneyGained,
     effects,
   };
 }

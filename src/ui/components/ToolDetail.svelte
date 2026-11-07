@@ -22,7 +22,11 @@ const text = $derived($texts.text);
   <div class="detail">
     <span class="tile"><ToolTile toolId={tool.toolId} type={tool.type} {disabled} /></span>
     <div>
-      <p class="rarity">{text.toolRarities[TOOLS[tool.toolId].rarity]}</p>
+      <p class="rarity">
+        {text.toolRarities[TOOLS[tool.toolId].rarity]}{TOOLS[tool.toolId].stadium
+          ? ` · ${text.app.stadiumTag}`
+          : ''}
+      </p>
       <p>{text.tools[tool.toolId].effect}</p>
       {#if disabled}<p class="off">{text.app.toolDisabled}</p>{/if}
     </div>

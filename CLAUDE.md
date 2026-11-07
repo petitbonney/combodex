@@ -5,7 +5,7 @@ Roguelite de deckbuilding web et mobile inspiré de Balatro, basé sur les vraie
 ## Avant de coder
 
 1. Lire [`docs/game-design.md`](docs/game-design.md) : c'est la source de vérité des règles. Toutes les questions de conception y sont tranchées (section Décisions).
-2. Lire le fichier de la phase en cours dans [`docs/phases/`](docs/phases/). Phase actuelle : [phase 2, tranche verticale](docs/phases/phase-2-tranche-verticale.md).
+2. Lire le fichier de la phase en cours dans [`docs/phases/`](docs/phases/). Phase actuelle : [phase 3, version 1.0](docs/phases/phase-3-version-1.md).
 3. Une règle absente ou ambiguë dans le document de game design se demande à l'utilisateur ; ne pas l'inventer en silence.
 
 ## Conventions
@@ -27,7 +27,7 @@ Roguelite de deckbuilding web et mobile inspiré de Balatro, basé sur les vraie
 - Source : dépôt [`tcgdex/cards-database`](https://github.com/tcgdex/cards-database), cloné dans `vendor/` (ignoré par git) et épinglé sur un commit.
 - Ne jamais exécuter les fichiers `.ts` de ce dépôt : les lire avec l'API du compilateur TypeScript et convertir l'arbre syntaxique en valeurs. TypeScript reste épinglé en version 6 : la version 7 n'expose plus cette API.
 - `api.tcgdex.net` et `assets.tcgdex.net` peuvent être inaccessibles depuis une session Claude ; GitHub l'est.
-- Extension du prototype : Éclipse Cosmique (`sm12`, `data/Sun & Moon/Cosmic Eclipse/`).
+- Extensions jouables : Éclipse Cosmique (`sm12`), Soleil et Lune (`sm1`) et Gardiens Ascendants (`sm2`), toutes dans `data/Sun & Moon/`. La liste est dans `src/content/sets.ts` et `scripts/build-data.ts`.
 - Ne pas recopier les textes des cartes (attaques, talents) dans la documentation ; les garder dans les données générées.
 
 ## Licence

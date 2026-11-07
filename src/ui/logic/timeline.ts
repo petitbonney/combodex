@@ -37,7 +37,14 @@ export type Beat =
       running: Running;
     }
   | { kind: 'silenced'; uid: number; running: Running }
-  | { kind: 'tool'; uid: number; addMult: number; timesMult: number; running: Running }
+  | {
+      kind: 'tool';
+      uid: number;
+      addMult: number;
+      timesMult: number;
+      addDamage: number;
+      running: Running;
+    }
   | { kind: 'modifier'; label: string; running: Running }
   | { kind: 'total'; damage: number; mult: number; score: number; flatDamage: number }
   | { kind: 'hit'; amount: number; hp: number }
@@ -204,6 +211,21 @@ export function buildTimeline(input: TimelineInput): Timeline {
       case 'moneyLost':
         last.push({ kind: 'notice', text: ui.eventMoneyLost(event.amount), tone: 'bad' });
         break;
+      case 'moneyGained':
+        last.push({ kind: 'notice', text: ui.eventMoney(event.amount), tone: 'good' });
+        break;
+      case 'weaknessChanged':
+        if (before.fight) {
+          last.push({
+            kind: 'notice',
+            text: ui.eventWeakness(types[event.weakness]),
+            tone: 'info',
+          });
+        }
+        break;
+      case 'aceUsed':
+        last.push({ kind: 'notice', text: ui.eventAce(text.aces[event.id].name), tone: 'good' });
+        break;
       case 'retreatLost':
         last.push({ kind: 'notice', text: ui.eventRetreatLost(event.amount), tone: 'bad' });
         break;
@@ -267,7 +289,8 @@ export function buildTimeline(input: TimelineInput): Timeline {
     }
   }
   if (fightEnd?.type === 'fightWon') {
-    const champion = before.fight?.opponent.kind === 'champion';
+    const kind = before.fight?.opponent.kind;
+    const champion = kind === 'champion';
     const arenaCleared = champion ? before.arenaIndex + 1 : null;
     first.push({ kind: 'gains', gains: fightEnd.gains, arenaCleared });
   }

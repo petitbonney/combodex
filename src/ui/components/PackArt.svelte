@@ -1,15 +1,17 @@
 <script lang="ts">
 import type { BoosterKind } from '../../engine/index.ts';
-import { cardIndex } from '../logic/data.ts';
+import { indexOfSet } from '../logic/data.ts';
 import { texts } from '../logic/texts.ts';
 
 interface Props {
   kind: BoosterKind;
+  /** Extension de la run. */
+  setId: string;
   /** Le paquet se déchire. */
   tearing?: boolean;
 }
 
-const { kind, tearing = false }: Props = $props();
+const { kind, setId, tearing = false }: Props = $props();
 
 const GRADIENTS: Record<BoosterKind, string> = {
   set: 'linear-gradient(150deg, #3a58c9, #7d3fc4 55%, #d94b8c)',
@@ -23,7 +25,7 @@ const GRADIENTS: Record<BoosterKind, string> = {
   <span class="crimp top"></span>
   <span class="shine"></span>
   <span class="label">
-    <small>{cardIndex.set.name[$texts.language]}</small>
+    <small>{indexOfSet(setId).set.name[$texts.language]}</small>
     <strong>{$texts.text.app.boosterNames[kind]}</strong>
   </span>
   <span class="crimp bottom"></span>

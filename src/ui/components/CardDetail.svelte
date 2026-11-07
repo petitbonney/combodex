@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { Snippet } from 'svelte';
+import type { SpecialEnergyId } from '../../content/consumables.ts';
 import type { CardData, PokemonType, Variant } from '../../engine/index.ts';
 import { texts } from '../logic/texts.ts';
 import GameCard from './GameCard.svelte';
@@ -10,6 +11,7 @@ interface Props {
   card: CardData;
   variant?: Variant;
   energies?: readonly PokemonType[];
+  specials?: readonly SpecialEnergyId[] | undefined;
   maskDamage?: boolean;
   onClose: () => void;
   actions?: Snippet | undefined;
@@ -19,6 +21,7 @@ const {
   card,
   variant = 'normal',
   energies = [],
+  specials = [],
   maskDamage = false,
   onClose,
   actions,
@@ -54,6 +57,11 @@ const family = $derived(card.abilityFamily ? $texts.text.families[card.abilityFa
         </div>
       {/if}
     </dl>
+    {#each specials as special, position (position)}
+      <p class="talent">
+        <strong>{$texts.text.specials[special].name}</strong><br />{$texts.text.specials[special].effect}
+      </p>
+    {/each}
     {#if family}
       <p class="talent"><strong>{app.talent} · {family.name}</strong><br />{family.effect}</p>
     {/if}

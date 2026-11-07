@@ -1,8 +1,9 @@
-/** `npm run play -- --seed=42 --lang=fr --arenas=3` : jouer une run à la main dans le terminal. */
+/** `npm run play -- --seed=42 --lang=fr --set=sm1` : jouer une run à la main dans le terminal. */
 import { createInterface } from 'node:readline/promises';
 import { parseArgs } from 'node:util';
 import { DEFAULT_ARENA_COUNT } from '../content/balance.ts';
 import type { Language } from '../content/i18n/index.ts';
+import { STARTING_SET } from '../content/sets.ts';
 import { loadCards } from '../data.ts';
 import {
   type Action,
@@ -39,10 +40,11 @@ const { values } = parseArgs({
     seed: { type: 'string' },
     lang: { type: 'string', default: 'fr' },
     arenas: { type: 'string', default: String(DEFAULT_ARENA_COUNT) },
+    set: { type: 'string', default: STARTING_SET },
   },
 });
 
-const index: CardIndex = loadCards();
+const index: CardIndex = loadCards(values.set);
 const view: View = createView(values.lang as Language, index);
 const { ui } = view.text;
 const seed = values.seed
@@ -100,6 +102,12 @@ function toolOrder(state: RunState, positions: readonly number[]): number[] | nu
   return uids.every((uid) => uid !== undefined) ? (uids as number[]) : null;
 }
 
+/** Les cartes du deck désignées par leur position dans `deckOrder`. */
+function deckUids(state: RunState, positions: readonly number[]): number[] {
+  const deck = deckOrder(view, state);
+  return positions.flatMap((position) => deck[position - 1]?.uid ?? []);
+}
+
 async function fightTurn(state: RunState, fight: FightState): Promise<RunState | null> {
   if (fight.searchChoices) {
     print(renderSearch(view, state, fight.searchChoices));
@@ -126,6 +134,7 @@ async function fightTurn(state: RunState, fight: FightState): Promise<RunState |
     print(renderDeck(view, state));
     return state;
   }
+  if (command === 'u') return perform(state, { type: 'useAce' });
   if (positions === null) {
     console.log(ui.invalidInput);
     return state;
@@ -186,6 +195,20 @@ async function shopTurn(state: RunState): Promise<RunState | null> {
       return state;
     case 'r':
       return perform(state, { type: 'reroll' });
+    case 'c': {
+      const [targetUid] = deckUids(state, positions);
+      return perform(state, {
+        type: 'buyConsumable',
+        ...(targetUid === undefined ? {} : { targetUid }),
+      });
+    }
+    case 'u':
+      return perform(state, { type: 'useAce', targetUids: deckUids(state, positions) });
+    case 'n': {
+      const [uid] = deckUids(state, positions);
+      if (uid !== undefined) return perform(state, { type: 'removeCard', uid });
+      break;
+    }
     case 'b':
       return perform(state, { type: 'buyBooster', index: first });
     case 'v': {

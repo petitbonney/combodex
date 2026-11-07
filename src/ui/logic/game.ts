@@ -1,20 +1,32 @@
 /** Instance unique de la partie pour l'application. */
 import type { Language } from '../../content/i18n/index.ts';
 import { type CardData, cardOf, instanceOf, isHidden, type RunState } from '../../engine/index.ts';
-import { cardIndex, seriesOf } from './data.ts';
+import { cardIndex, indexOfSet, seriesOf, setIdOf } from './data.ts';
 import { cardImageUrl, type ImageQuality, preloadImages } from './images.ts';
-import { indexedDbStore, memoryStore, type SaveStore } from './save.ts';
+import { Progress } from './progress.ts';
+import {
+  indexedDbMetaStore,
+  indexedDbStore,
+  type MetaStore,
+  memoryMetaStore,
+  memoryStore,
+  type SaveStore,
+} from './save.ts';
 import { Session } from './session.ts';
 import { currentTexts, speedFactor } from './settings.ts';
+import { showToast } from './toasts.ts';
 
 function saveStore(): SaveStore {
   return typeof indexedDB === 'undefined' ? memoryStore() : indexedDbStore();
 }
 
-const setRef = { id: cardIndex.set.id, series: seriesOf(cardIndex.set.id) };
+function metaStore(): MetaStore {
+  return typeof indexedDB === 'undefined' ? memoryMetaStore() : indexedDbMetaStore();
+}
 
 export function imageOf(card: CardData, quality: ImageQuality, language: Language): string {
-  return cardImageUrl(card, setRef, language, quality);
+  const id = setIdOf(card.id);
+  return cardImageUrl(card, { id, series: seriesOf(id) }, language, quality);
 }
 
 /** Seule la main est préchargée : le reste se charge quand il s'affiche. */
@@ -28,10 +40,19 @@ function preloadHand(state: RunState): void {
   );
 }
 
+export const progress = new Progress({
+  store: metaStore(),
+  onReached: (id) => {
+    const { app, objectives } = currentTexts().text;
+    showToast(app.objectiveReached(objectives[id].name));
+  },
+});
+
 export const session = new Session({
-  index: cardIndex,
+  indexFor: indexOfSet,
   store: saveStore(),
   speed: speedFactor,
   texts: currentTexts,
   onCommit: preloadHand,
+  onProgress: (state, events, index) => progress.observe(state, events, index),
 });

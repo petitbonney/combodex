@@ -1,6 +1,6 @@
 {
   "name": "combodex",
-  "version": "0.2.0",
+  "version": "1.0.0",
   "private": true,
   "description": "Roguelite de deckbuilding basé sur les vraies cartes du JCC Pokémon",
   "license": "GPL-3.0-or-later",

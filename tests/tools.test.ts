@@ -1,13 +1,17 @@
 import { describe, expect, it } from 'vitest';
 import { TOOL_IDS, TOOL_OFFERS, TOOLS } from '../src/content/tools.ts';
+import { applyAction } from '../src/engine/run.ts';
 import { scoreHand } from '../src/engine/scoring.ts';
-import { card, fillers, instance, scoreInput, tool } from './helpers.ts';
+import type { RunState } from '../src/engine/state.ts';
+import { card, fightRun, fillers, indexOf, instance, scoreInput, tool } from './helpers.ts';
 
 describe('catalogue', () => {
-  it('propose 20 Outils, dont un Feu de camp par type, soit 30 offres', () => {
-    expect(TOOL_IDS).toHaveLength(20);
+  it('propose 50 Outils et 8 Stades, avec un Feu de camp par type', () => {
+    const stadiums = TOOL_IDS.filter((id) => TOOLS[id].stadium);
+    expect(stadiums).toHaveLength(8);
+    expect(TOOL_IDS).toHaveLength(58);
     expect(TOOL_OFFERS.filter((offer) => offer.toolId === 'campfire')).toHaveLength(11);
-    expect(TOOL_OFFERS).toHaveLength(30);
+    expect(TOOL_OFFERS.filter((offer) => !TOOLS[offer.toolId].stadium)).toHaveLength(60);
   });
 
   it('respecte les raretés du game design', () => {
@@ -272,5 +276,197 @@ describe('Outils de la phase 2', () => {
       scoreInput([single], [single], { tools: [tool(9, 'badgeCase')], fightsWon: 5 }),
     );
     expect(result.mult).toBeCloseTo(1.5);
+  });
+});
+
+describe('Outils de la phase 3', () => {
+  const fire = card({ id: 'p3-fire', bestDamage: 50, retreat: 1 });
+  const toolStep = (result: ReturnType<typeof scoreHand>) =>
+    result.steps.find((step) => step.kind === 'tool');
+  const score = (toolId: Parameters<typeof tool>[1], overrides = {}) =>
+    scoreHand(scoreInput([fire], [fire], { tools: [tool(50, toolId)], ...overrides }));
+
+  it('Pierre à aiguiser : +40 Dégâts', () => {
+    expect(toolStep(score('whetstone'))).toMatchObject({ addDamage: 40, addMult: 0 });
+  });
+
+  it('Dernier carré : seulement au dernier Tour', () => {
+    expect(toolStep(score('lastStand', { turn: 1, maxTurns: 4 }))).toBeUndefined();
+    expect(toolStep(score('lastStand', { turn: 4, maxTurns: 4 }))).toMatchObject({ addMult: 10 });
+  });
+
+  it('Coup de grâce : sous 25 % des PV', () => {
+    const low = { opponent: { hp: 200, maxHp: 1000, weaknesses: [], resistances: [] } };
+    expect(toolStep(score('finisher'))).toBeUndefined();
+    expect(toolStep(score('finisher', low))).toMatchObject({ timesMult: 2 });
+  });
+
+  it('Rivalité : ni contre un Dresseur, oui contre un Champion', () => {
+    const versus = (kind: 'trainer' | 'champion') => ({
+      opponent: { kind, maxHp: 1000, weaknesses: [], resistances: [] },
+    });
+    expect(toolStep(score('rivalry', versus('trainer')))).toBeUndefined();
+    expect(toolStep(score('rivalry', versus('champion')))).toMatchObject({ timesMult: 1.5 });
+  });
+
+  it('Deck épuré : +2 Multi par carte sous 20', () => {
+    expect(toolStep(score('leanDeck', { deckSize: 15 }))).toMatchObject({ addMult: 10 });
+    expect(toolStep(score('leanDeck', { deckSize: 25 }))).toBeUndefined();
+  });
+
+  it('Carnet de combos : compte les mains déjà jouées', () => {
+    const counted = score('comboBook', { comboCounts: { single: 6 } });
+    expect(toolStep(counted)).toMatchObject({ addMult: 6 });
+  });
+
+  it('Perce-armure : la résistance ne s’applique pas', () => {
+    const opponent = { maxHp: 1000, weaknesses: [], resistances: ['Fire' as const] };
+    const plain = scoreHand(scoreInput([fire], [fire], { opponent }));
+    expect(score('armorPiercer', { opponent }).damage - plain.damage).toBe(30);
+  });
+
+  it('Analyse : seulement sur la faiblesse', () => {
+    const weak = { opponent: { maxHp: 1000, weaknesses: ['Fire' as const], resistances: [] } };
+    expect(toolStep(score('analysis'))).toBeUndefined();
+    expect(toolStep(score('analysis', weak))).toMatchObject({ addMult: 10 });
+  });
+
+  it('Dojo : ×4 sur une carte seule', () => {
+    expect(toolStep(score('dojo'))).toMatchObject({ timesMult: 4 });
+  });
+
+  it('Pochette reverse : neutralisée par les variantes coupées', () => {
+    const reverse = instance(1, fire, 'reverse');
+    const tools = [tool(50, 'reverseSleeve')];
+    const on = scoreHand(scoreInput([reverse], [fire], { tools }));
+    expect(toolStep(on)).toMatchObject({ addDamage: 30 });
+    const off = scoreHand(scoreInput([reverse], [fire], { tools, rules: { variantsOff: true } }));
+    expect(toolStep(off)).toBeUndefined();
+  });
+});
+
+describe('Outils hors calcul', () => {
+  const deck = fillers(25);
+  const index = indexOf(deck);
+  const start = (toolId: Parameters<typeof tool>[1]) => {
+    const base = fightRun({ deck, tools: [tool(90, toolId)] });
+    const run = { ...base, phase: 'intro' as const, fight: null };
+    return applyAction(
+      {
+        ...run,
+        arenas: [{ type: 'Fire', form: 'statuses', championCardId: deck[0]?.id as string }],
+      },
+      { type: 'startFight' },
+      index,
+    ).state.fight;
+  };
+
+  it('Sablier : +1 Tour', () => {
+    expect(start('hourglass')?.maxTurns).toBe(5);
+  });
+
+  it('Sac à dos et Terrain d’entraînement : +Retraite', () => {
+    expect(start('backpack')?.retreatPoints).toBe(5);
+    expect(start('trainingGround')?.retreatPoints).toBe(6);
+  });
+
+  it('Chaussures de course et Serre : main agrandie', () => {
+    expect(start('runningShoes')?.hand).toHaveLength(9);
+    expect(start('greenhouse')?.hand).toHaveLength(10);
+  });
+
+  it('Collier de croissance : grandit à chaque victoire', () => {
+    const run = fightRun({ deck, tools: [tool(90, 'growthCharm')] });
+    if (run.fight) run.fight.opponent.hp = 1;
+    const { state } = applyAction(run, { type: 'play', uids: [0] }, index);
+    expect(state.tools[0]?.stacks).toBe(1);
+  });
+
+  it('Pépite et Compte épargne : plus de ₽ à la victoire', () => {
+    const run = fightRun({
+      deck,
+      tools: [tool(90, 'goldNugget'), tool(91, 'savings')],
+      run: { money: 50 },
+    });
+    if (run.fight) run.fight.opponent.hp = 1;
+    const { events } = applyAction(run, { type: 'play', uids: [0] }, index);
+    const won = events.find((event) => event.type === 'fightWon');
+    expect(won).toMatchObject({ gains: { bonus: 2, interest: 10 } });
+  });
+
+  it('Carte de fidélité et Bon de réduction : baissent les prix de la boutique', () => {
+    const run = fightRun({
+      deck,
+      tools: [tool(90, 'loyaltyCard'), tool(91, 'coupon')],
+    });
+    if (run.fight) run.fight.opponent.hp = 1;
+    const { state } = applyAction(run, { type: 'play', uids: [0] }, index);
+    expect(state.shop?.rerollCost).toBe(3);
+    for (const booster of state.shop?.boosters ?? []) {
+      expect([3, 5, 7]).toContain(booster?.price);
+    }
+  });
+});
+
+describe('Stades', () => {
+  const deck = fillers(20);
+  const index = indexOf(deck);
+  const shopWith = (
+    tools: ReturnType<typeof tool>[],
+    toolId: Parameters<typeof tool>[1],
+  ): RunState => ({
+    ...fightRun({ deck, tools }),
+    phase: 'shop',
+    fight: null,
+    money: 50,
+    shop: {
+      slots: [{ kind: 'tool', toolId, type: null, price: 5 }],
+      boosters: [],
+      consumable: null,
+      rerollCost: 5,
+    },
+  });
+
+  it('un nouveau Stade remplace l’ancien, à la même place', () => {
+    const before = shopWith([tool(1, 'dojo'), tool(2, 'duo')], 'typeTemple');
+    const { state } = applyAction(before, { type: 'buySlot', index: 0 }, index);
+    expect(state.tools.map((entry) => entry.toolId)).toEqual(['typeTemple', 'duo']);
+  });
+
+  it('un Stade prend une place d’Outil', () => {
+    const full = ['duo', 'nap', 'palette', 'prism', 'trio'] as const;
+    const before = shopWith(
+      full.map((id, position) => tool(position + 1, id)),
+      'dojo',
+    );
+    expect(() => applyAction(before, { type: 'buySlot', index: 0 }, index)).toThrow();
+  });
+
+  it('un Stade en remplace un autre même si les emplacements sont pleins', () => {
+    const full = ['duo', 'nap', 'palette', 'prism', 'dojo'] as const;
+    const before = shopWith(
+      full.map((id, position) => tool(position + 1, id)),
+      'typeTemple',
+    );
+    const { state } = applyAction(before, { type: 'buySlot', index: 0 }, index);
+    expect(state.tools).toHaveLength(5);
+    expect(state.tools.at(-1)?.toolId).toBe('typeTemple');
+  });
+
+  it('Sanctuaire : fait échouer environ un statut réussi sur deux', () => {
+    const results = Array.from({ length: 300 }, (_, seed) => {
+      const base = fightRun({ deck, tools: [tool(1, 'sanctuary')] });
+      const run: RunState = {
+        ...base,
+        rng: { state: seed * 7919 },
+        fight: base.fight && { ...base.fight, announcedStatus: 'roots' },
+      };
+      const { events } = applyAction(run, { type: 'play', uids: [0] }, index);
+      const rolled = events.find((event) => event.type === 'statusRolled');
+      return rolled?.type === 'statusRolled' && rolled.success;
+    });
+    const share = results.filter(Boolean).length / results.length;
+    expect(share).toBeGreaterThan(0.38);
+    expect(share).toBeLessThan(0.62);
   });
 });

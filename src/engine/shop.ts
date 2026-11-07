@@ -1,10 +1,13 @@
-/** Boutique : cartes et Outils à l'unité, boosters, relance et revente. */
+/** Boutique : cartes et Outils à l'unité, boosters, consommable, relance, revente, Centre Pokémon. */
 import {
   BOOSTER_WEIGHTS,
   CARD_PRICES,
+  CONSUMABLE_PRICES,
+  CONSUMABLE_WEIGHTS,
   ENERGY_BOOSTER_PRICE,
   ENERGY_BOOSTER_SIZE,
   MAX_TAG_TEAMS,
+  MIN_DECK_SIZE,
   PREMIUM_BOOSTER_KEEPS,
   PREMIUM_BOOSTER_PRICE,
   PREMIUM_BOOSTER_SIZE,
@@ -17,12 +20,12 @@ import {
   SHOP_TOOL_CHANCE,
   TOOL_PRICES,
   TOOL_RARITY_WEIGHTS,
-  TOOL_SLOTS,
   TRAINER_BOOSTER_PRICE,
   TRAINER_BOOSTER_SIZE,
   VARIANT_WEIGHTS,
 } from '../content/balance.ts';
-import { TOOL_OFFERS, TOOLS } from '../content/tools.ts';
+import { ACE_SPEC_IDS, SPECIAL_ENERGY_IDS } from '../content/consumables.ts';
+import { TOOL_OFFERS, TOOLS, type ToolDef, type ToolId } from '../content/tools.ts';
 import type { CardData, CardIndex, PokemonType, Rarity, Variant } from './cards.ts';
 import { cardOf, evolvesFrom } from './cards.ts';
 import { nextFloat, pick, sample, weightedPick } from './rng.ts';
@@ -33,6 +36,7 @@ import {
   type OpenBooster,
   type RunState,
   type ShopBooster,
+  type ShopConsumable,
   type ShopSlot,
   type ShopState,
   type ShopToolSlot,
@@ -95,6 +99,7 @@ function offerTool(state: RunState, taken: readonly ShopSlot[]): ShopToolSlot | 
     (b: { toolId: string; type: PokemonType | null }) =>
       a.toolId === b.toolId && a.type === b.type;
   const available = TOOL_OFFERS.filter((offer) => {
+    if (state.lockedTools.includes(offer.toolId)) return false;
     const inShop = taken.some((slot) => slot.kind === 'tool' && sameOffer(offer)(slot));
     return !inShop && !state.tools.some(sameOffer(offer));
   });
@@ -120,6 +125,29 @@ function fillSlots(state: RunState, index: CardIndex): ShopSlot[] {
   return slots;
 }
 
+function discount(state: RunState, read: (def: ToolDef) => number | undefined): number {
+  return state.tools.reduce((sum, tool) => sum + (read(TOOLS[tool.toolId]) ?? 0), 0);
+}
+
+function drawConsumable(state: RunState): ShopConsumable {
+  const kinds = Object.keys(CONSUMABLE_WEIGHTS) as ShopConsumable['kind'][];
+  const kind = weightedPick(
+    state.rng,
+    kinds.map((value) => [value, CONSUMABLE_WEIGHTS[value]] as const),
+  );
+  const price = CONSUMABLE_PRICES[kind];
+  switch (kind) {
+    case 'energy':
+      return { kind, energy: pick(state.rng, BASIC_ENERGIES), price };
+    case 'special':
+      return { kind, special: pick(state.rng, SPECIAL_ENERGY_IDS), price };
+    case 'leap':
+      return { kind, price };
+    case 'ace':
+      return { kind, ace: pick(state.rng, ACE_SPEC_IDS), price };
+  }
+}
+
 /** Des boosters tous différents, tirés selon leurs poids. */
 function drawBoosters(state: RunState): ShopBooster[] {
   const kinds = Object.keys(BOOSTER_WEIGHTS) as BoosterKind[];
@@ -130,7 +158,8 @@ function drawBoosters(state: RunState): ShopBooster[] {
       state.rng,
       remaining.map((value) => [value, BOOSTER_WEIGHTS[value]] as const),
     );
-    boosters.push({ kind, price: BOOSTER_PRICES[kind] });
+    const reduced = BOOSTER_PRICES[kind] - discount(state, (def) => def.boosterDiscount);
+    boosters.push({ kind, price: Math.max(1, reduced) });
   }
   return boosters;
 }
@@ -139,7 +168,8 @@ export function openShop(state: RunState, index: CardIndex): void {
   const shop: ShopState = {
     slots: fillSlots(state, index),
     boosters: drawBoosters(state),
-    rerollCost: REROLL_BASE_COST,
+    consumable: drawConsumable(state),
+    rerollCost: Math.max(1, REROLL_BASE_COST - discount(state, (def) => def.rerollDiscount)),
   };
   state.shop = shop;
   state.phase = 'shop';
@@ -183,6 +213,23 @@ function addCard(
   target.cardId = cardId;
 }
 
+/** Un nouveau Stade prend la place de l'ancien, sans remboursement ; sinon il faut une place. */
+function addTool(
+  state: RunState,
+  offer: { toolId: ToolId; type: PokemonType | null; price: number },
+): void {
+  const instance = { uid: state.nextUid, ...offer, stacks: 0 };
+  const replaced = TOOLS[offer.toolId].stadium
+    ? state.tools.findIndex((tool) => TOOLS[tool.toolId].stadium)
+    : -1;
+  if (replaced < 0 && state.tools.length >= state.toolSlots) {
+    throw new IllegalActionError('toolSlotsFull');
+  }
+  state.nextUid += 1;
+  if (replaced >= 0) state.tools[replaced] = instance;
+  else state.tools.push(instance);
+}
+
 export function buySlot(
   state: RunState,
   index: CardIndex,
@@ -196,14 +243,7 @@ export function buySlot(
   if (slot.kind === 'card') {
     addCard(state, index, slot.cardId, slot.variant, evolveUid);
   } else {
-    if (state.tools.length >= TOOL_SLOTS) throw new IllegalActionError('toolSlotsFull');
-    state.tools.push({
-      uid: state.nextUid++,
-      toolId: slot.toolId,
-      type: slot.type,
-      price: slot.price,
-      stacks: 0,
-    });
+    addTool(state, { toolId: slot.toolId, type: slot.type, price: slot.price });
   }
   state.money -= slot.price;
   shop.slots[slotIndex] = null;
@@ -331,6 +371,65 @@ export function keepBoosterEnergy(state: RunState, energyIndex: number, targetUi
 export function keepBoosterTool(state: RunState, toolIndex: number): void {
   const tool = requireBooster(state).tools[toolIndex];
   if (!tool) throw new IllegalActionError('invalidBoosterChoice');
-  if (state.tools.length >= TOOL_SLOTS) throw new IllegalActionError('toolSlotsFull');
-  state.tools.push({ uid: state.nextUid++, ...tool, stacks: 0 });
+  addTool(state, tool);
+}
+
+/** Le Niveau 2 qu'une Base peut devenir d'un coup ; celui de la carte, s'il y en a plusieurs. */
+export function leapTarget(index: CardIndex, card: CardData): CardData | null {
+  if (card.stage !== 'Basic') return null;
+  const middles = index.set.cards.filter((other) => evolvesFrom(other, card));
+  for (const middle of middles) {
+    const top = index.set.cards.find((other) => evolvesFrom(other, middle));
+    if (top) return top;
+  }
+  return null;
+}
+
+function applyConsumable(
+  state: RunState,
+  index: CardIndex,
+  consumable: ShopConsumable,
+  targetUid: number | undefined,
+): void {
+  if (consumable.kind === 'ace') {
+    if (state.aceSpec) throw new IllegalActionError('aceReserveFull');
+    state.aceSpec = consumable.ace;
+    return;
+  }
+  if (targetUid === undefined) throw new IllegalActionError('invalidTarget');
+  const target = instanceOf(state, targetUid);
+  if (consumable.kind === 'energy') {
+    target.energies.push(consumable.energy);
+  } else if (consumable.kind === 'special') {
+    target.specials = [...(target.specials ?? []), consumable.special];
+  } else {
+    const top = leapTarget(index, cardOf(index, target));
+    if (!top) throw new IllegalActionError('invalidEvolution');
+    target.cardId = top.id;
+  }
+}
+
+export function buyConsumable(
+  state: RunState,
+  index: CardIndex,
+  targetUid: number | undefined,
+): void {
+  const shop = requireShop(state);
+  const { consumable } = shop;
+  if (!consumable) throw new IllegalActionError('emptySlot');
+  if (state.money < consumable.price) throw new IllegalActionError('notEnoughMoney');
+  applyConsumable(state, index, consumable, targetUid);
+  state.money -= consumable.price;
+  shop.consumable = null;
+}
+
+/** Retire une carte du deck : une fois par Arène, sans descendre sous une main. */
+export function removeCard(state: RunState, uid: number): void {
+  requireShop(state);
+  if (state.arenaCenterUsed) throw new IllegalActionError('centerUsed');
+  if (state.deck.length <= MIN_DECK_SIZE) throw new IllegalActionError('deckTooSmall');
+  instanceOf(state, uid);
+  state.deck = state.deck.filter((card) => card.uid !== uid);
+  state.arenaBanishedUids = state.arenaBanishedUids.filter((other) => other !== uid);
+  state.arenaCenterUsed = true;
 }

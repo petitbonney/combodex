@@ -72,6 +72,9 @@ const rollMs = $derived(BEAT_MS.roll / speedFactor());
         {#if beat.gains.picnic > 0}
           <div><dt>{app.gainPicnic}</dt><dd>+{beat.gains.picnic} ₽</dd></div>
         {/if}
+        {#if beat.gains.bonus > 0}
+          <div><dt>{app.gainBonus}</dt><dd>+{beat.gains.bonus} ₽</dd></div>
+        {/if}
         {#if beat.gains.reward > 0}
           <div><dt>{app.gainReward}</dt><dd>+{beat.gains.reward} ₽</dd></div>
         {/if}

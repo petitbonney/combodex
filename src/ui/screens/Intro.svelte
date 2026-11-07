@@ -1,6 +1,7 @@
 <script lang="ts">
 import Crown from '@lucide/svelte/icons/crown';
 import Swords from '@lucide/svelte/icons/swords';
+import Trophy from '@lucide/svelte/icons/trophy';
 import User from '@lucide/svelte/icons/user';
 import { cardOf, currentArena, type RunState } from '../../engine/index.ts';
 import GameCard from '../components/GameCard.svelte';
@@ -16,25 +17,29 @@ interface Props {
 
 const { run }: Props = $props();
 
+const gymCount = $derived(run.arenas.filter((stop) => !stop.league).length);
+
 const STAGES = ['trainer', 'elite', 'champion'] as const;
 const STAGE_ICONS = [User, Swords, Crown];
 
 const text = $derived($texts.text);
 const app = $derived(text.app);
 const arena = $derived(currentArena(run));
-const kind = $derived(STAGES[run.stageIndex] ?? 'trainer');
-const isChampion = $derived(kind === 'champion');
+const league = $derived(arena.league === true);
+const kind = $derived(league ? 'league' : (STAGES[run.stageIndex] ?? 'trainer'));
+const isChampion = $derived(kind === 'champion' || kind === 'league');
 const champion = $derived(
   cardOf(cardIndex, { uid: -1, cardId: arena.championCardId, variant: 'normal', energies: [] }),
 );
-const effect = $derived(
-  arena.form === 'permanent' ? text.permanents[arena.type] : app.championStatuses,
-);
+const effect = $derived.by(() => {
+  if (league) return app.leagueRules;
+  return arena.form === 'permanent' ? text.permanents[arena.type] : app.championStatuses;
+});
 </script>
 
 <main class="screen">
   <TopBar
-    title={app.arenaProgress(run.arenaIndex + 1, run.arenas.length)}
+    title={league ? app.leagueTitle : app.arenaProgress(run.arenaIndex + 1, gymCount)}
     money={run.money}
     deckSize={run.deck.length}
   />
@@ -42,9 +47,14 @@ const effect = $derived(
   <ol class="map">
     {#each run.arenas as stop, position (position)}
       <li class:current={position === run.arenaIndex} class:done={position < run.arenaIndex}>
-        <TypeIcon type={stop.type} size={24} />
+        {#if stop.league}
+          <Trophy size={20} aria-hidden="true" />
+          <span class="sr-only">{app.leagueTitle}</span>
+        {:else}
+          <TypeIcon type={stop.type} size={20} />
+        {/if}
         <span class="steps">
-          {#each STAGES as stage, step (stage)}
+          {#each stop.league ? [] : STAGES as stage, step (stage)}
             {@const StepIcon = STAGE_ICONS[step] as typeof User}
             <span
               class="step"
@@ -53,7 +63,7 @@ const effect = $derived(
               class:next={position === run.arenaIndex && step === run.stageIndex}
               title={text.opponents[stage]}
             >
-              <StepIcon size={14} aria-hidden="true" />
+              <StepIcon size={10} aria-hidden="true" />
               <span class="sr-only">{text.opponents[stage]}</span>
             </span>
           {/each}
@@ -65,7 +75,9 @@ const effect = $derived(
   <section class="next">
     <p class="label">{app.nextOpponent}</p>
     <h2>{text.opponents[kind]}</h2>
-    <p class="arena">{app.arenaTitle(run.arenaIndex + 1, text.types[arena.type])}</p>
+    {#if !league}
+      <p class="arena">{app.arenaTitle(run.arenaIndex + 1, text.types[arena.type])}</p>
+    {/if}
     {#if isChampion}
       <div class="boss">
         <span class="art"><GameCard card={champion} /></span>
@@ -94,9 +106,8 @@ const effect = $derived(
 <style>
   .map {
     display: grid;
-    grid-auto-columns: 1fr;
-    grid-auto-flow: column;
-    gap: 6px;
+    grid-template-columns: repeat(auto-fit, minmax(58px, 1fr));
+    gap: 4px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -104,9 +115,9 @@ const effect = $derived(
 
   li {
     display: grid;
-    gap: 6px;
+    gap: 3px;
     justify-items: center;
-    padding: 8px 4px;
+    padding: 4px 2px;
     border: 1px solid var(--line);
     border-radius: var(--radius);
     background: var(--surface);
@@ -124,14 +135,14 @@ const effect = $derived(
 
   .steps {
     display: flex;
-    gap: 3px;
+    gap: 2px;
   }
 
   .step {
     display: grid;
     place-items: center;
-    width: 24px;
-    height: 24px;
+    width: 16px;
+    height: 16px;
     border-radius: 50%;
     background: var(--bg-raised);
     color: var(--muted);

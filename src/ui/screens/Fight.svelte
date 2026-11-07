@@ -9,6 +9,7 @@ import Layers from '@lucide/svelte/icons/layers';
 import Network from '@lucide/svelte/icons/network';
 import Repeat2 from '@lucide/svelte/icons/repeat-2';
 import Settings from '@lucide/svelte/icons/settings';
+import Sparkles from '@lucide/svelte/icons/sparkles';
 import type { StatusId } from '../../content/statuses.ts';
 import type { ToolInstance } from '../../content/tools.ts';
 import {
@@ -21,11 +22,13 @@ import {
   isPreviewMasked,
   isStrong,
   maxPlayed,
+  permanentType,
   previewHand,
   retreatCost,
   type RunState,
   scoutedCards,
 } from '../../engine/index.ts';
+import AceSheet from '../components/AceSheet.svelte';
 import CardDetail from '../components/CardDetail.svelte';
 import GameCard from '../components/GameCard.svelte';
 import Hand, { type HandEntry } from '../components/Hand.svelte';
@@ -65,6 +68,7 @@ let zoomUid = $state<number | null>(null);
 let toolInfo = $state<ToolInstance | null>(null);
 let info = $state<Info | null>(null);
 let opponentZoom = $state(false);
+let aceOpen = $state(false);
 
 const handOrder = $derived(syncOrder(manualOrder, fight.hand));
 const picked = $derived(selected.filter((uid) => fight.hand.includes(uid)));
@@ -72,6 +76,8 @@ const limit = $derived(maxPlayed(run, fight));
 const rules = $derived(currentRules(fight));
 const strong = $derived(isStrong(run));
 const opponent = $derived(fight.opponent);
+const permanent = $derived(permanentType(opponent));
+const ace = $derived(run.aceSpec);
 const opponentCard = $derived(cardIndex.byId.get(opponent.cardId) as CardData);
 const hp = $derived(stage.hp ?? opponent.hp);
 const disabledTools = $derived([...fight.fightDisabledToolUids, ...fight.turnDisabledToolUids]);
@@ -126,7 +132,9 @@ const note = $derived.by(() => {
 
 const toolPopup = $derived.by(() => {
   const { beat } = stage;
-  return beat?.kind === 'tool' ? formatBonus(beat, app.multLabel, language) : null;
+  return beat?.kind === 'tool'
+    ? formatBonus({ ...beat, damage: beat.addDamage }, app.multLabel, language)
+    : null;
 });
 
 const hit = $derived(stage.beat?.kind === 'hit' ? stage.beat.amount : null);
@@ -276,15 +284,23 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
   </section>
 
   <section class="status">
-    {#if opponent.form === 'permanent'}
+    {#if permanent}
       <button
-        class="chip wide"
+        class="chip"
+        class:wide={opponent.form === 'permanent'}
+        class:icon={opponent.form !== 'permanent'}
         type="button"
-        onclick={() => (info = { title: app.permanentEffect, body: text.permanents[opponent.type] })}
+        aria-label={app.permanentEffect}
+        onclick={() => (info = { title: app.permanentEffect, body: text.permanents[permanent] })}
       >
-        {text.permanents[opponent.type]}
+        {#if opponent.form === 'permanent'}
+          {text.permanents[permanent]}
+        {:else}
+          <TypeIcon type={permanent} size={17} />
+        {/if}
       </button>
-    {:else if opponent.form === 'statuses'}
+    {/if}
+    {#if opponent.form === 'statuses'}
       {@const active = fight.activeStatus}
       {@const next = fight.announcedStatus}
       <button
@@ -310,6 +326,16 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
       >
         <small>{app.statusNext}</small>
         {next ? text.statuses[next].name : app.statusNone}
+      </button>
+    {/if}
+    {#if ace}
+      <button
+        class="chip icon gold"
+        type="button"
+        aria-label={`${app.aceTag} : ${text.aces[ace].name}`}
+        onclick={() => (aceOpen = true)}
+      >
+        <Sparkles size={16} aria-hidden="true" />
       </button>
     {/if}
     {#if fight.poisonPercent > 0}
@@ -347,6 +373,7 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
 
   <div class="tools">
     <ToolRow
+      slots={run.toolSlots}
       tools={run.tools}
       disabledUids={disabledTools}
       litUid={stage.litTool}
@@ -432,7 +459,7 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
           aria-label={cardOf(cardIndex, instance).name[language]}
           onclick={() => session.dispatch({ type: 'resolveSearch', uid })}
         >
-          <GameCard card={cardOf(cardIndex, instance)} variant={instance.variant} energies={instance.energies} />
+          <GameCard card={cardOf(cardIndex, instance)} variant={instance.variant} energies={instance.energies} specials={instance.specials} />
         </button>
       {/each}
     </div>
@@ -444,9 +471,14 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
     card={cardOf(cardIndex, zoomed)}
     variant={zoomed.variant}
     energies={zoomed.energies}
+    specials={zoomed.specials}
     maskDamage={rules.hideCardDamage}
     onClose={() => (zoomUid = null)}
   />
+{/if}
+
+{#if aceOpen}
+  <AceSheet {run} onClose={() => (aceOpen = false)} />
 {/if}
 
 {#if opponentZoom}
@@ -668,6 +700,11 @@ const zoomed = $derived(zoomUid === null ? null : instanceOf(run, zoomUid));
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
     line-clamp: 2;
+  }
+
+  .chip.gold {
+    border-color: var(--gold);
+    color: var(--gold);
   }
 
   .chip.warn {

@@ -18,12 +18,18 @@ import {
   WIN_MONEY,
 } from '../content/balance.ts';
 import { STATUS_IDS, STATUSES, type StatusId, statusesOfType } from '../content/statuses.ts';
-import { TOOLS } from '../content/tools.ts';
+import { TOOLS, type ToolDef } from '../content/tools.ts';
 import type { CardData, CardIndex } from './cards.ts';
-import { cardOf, evolvesFrom } from './cards.ts';
+import { cardOf, evolvesFrom, POKEMON_TYPES } from './cards.ts';
 import { coinFlip, nextFloat, pick, rollDie, sample, shuffle } from './rng.ts';
-import { currentRules } from './rules.ts';
-import { activeTools, type ScoreInput, type ScoreResult, scoreHand } from './scoring.ts';
+import { currentRules, permanentType } from './rules.ts';
+import {
+  activeTools,
+  hasSpecial,
+  type ScoreInput,
+  type ScoreResult,
+  scoreHand,
+} from './scoring.ts';
 import {
   type FightGains,
   type FightState,
@@ -49,7 +55,18 @@ export function isStrong(state: RunState): boolean {
 }
 
 function hasPermanent(fight: FightState, type: Opponent['type']): boolean {
-  return fight.opponent.form === 'permanent' && fight.opponent.type === type;
+  return permanentType(fight.opponent) === type;
+}
+
+/** Somme d'un bonus d'Outil, sans ceux que le combat a désactivés. */
+function toolBonus(
+  state: RunState,
+  disabled: readonly number[],
+  read: (def: ToolDef) => number | undefined,
+): number {
+  return state.tools
+    .filter((tool) => !disabled.includes(tool.uid))
+    .reduce((sum, tool) => sum + (read(TOOLS[tool.toolId]) ?? 0), 0);
 }
 
 function drawCard(state: RunState, fight: FightState): number | null {
@@ -68,7 +85,7 @@ function drawCards(state: RunState, fight: FightState, count: number): void {
 
 function refillHand(state: RunState, fight: FightState): void {
   const { handLimit } = currentRules(fight);
-  drawCards(state, fight, handLimit - fight.hand.length);
+  drawCards(state, fight, handLimit + fight.handBonus - fight.hand.length);
 }
 
 function removeFromHand(fight: FightState, uids: readonly number[]): void {
@@ -81,8 +98,10 @@ function returnToDeck(state: RunState, fight: FightState, uids: readonly number[
   fight.drawPile = shuffle(state.rng, [...fight.drawPile, ...uids]);
 }
 
+/** Le Maître de la Ligue tire parmi tous les types ; les Champions, parmi ceux de leur Arène. */
 function drawAnnouncement(state: RunState, fight: FightState): StatusId {
-  return pick(state.rng, statusesOfType(fight.opponent.type));
+  const { kind, type } = fight.opponent;
+  return pick(state.rng, kind === 'league' ? STATUS_IDS : statusesOfType(type));
 }
 
 /** Pile ou face et dé 1 à 3 : 50 % ; dé 1 à 4 : 67 % (dé à 6 faces). */
@@ -117,7 +136,7 @@ function applyStatusStart(
       healOpponent(fight, Math.floor(fight.opponent.maxHp * value), events);
       break;
     case 'vines': {
-      const excess = fight.hand.length - value;
+      const excess = fight.hand.length - value - fight.handBonus;
       if (excess > 0) {
         const uids = sample(rng, fight.hand, excess);
         returnToDeck(state, fight, uids);
@@ -186,7 +205,9 @@ function resolveAnnouncedStatus(
   announced: StatusId,
   events: Events,
 ): void {
-  const { success, rolled } = rollStatus(state, announced);
+  const { success: rollSuccess, rolled } = rollStatus(state, announced);
+  const warded = toolBonus(state, disabledToolUids(fight), (def) => (def.statusWard ? 1 : 0)) > 0;
+  const success = rollSuccess && !(warded && coinFlip(state.rng));
   events.push({ type: 'statusRolled', id: announced, success, rolled });
   if (!success) return;
   let id = announced;
@@ -216,6 +237,15 @@ function beginTurn(state: RunState, fight: FightState, events: Events): void {
   fight.forcedUids = [];
   fight.turnDisabledToolUids = [];
   events.push({ type: 'turnStarted', turn: fight.turn });
+
+  if (fight.opponent.kind === 'league') {
+    const weakness = pick(
+      state.rng,
+      POKEMON_TYPES.filter((type) => type !== 'Colorless'),
+    );
+    fight.opponent.weaknesses = [weakness];
+    events.push({ type: 'weaknessChanged', weakness });
+  }
 
   const announced = fight.announcedStatus;
   fight.announcedStatus = null;
@@ -263,6 +293,7 @@ export function startFight(state: RunState, opponent: Opponent, events: Events):
     forcedUids: [],
     turnDisabledToolUids: [],
     fightDisabledToolUids: [],
+    handBonus: 0,
   };
   state.fight = fight;
   state.phase = 'fight';
@@ -272,7 +303,11 @@ export function startFight(state: RunState, opponent: Opponent, events: Events):
   if (hasPermanent(fight, 'Darkness') && state.tools.length > 0) {
     fight.fightDisabledToolUids = [pick(state.rng, state.tools).uid];
   }
-  drawCards(state, fight, HAND_SIZE);
+  const disabled = fight.fightDisabledToolUids;
+  fight.maxTurns += toolBonus(state, disabled, (def) => def.extraTurns);
+  fight.retreatPoints += toolBonus(state, disabled, (def) => def.extraRetreat);
+  fight.handBonus = toolBonus(state, disabled, (def) => def.handBonus);
+  drawCards(state, fight, HAND_SIZE + fight.handBonus);
   if (opponent.form === 'statuses') {
     fight.announcedStatus = drawAnnouncement(state, fight);
     events.push({ type: 'statusAnnounced', id: fight.announcedStatus });
@@ -305,7 +340,9 @@ export function retreatCost(
     (other) => cardOf(index, instanceOf(state, other)).abilityFamily === 'agility',
   ).length;
   const { retreatCostBonus } = currentRules(fight);
-  const printed = cardOf(index, instanceOf(state, uid)).retreat;
+  const instance = instanceOf(state, uid);
+  if (hasSpecial(instance, 'light')) return 0;
+  const printed = cardOf(index, instance).retreat;
   return Math.max(0, printed + retreatCostBonus - agility);
 }
 
@@ -343,6 +380,9 @@ function scoreInput(
     money: state.money,
     retreatPoints: fight.retreatPoints,
     fightsWon: state.stats.fightsWon,
+    turn: fight.turn,
+    maxTurns: fight.maxTurns,
+    deckSize: state.deck.length,
     rng: estimate ? null : state.rng,
   };
 }
@@ -493,10 +533,21 @@ function fightGains(state: RunState, fight: FightState, rewards: number): FightG
   );
   const victory = WIN_MONEY[fight.opponent.kind];
   const unusedTurns = UNUSED_TURN_MONEY * unused;
-  const interest = Math.min(INTEREST_CAP, Math.floor(state.money / INTEREST_STEP));
+  const disabled = disabledToolUids(fight);
+  const interestCap = INTEREST_CAP + toolBonus(state, disabled, (def) => def.interestCapBonus);
+  const interest = Math.min(interestCap, Math.floor(state.money / INTEREST_STEP));
   const reward = REWARD_MONEY * rewards;
-  const total = victory + unusedTurns + interest + picnic + reward;
-  return { victory, unusedTurns, interest, picnic, reward, total };
+  const bonus = toolBonus(state, disabled, (def) => def.moneyPerWin);
+  const total = victory + unusedTurns + interest + picnic + reward + bonus;
+  return { victory, unusedTurns, interest, picnic, reward, bonus, total };
+}
+
+/** Les Outils qui grandissent à chaque victoire. */
+function growTools(state: RunState, fight: FightState): void {
+  const disabled = disabledToolUids(fight);
+  for (const tool of state.tools) {
+    if (!disabled.includes(tool.uid)) tool.stacks += TOOLS[tool.toolId].stacksPerWin ?? 0;
+  }
 }
 
 export type FightOutcome = 'ongoing' | 'won' | 'lost';
@@ -519,10 +570,15 @@ export function playCards(
   events.push({ type: 'opponentDamaged', amount: dealt, hp: opponent.hp });
   recordHand(state, index, uids, result, disabledToolUids(fight));
   applyEffects(state, fight, index, result, events);
+  if (result.moneyGained > 0) {
+    state.money += result.moneyGained;
+    events.push({ type: 'moneyGained', amount: result.moneyGained });
+  }
 
   // Récompense exige que la main batte l'adversaire : pas une fin de Tour par Affliction.
   if (opponent.hp <= 0) {
     const rewards = result.effects.filter((effect) => effect === 'reward').length;
+    growTools(state, fight);
     return { outcome: 'won', gains: fightGains(state, fight, rewards) };
   }
 
@@ -531,7 +587,10 @@ export function playCards(
     const amount = Math.floor(opponent.maxHp * AFFLICTION_PERCENT);
     opponent.hp = Math.max(0, opponent.hp - amount);
     events.push({ type: 'afflictionTick', amount });
-    if (opponent.hp <= 0) return { outcome: 'won', gains: fightGains(state, fight, 0) };
+    if (opponent.hp <= 0) {
+      growTools(state, fight);
+      return { outcome: 'won', gains: fightGains(state, fight, 0) };
+    }
   }
   if (fight.turn >= fight.maxTurns) return { outcome: 'lost', gains: null };
   beginTurn(state, fight, events);

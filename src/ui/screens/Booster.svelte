@@ -1,6 +1,5 @@
 <script lang="ts">
-import { TOOL_SLOTS } from '../../content/balance.ts';
-import type { ToolInstance } from '../../content/tools.ts';
+import { TOOLS, type ToolInstance } from '../../content/tools.ts';
 import {
   type CardData,
   type CardInstance,
@@ -56,7 +55,12 @@ const size = $derived(
 );
 const allRevealed = $derived(revealed >= size);
 const chosenTool = $derived(chosen === null ? null : (booster.tools[chosen] ?? null));
-const toolsFull = $derived(booster.kind === 'trainer' && run.tools.length >= TOOL_SLOTS);
+const hasStadium = $derived(run.tools.some((tool) => TOOLS[tool.toolId].stadium));
+const toolsFull = $derived(
+  booster.kind === 'trainer' &&
+    run.tools.length >= run.toolSlots &&
+    !(chosenTool && TOOLS[chosenTool.toolId].stadium && hasStadium),
+);
 
 const isGlowing = (position: number): boolean => {
   const entry = booster.cards[position];
@@ -121,7 +125,7 @@ function keep(): void {
   {#if step !== 'revealing'}
     <div class="sealed">
       <button class="pack" type="button" aria-label={app.openBooster} onclick={open}>
-        <PackArt kind={booster.kind} tearing={step === 'tearing'} />
+        <PackArt setId={run.setId} kind={booster.kind} tearing={step === 'tearing'} />
       </button>
       <p class="hint">{app.boosterContents[booster.kind]}</p>
       <button class="btn primary" type="button" onclick={open}>{app.openBooster}</button>
@@ -187,6 +191,7 @@ function keep(): void {
       <section class="sell">
         <p class="hint">{app.toolsFull}</p>
         <ToolRow
+      slots={run.toolSlots}
           tools={run.tools}
           onOpen={(tool) => (owned = tool)}
           onReorder={(uids) => session.dispatch({ type: 'reorderTools', uids })}

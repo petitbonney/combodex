@@ -1,0 +1,5111 @@
+{
+ "id": "sm2",
+ "name": {
+  "fr": "Gardiens Ascendants",
+  "en": "Guardians Rising"
+ },
+ "sourceCommit": "a8fe5736aef9bd6be2436e3be730109030f4c6e2",
+ "cards": [
+  {
+   "id": "sm2-1",
+   "localId": "1",
+   "name": {
+    "fr": "Chétiflor",
+    "en": "Bellsprout"
+   },
+   "dexIds": [
+    69
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Aya Kusube",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297465,
+   "cardmarketPrice": 0.13
+  },
+  {
+   "id": "sm2-2",
+   "localId": "2",
+   "name": {
+    "fr": "Boustiflor",
+    "en": "Weepinbell"
+   },
+   "dexIds": [
+    70
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Bellsprout",
+   "hp": 80,
+   "retreat": 2,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mina Nakai",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297466,
+   "cardmarketPrice": 0.15
+  },
+  {
+   "id": "sm2-3",
+   "localId": "3",
+   "name": {
+    "fr": "Empiflor",
+    "en": "Victreebel"
+   },
+   "dexIds": [
+    71
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Weepinbell",
+   "hp": 140,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "TOKIYA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297467,
+   "cardmarketPrice": 0.41
+  },
+  {
+   "id": "sm2-4",
+   "localId": "4",
+   "name": {
+    "fr": "Chlorobule",
+    "en": "Petilil"
+   },
+   "dexIds": [
+    548
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297468,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-5",
+   "localId": "5",
+   "name": {
+    "fr": "Fragilady",
+    "en": "Lilligant"
+   },
+   "dexIds": [
+    549
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Petilil",
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "You Iribi",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297469,
+   "cardmarketPrice": 0.32
+  },
+  {
+   "id": "sm2-6",
+   "localId": "6",
+   "name": {
+    "fr": "Brocélôme",
+    "en": "Phantump"
+   },
+   "dexIds": [
+    708
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Sanosuke Sakuma",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297470,
+   "cardmarketPrice": 0.13
+  },
+  {
+   "id": "sm2-7",
+   "localId": "7",
+   "name": {
+    "fr": "Desséliande",
+    "en": "Trevenant"
+   },
+   "dexIds": [
+    709
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Phantump",
+   "hp": 120,
+   "retreat": 2,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Hiroyuki Yamamoto",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297471,
+   "cardmarketPrice": 0.25
+  },
+  {
+   "id": "sm2-8",
+   "localId": "8",
+   "name": {
+    "fr": "Sovkipou",
+    "en": "Wimpod"
+   },
+   "dexIds": [
+    767
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 2,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "match",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297472,
+   "cardmarketPrice": 0.08
+  },
+  {
+   "id": "sm2-9",
+   "localId": "9",
+   "name": {
+    "fr": "Sarmuraï",
+    "en": "Golisopod"
+   },
+   "dexIds": [
+    768
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Wimpod",
+   "hp": 130,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": "shield",
+   "ability": {
+    "name": {
+     "fr": "Cuirasse",
+     "en": "Armor"
+    },
+    "effect": {
+     "fr": "Ce Pokémon subit 30 dégâts de moins provenant des attaques (après application de la Faiblesse et de la Résistance).",
+     "en": "This Pokémon takes 30 less damage from attacks (after applying Weakness and Resistance)."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297473,
+   "cardmarketPrice": 0.46
+  },
+  {
+   "id": "sm2-10",
+   "localId": "10",
+   "name": {
+    "fr": "Victini",
+    "en": "Victini"
+   },
+   "dexIds": [
+    494
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "kodama",
+   "abilityFamily": "coinFlip",
+   "ability": {
+    "name": {
+     "fr": "Victorieux",
+     "en": "Victory Star"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour, après avoir lancé des pièces pour une attaque, vous pouvez ignorer les effets de ces lancers de pièce et lancer ces pièces à nouveau. Vous ne pouvez pas utiliser la capacité spéciale Victorieux plus d’une fois par tour.",
+     "en": "Once during your turn, after you flip any coins for an attack, you may ignore all effects of those coin flips and begin flipping those coins again. You can’t use more than 1 Victory Star Ability each turn."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297474,
+   "cardmarketPrice": 0.86
+  },
+  {
+   "id": "sm2-11",
+   "localId": "11",
+   "name": {
+    "fr": "Funécire",
+    "en": "Litwick"
+   },
+   "dexIds": [
+    607
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mitsuhiro Arita",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297475,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-12",
+   "localId": "12",
+   "name": {
+    "fr": "Mélancolux",
+    "en": "Lampent"
+   },
+   "dexIds": [
+    608
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Litwick",
+   "hp": 80,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "0313",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297476,
+   "cardmarketPrice": 0.09
+  },
+  {
+   "id": "sm2-13",
+   "localId": "13",
+   "name": {
+    "fr": "Lugulabre",
+    "en": "Chandelure"
+   },
+   "dexIds": [
+    609
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Lampent",
+   "hp": 140,
+   "retreat": 1,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": "counters",
+   "ability": {
+    "name": {
+     "fr": "Déplacement Louche",
+     "en": "Shady Move"
+    },
+    "effect": {
+     "fr": "Une fois pendant votre tour (avant votre attaque), vous pouvez déplacer 1 marqueur de dégâts d'un Pokémon à un autre Pokémon.",
+     "en": "Once during your turn (before your attack), you may move 1 damage counter from 1 Pokémon to another Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297477,
+   "cardmarketPrice": 0.51
+  },
+  {
+   "id": "sm2-14",
+   "localId": "14",
+   "name": {
+    "fr": "Plumeline",
+    "en": "Oricorio"
+   },
+   "dexIds": [
+    741
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297478,
+   "cardmarketPrice": 0.23
+  },
+  {
+   "id": "sm2-15",
+   "localId": "15",
+   "name": {
+    "fr": "Tritox",
+    "en": "Salandit"
+   },
+   "dexIds": [
+    757
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "TOKIYA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297479,
+   "cardmarketPrice": 0.05
+  },
+  {
+   "id": "sm2-16",
+   "localId": "16",
+   "name": {
+    "fr": "Malamandre",
+    "en": "Salazzle"
+   },
+   "dexIds": [
+    758
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Salandit",
+   "hp": 110,
+   "retreat": 1,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mitsuhiro Arita",
+   "abilityFamily": "affliction",
+   "ability": {
+    "name": {
+     "fr": "Poison Bouillant",
+     "en": "Hot Poison"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez laisser le Pokémon Actif de votre adversaire Brûlé et Empoisonné.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may leave your opponent’s Active Pokémon Burned and Poisoned."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297480,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-17",
+   "localId": "17",
+   "name": {
+    "fr": "Boumata",
+    "en": "Turtonator"
+   },
+   "dexIds": [
+    776
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 110,
+   "retreat": 3,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297481,
+   "cardmarketPrice": 0.2
+  },
+  {
+   "id": "sm2-18",
+   "localId": "18",
+   "name": {
+    "fr": "Boumata GX",
+    "en": "Turtonator GX"
+   },
+   "dexIds": [
+    776
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 190,
+   "retreat": 3,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297482,
+   "cardmarketPrice": 1.49
+  },
+  {
+   "id": "sm2-19",
+   "localId": "19",
+   "name": {
+    "fr": "Sabelette d’Alola",
+    "en": "Alolan Sandshrew"
+   },
+   "dexIds": [
+    27
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mizue",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297483,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-20",
+   "localId": "20",
+   "name": {
+    "fr": "Sablaireau d’Alola",
+    "en": "Alolan Sandslash"
+   },
+   "dexIds": [
+    28
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Alolan Sandshrew",
+   "hp": 110,
+   "retreat": 2,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "TOKIYA",
+   "abilityFamily": "draw",
+   "ability": {
+    "name": {
+     "fr": "Chasse-Neige",
+     "en": "Slush Rush"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque), vous pouvez piocher une carte.",
+     "en": "Once during your turn (before your attack), you may draw a card."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297484,
+   "cardmarketPrice": 0.15
+  },
+  {
+   "id": "sm2-21",
+   "localId": "21",
+   "name": {
+    "fr": "Goupix d’Alola",
+    "en": "Alolan Vulpix"
+   },
+   "dexIds": [
+    37
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "You Iribi",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297485,
+   "cardmarketPrice": 0.35
+  },
+  {
+   "id": "sm2-22",
+   "localId": "22",
+   "name": {
+    "fr": "Feunard d’Alola GX",
+    "en": "Alolan Ninetales GX"
+   },
+   "dexIds": [
+    38
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Alolan Vulpix",
+   "hp": 210,
+   "retreat": 1,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 296842,
+   "cardmarketPrice": 5.07
+  },
+  {
+   "id": "sm2-23",
+   "localId": "23",
+   "name": {
+    "fr": "Tentacool",
+    "en": "Tentacool"
+   },
+   "dexIds": [
+    72
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shibuzoh.",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297486,
+   "cardmarketPrice": 0.02
+  },
+  {
+   "id": "sm2-24",
+   "localId": "24",
+   "name": {
+    "fr": "Tentacruel",
+    "en": "Tentacruel"
+   },
+   "dexIds": [
+    73
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Tentacool",
+   "hp": 110,
+   "retreat": 2,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Masakazu Fukuda",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297487,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-25",
+   "localId": "25",
+   "name": {
+    "fr": "Tarpaud",
+    "en": "Politoed"
+   },
+   "dexIds": [
+    186
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Poliwhirl",
+   "hp": 130,
+   "retreat": 1,
+   "bestDamage": 100,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Saya Tsuruta",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297690,
+   "cardmarketPrice": 0.86
+  },
+  {
+   "id": "sm2-26",
+   "localId": "26",
+   "name": {
+    "fr": "Cadoizo",
+    "en": "Delibird"
+   },
+   "dexIds": [
+    225
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "sui",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297488,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-27",
+   "localId": "27",
+   "name": {
+    "fr": "Carvanha",
+    "en": "Carvanha"
+   },
+   "dexIds": [
+    318
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Hideki Ishikawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297489,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-28",
+   "localId": "28",
+   "name": {
+    "fr": "Sharpedo",
+    "en": "Sharpedo"
+   },
+   "dexIds": [
+    319
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Carvanha",
+   "hp": 90,
+   "retreat": 0,
+   "bestDamage": 70,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297490,
+   "cardmarketPrice": 0.22
+  },
+  {
+   "id": "sm2-29",
+   "localId": "29",
+   "name": {
+    "fr": "Wailmer",
+    "en": "Wailmer"
+   },
+   "dexIds": [
+    320
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 120,
+   "retreat": 3,
+   "bestDamage": 70,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Miki Tanaka",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297491,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-30",
+   "localId": "30",
+   "name": {
+    "fr": "Wailord",
+    "en": "Wailord"
+   },
+   "dexIds": [
+    321
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Wailmer",
+   "hp": 200,
+   "retreat": 4,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "OOYAMA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297492,
+   "cardmarketPrice": 0.41
+  },
+  {
+   "id": "sm2-31",
+   "localId": "31",
+   "name": {
+    "fr": "Stalgamin",
+    "en": "Snorunt"
+   },
+   "dexIds": [
+    361
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Tomokazu Komiya",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297493,
+   "cardmarketPrice": 0.15
+  },
+  {
+   "id": "sm2-32",
+   "localId": "32",
+   "name": {
+    "fr": "Oniglali",
+    "en": "Glalie"
+   },
+   "dexIds": [
+    362
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Snorunt",
+   "hp": 120,
+   "retreat": 3,
+   "bestDamage": 70,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "so-taro",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297494,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-33",
+   "localId": "33",
+   "name": {
+    "fr": "Sorbébé",
+    "en": "Vanillite"
+   },
+   "dexIds": [
+    582
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "OOYAMA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297495,
+   "cardmarketPrice": 0.02
+  },
+  {
+   "id": "sm2-34",
+   "localId": "34",
+   "name": {
+    "fr": "Sorboul",
+    "en": "Vanillish"
+   },
+   "dexIds": [
+    583
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Vanillite",
+   "hp": 80,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297496,
+   "cardmarketPrice": 0.09
+  },
+  {
+   "id": "sm2-35",
+   "localId": "35",
+   "name": {
+    "fr": "Sorbouboul",
+    "en": "Vanilluxe"
+   },
+   "dexIds": [
+    584
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Vanillish",
+   "hp": 140,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "kawayoo",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297497,
+   "cardmarketPrice": 0.21
+  },
+  {
+   "id": "sm2-36",
+   "localId": "36",
+   "name": {
+    "fr": "Mamanbo",
+    "en": "Alomomola"
+   },
+   "dexIds": [
+    594
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 110,
+   "retreat": 2,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Aya Kusube",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297498,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-37",
+   "localId": "37",
+   "name": {
+    "fr": "Froussardine",
+    "en": "Wishiwashi"
+   },
+   "dexIds": [
+    746
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 30,
+   "retreat": 0,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Sanosuke Sakuma",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Banc",
+     "en": "Schooling"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque),vous pouvez échanger ce Pokémon avec un Froussardine GX dans votre main. Les cartes attachées, les marqueurs de dégâts, les États Spéciaux, le nombre de tours de jeu, et tous les autres effets restent sur le nouveau Pokémon.",
+     "en": "Once during your turn (before your attack), you may switch this Pokémon with a Wishiwashi GX in your hand. Any attached cards, damage counters, Special Conditions, turns in play, and any other effects remain on the new Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297499,
+   "cardmarketPrice": 0.05
+  },
+  {
+   "id": "sm2-38",
+   "localId": "38",
+   "name": {
+    "fr": "Froussardine GX",
+    "en": "Wishiwashi GX"
+   },
+   "dexIds": [
+    746
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 220,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297500,
+   "cardmarketPrice": 1.87
+  },
+  {
+   "id": "sm2-39",
+   "localId": "39",
+   "name": {
+    "fr": "Vorastérie",
+    "en": "Mareanie"
+   },
+   "dexIds": [
+    747
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297501,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-40",
+   "localId": "40",
+   "name": {
+    "fr": "Racaillou d’Alola",
+    "en": "Alolan Geodude"
+   },
+   "dexIds": [
+    74
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 2,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Hitoshi Ariga",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297502,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-41",
+   "localId": "41",
+   "name": {
+    "fr": "Gravalanch d’Alola",
+    "en": "Alolan Graveler"
+   },
+   "dexIds": [
+    75
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Alolan Geodude",
+   "hp": 110,
+   "retreat": 4,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "match",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297503,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-42",
+   "localId": "42",
+   "name": {
+    "fr": "Grolem d’Alola",
+    "en": "Alolan Golem"
+   },
+   "dexIds": [
+    76
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Alolan Graveler",
+   "hp": 160,
+   "retreat": 4,
+   "bestDamage": 200,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297504,
+   "cardmarketPrice": 0.8
+  },
+  {
+   "id": "sm2-43",
+   "localId": "43",
+   "name": {
+    "fr": "Galvaran",
+    "en": "Helioptile"
+   },
+   "dexIds": [
+    694
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Masakazu Fukuda",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297505,
+   "cardmarketPrice": 0.09
+  },
+  {
+   "id": "sm2-44",
+   "localId": "44",
+   "name": {
+    "fr": "Iguolta",
+    "en": "Heliolisk"
+   },
+   "dexIds": [
+    695
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Helioptile",
+   "hp": 100,
+   "retreat": 1,
+   "bestDamage": 120,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297506,
+   "cardmarketPrice": 0.21
+  },
+  {
+   "id": "sm2-45",
+   "localId": "45",
+   "name": {
+    "fr": "Lucanon GX",
+    "en": "Vikavolt GX"
+   },
+   "dexIds": [
+    738
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Charjabug",
+   "hp": 240,
+   "retreat": 1,
+   "bestDamage": 180,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297507,
+   "cardmarketPrice": 2.07
+  },
+  {
+   "id": "sm2-46",
+   "localId": "46",
+   "name": {
+    "fr": "Plumeline",
+    "en": "Oricorio"
+   },
+   "dexIds": [
+    741
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297478,
+   "cardmarketPrice": 0.23
+  },
+  {
+   "id": "sm2-47",
+   "localId": "47",
+   "name": {
+    "fr": "Tokorico GX",
+    "en": "Tapu Koko GX"
+   },
+   "dexIds": [
+    785
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 2,
+   "bestDamage": 130,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Sentier Aérien",
+     "en": "Aero Trail"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez déplacer autant d’Énergie Lightning que vous voulez de vos autres Pokémon vers ce Pokémon. Dans ce cas, échangez ce Pokémon avec votre Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of Lightning Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297509,
+   "cardmarketPrice": 1.6
+  },
+  {
+   "id": "sm2-48",
+   "localId": "48",
+   "name": {
+    "fr": "Ramoloss",
+    "en": "Slowpoke"
+   },
+   "dexIds": [
+    79
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 3,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mina Nakai",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297510,
+   "cardmarketPrice": 0.3
+  },
+  {
+   "id": "sm2-49",
+   "localId": "49",
+   "name": {
+    "fr": "Flagadoss",
+    "en": "Slowbro"
+   },
+   "dexIds": [
+    80
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Slowpoke",
+   "hp": 110,
+   "retreat": 3,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shibuzoh.",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297511,
+   "cardmarketPrice": 0.19
+  },
+  {
+   "id": "sm2-50",
+   "localId": "50",
+   "name": {
+    "fr": "Miamiasme",
+    "en": "Trubbish"
+   },
+   "dexIds": [
+    568
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Yuka Morii",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297512,
+   "cardmarketPrice": 0.14
+  },
+  {
+   "id": "sm2-51",
+   "localId": "51",
+   "name": {
+    "fr": "Miasmax",
+    "en": "Garbodor"
+   },
+   "dexIds": [
+    569
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Trubbish",
+   "hp": 120,
+   "retreat": 3,
+   "bestDamage": 70,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mitsuhiro Arita",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297513,
+   "cardmarketPrice": 0.23
+  },
+  {
+   "id": "sm2-52",
+   "localId": "52",
+   "name": {
+    "fr": "Scrutella",
+    "en": "Gothita"
+   },
+   "dexIds": [
+    574
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Yuka Morii",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297514,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-53",
+   "localId": "53",
+   "name": {
+    "fr": "Mesmérella",
+    "en": "Gothorita"
+   },
+   "dexIds": [
+    575
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Gothita",
+   "hp": 80,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "kawayoo",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297515,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-54",
+   "localId": "54",
+   "name": {
+    "fr": "Sidérella",
+    "en": "Gothitelle"
+   },
+   "dexIds": [
+    576
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Gothorita",
+   "hp": 140,
+   "retreat": 2,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mitsuhiro Arita",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297516,
+   "cardmarketPrice": 0.19
+  },
+  {
+   "id": "sm2-55",
+   "localId": "55",
+   "name": {
+    "fr": "Plumeline",
+    "en": "Oricorio"
+   },
+   "dexIds": [
+    741
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": "search",
+   "ability": {
+    "name": {
+     "fr": "Danse Vitale",
+     "en": "Vital Dance"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez chercher jusqu’à 2 cartes Énergie de base dans votre deck, les montrer et les ajouter à votre main. Mélangez ensuite votre deck.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for up to 2 basic Energy cards, reveal them, and put them into your hand. Then, shuffle your deck."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297478,
+   "cardmarketPrice": 0.23
+  },
+  {
+   "id": "sm2-56",
+   "localId": "56",
+   "name": {
+    "fr": "Plumeline",
+    "en": "Oricorio"
+   },
+   "dexIds": [
+    741
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Darkness"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "TOKIYA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297478,
+   "cardmarketPrice": 0.23
+  },
+  {
+   "id": "sm2-57",
+   "localId": "57",
+   "name": {
+    "fr": "Prédastérie GX",
+    "en": "Toxapex GX"
+   },
+   "dexIds": [
+    748
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Mareanie",
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297519,
+   "cardmarketPrice": 2.04
+  },
+  {
+   "id": "sm2-58",
+   "localId": "58",
+   "name": {
+    "fr": "Mimiqui",
+    "en": "Mimikyu"
+   },
+   "dexIds": [
+    778
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Megumi Mizutani",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297520,
+   "cardmarketPrice": 4.9
+  },
+  {
+   "id": "sm2-59",
+   "localId": "59",
+   "name": {
+    "fr": "Sinistrail",
+    "en": "Dhelmise"
+   },
+   "dexIds": [
+    781
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 120,
+   "retreat": 2,
+   "bestDamage": 70,
+   "weaknesses": [
+    "Darkness"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Hasuno",
+   "abilityFamily": "power",
+   "ability": {
+    "name": {
+     "fr": "Expert Acier",
+     "en": "Steelworker"
+    },
+    "effect": {
+     "fr": "Les attaques de vos Pokémon Metal infligent 10 dégâts supplémentaires au Pokémon Actif de votre adversaire (avant application de la Faiblesse et de la Résistance).",
+     "en": "Your Metal Pokémon’s attacks do 10 more damage to your opponent’s Active Pokémon (before applying Weakness and Resistance)."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297521,
+   "cardmarketPrice": 0.26
+  },
+  {
+   "id": "sm2-60",
+   "localId": "60",
+   "name": {
+    "fr": "Tokopiyon GX",
+    "en": "Tapu Lele GX"
+   },
+   "dexIds": [
+    786
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "search",
+   "ability": {
+    "name": {
+     "fr": "Relais Miracle",
+     "en": "Wonder Tag"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez chercher une carte Supporter dans votre deck, la montrer et l’ajouter à votre main. Mélangez ensuite votre deck.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 296843,
+   "cardmarketPrice": 3.46
+  },
+  {
+   "id": "sm2-61",
+   "localId": "61",
+   "name": {
+    "fr": "Lunala",
+    "en": "Lunala"
+   },
+   "dexIds": [
+    792
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Cosmoem",
+   "hp": 160,
+   "retreat": 2,
+   "bestDamage": 130,
+   "weaknesses": [
+    "Darkness"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297522,
+   "cardmarketPrice": 0.62
+  },
+  {
+   "id": "sm2-62",
+   "localId": "62",
+   "name": {
+    "fr": "Machoc",
+    "en": "Machop"
+   },
+   "dexIds": [
+    66
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kyoko Umemoto",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297523,
+   "cardmarketPrice": 0.08
+  },
+  {
+   "id": "sm2-63",
+   "localId": "63",
+   "name": {
+    "fr": "Machoc",
+    "en": "Machop"
+   },
+   "dexIds": [
+    66
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 50,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Masakazu Fukuda",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297523,
+   "cardmarketPrice": 0.08
+  },
+  {
+   "id": "sm2-64",
+   "localId": "64",
+   "name": {
+    "fr": "Machopeur",
+    "en": "Machoke"
+   },
+   "dexIds": [
+    67
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Machop",
+   "hp": 100,
+   "retreat": 3,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": "shield",
+   "ability": {
+    "name": {
+     "fr": "Attitude Patibulaire",
+     "en": "Daunting Pose"
+    },
+    "effect": {
+     "fr": "Évitez tous les dégâts infligés à vos Pokémon de Banc par les attaques de votre adversaire. Les attaques et les talents de votre adversaire ne peuvent pas placer de marqueurs de dégâts sur vos Pokémon de Banc.",
+     "en": "Prevent all damage done to your Benched Pokémon by your opponent’s attacks. Your opponent’s attacks and Abilities can’t put damage counters on your Benched Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297525,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-65",
+   "localId": "65",
+   "name": {
+    "fr": "Mackogneur",
+    "en": "Machamp"
+   },
+   "dexIds": [
+    68
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Machoke",
+   "hp": 160,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Hitoshi Ariga",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297526,
+   "cardmarketPrice": 0.75
+  },
+  {
+   "id": "sm2-66",
+   "localId": "66",
+   "name": {
+    "fr": "Simularbre",
+    "en": "Sudowoodo"
+   },
+   "dexIds": [
+    185
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 100,
+   "retreat": 2,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Hajime Kusajima",
+   "abilityFamily": "bench",
+   "ability": {
+    "name": {
+     "fr": "Barrage Routier",
+     "en": "Roadblock"
+    },
+    "effect": {
+     "fr": "Votre adversaire ne peut pas avoir plus de 4 Pokémon de Banc. S’il a 5 Pokémon de Banc ou plus, il doit défausser des Pokémon de Banc jusqu’à en avoir 4 sur le Banc. Si plus d’un effet change le nombre de Pokémon de Banc autorisés, utilisez le nombre le plus petit.",
+     "en": "Your opponent can’t have more than 4 Benched Pokémon. If they have 5 or more Benched Pokémon, they discard Benched Pokémon until they have 4 Pokémon on the Bench. If more than one effect changes the number of Benched Pokémon allowed, use the smaller number."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297527,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-67",
+   "localId": "67",
+   "name": {
+    "fr": "Scorplane",
+    "en": "Gligar"
+   },
+   "dexIds": [
+    207
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Mina Nakai",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297528,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-68",
+   "localId": "68",
+   "name": {
+    "fr": "Scorvol",
+    "en": "Gliscor"
+   },
+   "dexIds": [
+    472
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Gligar",
+   "hp": 110,
+   "retreat": 1,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Yoshinobu Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297529,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-69",
+   "localId": "69",
+   "name": {
+    "fr": "Tarinor",
+    "en": "Nosepass"
+   },
+   "dexIds": [
+    299
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 80,
+   "retreat": 3,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Tomokazu Komiya",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297530,
+   "cardmarketPrice": 0.15
+  },
+  {
+   "id": "sm2-70",
+   "localId": "70",
+   "name": {
+    "fr": "Barloche",
+    "en": "Barboach"
+   },
+   "dexIds": [
+    339
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "sui",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297531,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-71",
+   "localId": "71",
+   "name": {
+    "fr": "Barbicha",
+    "en": "Whiscash"
+   },
+   "dexIds": [
+    340
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Barboach",
+   "hp": 130,
+   "retreat": 3,
+   "bestDamage": 100,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Masakazu Fukuda",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297532,
+   "cardmarketPrice": 0.36
+  },
+  {
+   "id": "sm2-72",
+   "localId": "72",
+   "name": {
+    "fr": "Pandespiègle",
+    "en": "Pancham"
+   },
+   "dexIds": [
+    674
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "TOKIYA",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297533,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-73",
+   "localId": "73",
+   "name": {
+    "fr": "Rocabot",
+    "en": "Rockruff"
+   },
+   "dexIds": [
+    744
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297534,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-74",
+   "localId": "74",
+   "name": {
+    "fr": "Lougaroc GX",
+    "en": "Lycanroc GX"
+   },
+   "dexIds": [
+    745
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Rockruff",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Regard Sanguinaire",
+     "en": "Bloodthirsty Eyes"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez échanger l’un des Pokémon de Banc de votre adversaire avec son Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 296844,
+   "cardmarketPrice": 2.36
+  },
+  {
+   "id": "sm2-75",
+   "localId": "75",
+   "name": {
+    "fr": "Tiboudet",
+    "en": "Mudbray"
+   },
+   "dexIds": [
+    749
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 80,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297535,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-76",
+   "localId": "76",
+   "name": {
+    "fr": "Bourrinos",
+    "en": "Mudsdale"
+   },
+   "dexIds": [
+    750
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Mudbray",
+   "hp": 140,
+   "retreat": 4,
+   "bestDamage": 180,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Mitsuhiro Arita",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297691,
+   "cardmarketPrice": 0.46
+  },
+  {
+   "id": "sm2-77",
+   "localId": "77",
+   "name": {
+    "fr": "Météno",
+    "en": "Minior"
+   },
+   "dexIds": [
+    774
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 190,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297692,
+   "cardmarketPrice": 0.83
+  },
+  {
+   "id": "sm2-78",
+   "localId": "78",
+   "name": {
+    "fr": "Cornèbre",
+    "en": "Murkrow"
+   },
+   "dexIds": [
+    198
+   ],
+   "types": [
+    "Darkness"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Sekio",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297536,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-79",
+   "localId": "79",
+   "name": {
+    "fr": "Corboss",
+    "en": "Honchkrow"
+   },
+   "dexIds": [
+    430
+   ],
+   "types": [
+    "Darkness"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Murkrow",
+   "hp": 110,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Hideki Ishikawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297537,
+   "cardmarketPrice": 0.18
+  },
+  {
+   "id": "sm2-80",
+   "localId": "80",
+   "name": {
+    "fr": "Ténéfix",
+    "en": "Sableye"
+   },
+   "dexIds": [
+    302
+   ],
+   "types": [
+    "Darkness"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Aya Kusube",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297538,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-81",
+   "localId": "81",
+   "name": {
+    "fr": "Absol",
+    "en": "Absol"
+   },
+   "dexIds": [
+    359
+   ],
+   "types": [
+    "Darkness"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 100,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Anesaki Dynamic",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297693,
+   "cardmarketPrice": 1.42
+  },
+  {
+   "id": "sm2-82",
+   "localId": "82",
+   "name": {
+    "fr": "Pandarbare",
+    "en": "Pangoro"
+   },
+   "dexIds": [
+    675
+   ],
+   "types": [
+    "Darkness"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Pancham",
+   "hp": 130,
+   "retreat": 3,
+   "bestDamage": 130,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "kodama",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297539,
+   "cardmarketPrice": 0.24
+  },
+  {
+   "id": "sm2-83",
+   "localId": "83",
+   "name": {
+    "fr": "Terhal",
+    "en": "Beldum"
+   },
+   "dexIds": [
+    374
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kyoko Umemoto",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297540,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-84",
+   "localId": "84",
+   "name": {
+    "fr": "Métang",
+    "en": "Metang"
+   },
+   "dexIds": [
+    375
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Beldum",
+   "hp": 90,
+   "retreat": 3,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kagemaru Himeno",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297541,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-85",
+   "localId": "85",
+   "name": {
+    "fr": "Métalosse GX",
+    "en": "Metagross GX"
+   },
+   "dexIds": [
+    376
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Metang",
+   "hp": 250,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "energy",
+   "ability": {
+    "name": {
+     "fr": "Système Géotechnique",
+     "en": "Geotech System"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque), vous pouvez attacher une carte Énergie Psychic ou Metal de votre pile de défausse à votre Pokémon Actif.",
+     "en": "Once during your turn (before your attack), you may attach a Psychic or Metal Energy card from your discard pile to your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 296845,
+   "cardmarketPrice": 2.85
+  },
+  {
+   "id": "sm2-86",
+   "localId": "86",
+   "name": {
+    "fr": "Tarinorme",
+    "en": "Probopass"
+   },
+   "dexIds": [
+    476
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Nosepass",
+   "hp": 130,
+   "retreat": 4,
+   "bestDamage": 120,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Yoshinobu Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297542,
+   "cardmarketPrice": 0.19
+  },
+  {
+   "id": "sm2-87",
+   "localId": "87",
+   "name": {
+    "fr": "Solgaleo",
+    "en": "Solgaleo"
+   },
+   "dexIds": [
+    791
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Cosmoem",
+   "hp": 160,
+   "retreat": 3,
+   "bestDamage": 170,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297543,
+   "cardmarketPrice": 0.62
+  },
+  {
+   "id": "sm2-88",
+   "localId": "88",
+   "name": {
+    "fr": "Mélofée",
+    "en": "Clefairy"
+   },
+   "dexIds": [
+    35
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kagemaru Himeno",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297544,
+   "cardmarketPrice": 0.4
+  },
+  {
+   "id": "sm2-89",
+   "localId": "89",
+   "name": {
+    "fr": "Mélodelfe",
+    "en": "Clefable"
+   },
+   "dexIds": [
+    36
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Clefairy",
+   "hp": 100,
+   "retreat": 1,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Miki Tanaka",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297545,
+   "cardmarketPrice": 0.12
+  },
+  {
+   "id": "sm2-90",
+   "localId": "90",
+   "name": {
+    "fr": "Doudouvet",
+    "en": "Cottonee"
+   },
+   "dexIds": [
+    546
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 10,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Megumi Mizutani",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297546,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-91",
+   "localId": "91",
+   "name": {
+    "fr": "Farfaduvet",
+    "en": "Whimsicott"
+   },
+   "dexIds": [
+    547
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Cottonee",
+   "hp": 80,
+   "retreat": 0,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297547,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-92",
+   "localId": "92",
+   "name": {
+    "fr": "Nymphali GX",
+    "en": "Sylveon GX"
+   },
+   "dexIds": [
+    700
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Eevee",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 296846,
+   "cardmarketPrice": 9.14
+  },
+  {
+   "id": "sm2-93",
+   "localId": "93",
+   "name": {
+    "fr": "Guérilande",
+    "en": "Comfey"
+   },
+   "dexIds": [
+    764
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Sanosuke Sakuma",
+   "abilityFamily": "shield",
+   "ability": {
+    "name": {
+     "fr": "Garde Florale",
+     "en": "Flower Shield"
+    },
+    "effect": {
+     "fr": "Aucun de vos Pokémon auquel de l’Énergie Fairy est attachée ne peut être affecté par des États Spéciaux. Retirez tous les États Spéciaux affectant ces Pokémon.",
+     "en": "Each of your Pokémon that has any Fairy Energy attached to it can’t be affected by any Special Conditions. Remove any Special Conditions affecting those Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297694,
+   "cardmarketPrice": 0.98
+  },
+  {
+   "id": "sm2-94",
+   "localId": "94",
+   "name": {
+    "fr": "Mucuscule",
+    "en": "Goomy"
+   },
+   "dexIds": [
+    704
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Asako Ito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297548,
+   "cardmarketPrice": 0.18
+  },
+  {
+   "id": "sm2-95",
+   "localId": "95",
+   "name": {
+    "fr": "Colimucus",
+    "en": "Sliggoo"
+   },
+   "dexIds": [
+    705
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Goomy",
+   "hp": 70,
+   "retreat": 3,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Tomokazu Komiya",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297549,
+   "cardmarketPrice": 0.34
+  },
+  {
+   "id": "sm2-96",
+   "localId": "96",
+   "name": {
+    "fr": "Muplodocus",
+    "en": "Goodra"
+   },
+   "dexIds": [
+    706
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Sliggoo",
+   "hp": 160,
+   "retreat": 3,
+   "bestDamage": 130,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Naoki Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297550,
+   "cardmarketPrice": 0.3
+  },
+  {
+   "id": "sm2-97",
+   "localId": "97",
+   "name": {
+    "fr": "Draïeul",
+    "en": "Drampa"
+   },
+   "dexIds": [
+    780
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 120,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "match",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297551,
+   "cardmarketPrice": 0.58
+  },
+  {
+   "id": "sm2-98",
+   "localId": "98",
+   "name": {
+    "fr": "Bébécaille",
+    "en": "Jangmo-o"
+   },
+   "dexIds": [
+    782
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 2,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "match",
+   "abilityFamily": "shield",
+   "ability": {
+    "name": {
+     "fr": "Pare-Balles",
+     "en": "Bulletproof"
+    },
+    "effect": {
+     "fr": "Ce Pokémon subit 10 dégâts de moins provenant des attaques(après application de la Faiblesse et de la Résistance).",
+     "en": "This Pokémon takes 10 less damage from attacks (after applying Weakness and Resistance)."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297552,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-99",
+   "localId": "99",
+   "name": {
+    "fr": "Écaïd",
+    "en": "Hakamo-o"
+   },
+   "dexIds": [
+    783
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Jangmo-o",
+   "hp": 90,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297553,
+   "cardmarketPrice": 0.15
+  },
+  {
+   "id": "sm2-100",
+   "localId": "100",
+   "name": {
+    "fr": "Ékaïser GX",
+    "en": "Kommo-o GX"
+   },
+   "dexIds": [
+    784
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Hakamo-o",
+   "hp": 240,
+   "retreat": 2,
+   "bestDamage": 240,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 296847,
+   "cardmarketPrice": 2.16
+  },
+  {
+   "id": "sm2-101",
+   "localId": "101",
+   "name": {
+    "fr": "Leveinard",
+    "en": "Chansey"
+   },
+   "dexIds": [
+    113
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 110,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Megumi Mizutani",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297554,
+   "cardmarketPrice": 0.08
+  },
+  {
+   "id": "sm2-102",
+   "localId": "102",
+   "name": {
+    "fr": "Leuphorie",
+    "en": "Blissey"
+   },
+   "dexIds": [
+    242
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Chansey",
+   "hp": 160,
+   "retreat": 4,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Rare",
+   "variants": [
+    "reverse",
+    "holo"
+   ],
+   "illustrator": "Hideki Ishikawa",
+   "abilityFamily": "heal",
+   "ability": {
+    "name": {
+     "fr": "Œuf Frais",
+     "en": "Fresh Egg"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez soigner 80 dégâts à votre Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may heal 80 damage from your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297695,
+   "cardmarketPrice": 1.56
+  },
+  {
+   "id": "sm2-103",
+   "localId": "103",
+   "name": {
+    "fr": "Nirondelle",
+    "en": "Taillow"
+   },
+   "dexIds": [
+    276
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Ayaka Yoshida",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297555,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-104",
+   "localId": "104",
+   "name": {
+    "fr": "Hélédelle",
+    "en": "Swellow"
+   },
+   "dexIds": [
+    277
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Taillow",
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kagemaru Himeno",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297556,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-105",
+   "localId": "105",
+   "name": {
+    "fr": "Morphéo",
+    "en": "Castform"
+   },
+   "dexIds": [
+    351
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 30,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "sui",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297557,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-106",
+   "localId": "106",
+   "name": {
+    "fr": "Rayquaza",
+    "en": "Rayquaza"
+   },
+   "dexIds": [
+    384
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 120,
+   "retreat": 1,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Yoshinobu Saito",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297558,
+   "cardmarketPrice": 2.25
+  },
+  {
+   "id": "sm2-107",
+   "localId": "107",
+   "name": {
+    "fr": "Ratentif",
+    "en": "Patrat"
+   },
+   "dexIds": [
+    504
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 60,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Ayaka Yoshida",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297559,
+   "cardmarketPrice": 0.06
+  },
+  {
+   "id": "sm2-108",
+   "localId": "108",
+   "name": {
+    "fr": "Miradar",
+    "en": "Watchog"
+   },
+   "dexIds": [
+    505
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Patrat",
+   "hp": 90,
+   "retreat": 1,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kagemaru Himeno",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297560,
+   "cardmarketPrice": 0.11
+  },
+  {
+   "id": "sm2-109",
+   "localId": "109",
+   "name": {
+    "fr": "Passerouge",
+    "en": "Fletchling"
+   },
+   "dexIds": [
+    661
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 50,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "You Iribi",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297561,
+   "cardmarketPrice": 0.08
+  },
+  {
+   "id": "sm2-110",
+   "localId": "110",
+   "name": {
+    "fr": "Braisillon",
+    "en": "Fletchinder"
+   },
+   "dexIds": [
+    662
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Fletchling",
+   "hp": 70,
+   "retreat": 1,
+   "bestDamage": 40,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "kawayoo",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297562,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-111",
+   "localId": "111",
+   "name": {
+    "fr": "Flambusard",
+    "en": "Talonflame"
+   },
+   "dexIds": [
+    663
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Fletchinder",
+   "hp": 130,
+   "retreat": 0,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [
+    "Fighting"
+   ],
+   "rarity": "Rare",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297563,
+   "cardmarketPrice": 0.16
+  },
+  {
+   "id": "sm2-112",
+   "localId": "112",
+   "name": {
+    "fr": "Nounourson",
+    "en": "Stufful"
+   },
+   "dexIds": [
+    759
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 70,
+   "retreat": 2,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Common",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297564,
+   "cardmarketPrice": 0.1
+  },
+  {
+   "id": "sm2-113",
+   "localId": "113",
+   "name": {
+    "fr": "Chelours",
+    "en": "Bewear"
+   },
+   "dexIds": [
+    760
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Stufful",
+   "hp": 130,
+   "retreat": 2,
+   "bestDamage": 60,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Shin Nagasawa",
+   "abilityFamily": "draw",
+   "ability": {
+    "name": {
+     "fr": "Ça Rapporte",
+     "en": "Rake It In"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez piocher 3 cartes.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may draw 3 cards."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297565,
+   "cardmarketPrice": 0.07
+  },
+  {
+   "id": "sm2-114",
+   "localId": "114",
+   "name": {
+    "fr": "Dodoala",
+    "en": "Komala"
+   },
+   "dexIds": [
+    775
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 80,
+   "retreat": 2,
+   "bestDamage": 100,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Uncommon",
+   "variants": [
+    "normal",
+    "reverse"
+   ],
+   "illustrator": "Kouki Saitou",
+   "abilityFamily": "affliction",
+   "ability": {
+    "name": {
+     "fr": "Hypersommeil",
+     "en": "Comatose"
+    },
+    "effect": {
+     "fr": "Tant que ce Pokémon est votre Pokémon Actif, lorsque vous lui attachez une Énergie de votre main, il est désormais Endormi.",
+     "en": "As long as this Pokémon is your Active Pokémon, whenever you attach an Energy from your hand to it, it is now Asleep."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297566,
+   "cardmarketPrice": 0.04
+  },
+  {
+   "id": "sm2-115",
+   "localId": "115",
+   "name": {
+    "fr": "Draïeul GX",
+    "en": "Drampa GX"
+   },
+   "dexIds": [
+    780
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 180,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297567,
+   "cardmarketPrice": 1.86
+  },
+  {
+   "id": "sm2-131",
+   "localId": "131",
+   "name": {
+    "fr": "Boumata GX",
+    "en": "Turtonator GX"
+   },
+   "dexIds": [
+    776
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 190,
+   "retreat": 3,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297583,
+   "cardmarketPrice": 21.32
+  },
+  {
+   "id": "sm2-132",
+   "localId": "132",
+   "name": {
+    "fr": "Feunard d’Alola GX",
+    "en": "Alolan Ninetales GX"
+   },
+   "dexIds": [
+    38
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Alolan Vulpix",
+   "hp": 210,
+   "retreat": 1,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297584,
+   "cardmarketPrice": 11.83
+  },
+  {
+   "id": "sm2-133",
+   "localId": "133",
+   "name": {
+    "fr": "Froussardine GX",
+    "en": "Wishiwashi GX"
+   },
+   "dexIds": [
+    746
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 220,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297585,
+   "cardmarketPrice": 3.83
+  },
+  {
+   "id": "sm2-134",
+   "localId": "134",
+   "name": {
+    "fr": "Lucanon GX",
+    "en": "Vikavolt GX"
+   },
+   "dexIds": [
+    738
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Charjabug",
+   "hp": 240,
+   "retreat": 1,
+   "bestDamage": 180,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297586,
+   "cardmarketPrice": 3.11
+  },
+  {
+   "id": "sm2-135",
+   "localId": "135",
+   "name": {
+    "fr": "Tokorico GX",
+    "en": "Tapu Koko GX"
+   },
+   "dexIds": [
+    785
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 2,
+   "bestDamage": 130,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Sentier Aérien",
+     "en": "Aero Trail"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez déplacer autant d’Énergie Lightning que vous voulez de vos autres Pokémon vers ce Pokémon. Dans ce cas, échangez ce Pokémon avec votre Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of Lightning Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297587,
+   "cardmarketPrice": 5.01
+  },
+  {
+   "id": "sm2-136",
+   "localId": "136",
+   "name": {
+    "fr": "Prédastérie GX",
+    "en": "Toxapex GX"
+   },
+   "dexIds": [
+    748
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Mareanie",
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297588,
+   "cardmarketPrice": 3.59
+  },
+  {
+   "id": "sm2-137",
+   "localId": "137",
+   "name": {
+    "fr": "Tokopiyon GX",
+    "en": "Tapu Lele GX"
+   },
+   "dexIds": [
+    786
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "search",
+   "ability": {
+    "name": {
+     "fr": "Relais Miracle",
+     "en": "Wonder Tag"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez chercher une carte Supporter dans votre deck, la montrer et l’ajouter à votre main. Mélangez ensuite votre deck.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297589,
+   "cardmarketPrice": 7.39
+  },
+  {
+   "id": "sm2-138",
+   "localId": "138",
+   "name": {
+    "fr": "Lougaroc GX",
+    "en": "Lycanroc GX"
+   },
+   "dexIds": [
+    745
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Rockruff",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Regard Sanguinaire",
+     "en": "Bloodthirsty Eyes"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez échanger l’un des Pokémon de Banc de votre adversaire avec son Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297590,
+   "cardmarketPrice": 3.33
+  },
+  {
+   "id": "sm2-139",
+   "localId": "139",
+   "name": {
+    "fr": "Métalosse GX",
+    "en": "Metagross GX"
+   },
+   "dexIds": [
+    376
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Metang",
+   "hp": 250,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "energy",
+   "ability": {
+    "name": {
+     "fr": "Système Géotechnique",
+     "en": "Geotech System"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque), vous pouvez attacher une carte Énergie Psychic ou Metal de votre pile de défausse à votre Pokémon Actif.",
+     "en": "Once during your turn (before your attack), you may attach a Psychic or Metal Energy card from your discard pile to your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297591,
+   "cardmarketPrice": 10.11
+  },
+  {
+   "id": "sm2-140",
+   "localId": "140",
+   "name": {
+    "fr": "Nymphali GX",
+    "en": "Sylveon GX"
+   },
+   "dexIds": [
+    700
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Eevee",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297592,
+   "cardmarketPrice": 59.85
+  },
+  {
+   "id": "sm2-141",
+   "localId": "141",
+   "name": {
+    "fr": "Ékaïser GX",
+    "en": "Kommo-o GX"
+   },
+   "dexIds": [
+    784
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Hakamo-o",
+   "hp": 240,
+   "retreat": 2,
+   "bestDamage": 240,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297593,
+   "cardmarketPrice": 4.68
+  },
+  {
+   "id": "sm2-142",
+   "localId": "142",
+   "name": {
+    "fr": "Draïeul GX",
+    "en": "Drampa GX"
+   },
+   "dexIds": [
+    780
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 180,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Ultra Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297594,
+   "cardmarketPrice": 3.94
+  },
+  {
+   "id": "sm2-146",
+   "localId": "146",
+   "name": {
+    "fr": "Archéduc GX",
+    "en": "Decidueye GX"
+   },
+   "dexIds": [
+    724
+   ],
+   "types": [
+    "Grass"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Dartrix",
+   "hp": 240,
+   "retreat": 2,
+   "bestDamage": 90,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "counters",
+   "ability": {
+    "name": {
+     "fr": "Flèche Empennée",
+     "en": "Feather Arrow"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque), vous pouvez placer 2 marqueurs de dégâts sur l’un des Pokémon de votre adversaire.",
+     "en": "Once during your turn (before your attack), you may put 2 damage counters on 1 of your opponent’s Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297697,
+   "cardmarketPrice": 16.41
+  },
+  {
+   "id": "sm2-147",
+   "localId": "147",
+   "name": {
+    "fr": "Félinferno GX",
+    "en": "Incineroar GX"
+   },
+   "dexIds": [
+    727
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Torracat",
+   "hp": 250,
+   "retreat": 3,
+   "bestDamage": 200,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297696,
+   "cardmarketPrice": 20.27
+  },
+  {
+   "id": "sm2-148",
+   "localId": "148",
+   "name": {
+    "fr": "Boumata GX",
+    "en": "Turtonator GX"
+   },
+   "dexIds": [
+    776
+   ],
+   "types": [
+    "Fire"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 190,
+   "retreat": 3,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Water"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297597,
+   "cardmarketPrice": 11.05
+  },
+  {
+   "id": "sm2-149",
+   "localId": "149",
+   "name": {
+    "fr": "Oratoria GX",
+    "en": "Primarina GX"
+   },
+   "dexIds": [
+    730
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Brionne",
+   "hp": 250,
+   "retreat": 2,
+   "bestDamage": 120,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297698,
+   "cardmarketPrice": 19
+  },
+  {
+   "id": "sm2-150",
+   "localId": "150",
+   "name": {
+    "fr": "Feunard d’Alola GX",
+    "en": "Alolan Ninetales GX"
+   },
+   "dexIds": [
+    38
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Alolan Vulpix",
+   "hp": 210,
+   "retreat": 1,
+   "bestDamage": 160,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297598,
+   "cardmarketPrice": 25.21
+  },
+  {
+   "id": "sm2-151",
+   "localId": "151",
+   "name": {
+    "fr": "Froussardine GX",
+    "en": "Wishiwashi GX"
+   },
+   "dexIds": [
+    746
+   ],
+   "types": [
+    "Water"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 220,
+   "weaknesses": [
+    "Lightning"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297599,
+   "cardmarketPrice": 13.6
+  },
+  {
+   "id": "sm2-152",
+   "localId": "152",
+   "name": {
+    "fr": "Lucanon GX",
+    "en": "Vikavolt GX"
+   },
+   "dexIds": [
+    738
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Charjabug",
+   "hp": 240,
+   "retreat": 1,
+   "bestDamage": 180,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [
+    "Metal"
+   ],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297600,
+   "cardmarketPrice": 10.25
+  },
+  {
+   "id": "sm2-153",
+   "localId": "153",
+   "name": {
+    "fr": "Tokorico GX",
+    "en": "Tapu Koko GX"
+   },
+   "dexIds": [
+    785
+   ],
+   "types": [
+    "Lightning"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 2,
+   "bestDamage": 130,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Sentier Aérien",
+     "en": "Aero Trail"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez déplacer autant d’Énergie Lightning que vous voulez de vos autres Pokémon vers ce Pokémon. Dans ce cas, échangez ce Pokémon avec votre Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may move any number of Lightning Energy from your other Pokémon to this Pokémon. If you do, switch this Pokémon with your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297601,
+   "cardmarketPrice": 13.86
+  },
+  {
+   "id": "sm2-154",
+   "localId": "154",
+   "name": {
+    "fr": "Prédastérie GX",
+    "en": "Toxapex GX"
+   },
+   "dexIds": [
+    748
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Mareanie",
+   "hp": 210,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Psychic"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297602,
+   "cardmarketPrice": 10.57
+  },
+  {
+   "id": "sm2-155",
+   "localId": "155",
+   "name": {
+    "fr": "Tokopiyon GX",
+    "en": "Tapu Lele GX"
+   },
+   "dexIds": [
+    786
+   ],
+   "types": [
+    "Psychic"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 170,
+   "retreat": 1,
+   "bestDamage": 20,
+   "weaknesses": [],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "search",
+   "ability": {
+    "name": {
+     "fr": "Relais Miracle",
+     "en": "Wonder Tag"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main sur votre Banc pendant votre tour, vous pouvez chercher une carte Supporter dans votre deck, la montrer et l’ajouter à votre main. Mélangez ensuite votre deck.",
+     "en": "When you play this Pokémon from your hand onto your Bench during your turn, you may search your deck for a Supporter card, reveal it, and put it into your hand. Then, shuffle your deck."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297603,
+   "cardmarketPrice": 16.66
+  },
+  {
+   "id": "sm2-156",
+   "localId": "156",
+   "name": {
+    "fr": "Lougaroc GX",
+    "en": "Lycanroc GX"
+   },
+   "dexIds": [
+    745
+   ],
+   "types": [
+    "Fighting"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Rockruff",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Grass"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "switch",
+   "ability": {
+    "name": {
+     "fr": "Regard Sanguinaire",
+     "en": "Bloodthirsty Eyes"
+    },
+    "effect": {
+     "fr": "Lorsque vous jouez ce Pokémon de votre main pour faire évoluer l’un de vos Pokémon pendant votre tour, vous pouvez échanger l’un des Pokémon de Banc de votre adversaire avec son Pokémon Actif.",
+     "en": "When you play this Pokémon from your hand to evolve 1 of your Pokémon during your turn, you may switch 1 of your opponent’s Benched Pokémon with their Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297604,
+   "cardmarketPrice": 14.63
+  },
+  {
+   "id": "sm2-157",
+   "localId": "157",
+   "name": {
+    "fr": "Métalosse GX",
+    "en": "Metagross GX"
+   },
+   "dexIds": [
+    376
+   ],
+   "types": [
+    "Metal"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Metang",
+   "hp": 250,
+   "retreat": 3,
+   "bestDamage": 150,
+   "weaknesses": [
+    "Fire"
+   ],
+   "resistances": [
+    "Psychic"
+   ],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": "energy",
+   "ability": {
+    "name": {
+     "fr": "Système Géotechnique",
+     "en": "Geotech System"
+    },
+    "effect": {
+     "fr": "Une seule fois pendant votre tour (avant votre attaque), vous pouvez attacher une carte Énergie Psychic ou Metal de votre pile de défausse à votre Pokémon Actif.",
+     "en": "Once during your turn (before your attack), you may attach a Psychic or Metal Energy card from your discard pile to your Active Pokémon."
+    }
+   },
+   "isTagTeam": false,
+   "cardmarketId": 297605,
+   "cardmarketPrice": 22.3
+  },
+  {
+   "id": "sm2-158",
+   "localId": "158",
+   "name": {
+    "fr": "Nymphali GX",
+    "en": "Sylveon GX"
+   },
+   "dexIds": [
+    700
+   ],
+   "types": [
+    "Fairy"
+   ],
+   "stage": "Stage1",
+   "evolveFrom": "Eevee",
+   "hp": 200,
+   "retreat": 2,
+   "bestDamage": 110,
+   "weaknesses": [
+    "Metal"
+   ],
+   "resistances": [
+    "Darkness"
+   ],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297606,
+   "cardmarketPrice": 50.93
+  },
+  {
+   "id": "sm2-159",
+   "localId": "159",
+   "name": {
+    "fr": "Ékaïser GX",
+    "en": "Kommo-o GX"
+   },
+   "dexIds": [
+    784
+   ],
+   "types": [
+    "Dragon"
+   ],
+   "stage": "Stage2",
+   "evolveFrom": "Hakamo-o",
+   "hp": 240,
+   "retreat": 2,
+   "bestDamage": 240,
+   "weaknesses": [
+    "Fairy"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297607,
+   "cardmarketPrice": 14.2
+  },
+  {
+   "id": "sm2-160",
+   "localId": "160",
+   "name": {
+    "fr": "Draïeul GX",
+    "en": "Drampa GX"
+   },
+   "dexIds": [
+    780
+   ],
+   "types": [
+    "Colorless"
+   ],
+   "stage": "Basic",
+   "evolveFrom": null,
+   "hp": 180,
+   "retreat": 2,
+   "bestDamage": 80,
+   "weaknesses": [
+    "Fighting"
+   ],
+   "resistances": [],
+   "rarity": "Secret Rare",
+   "variants": [
+    "holo"
+   ],
+   "illustrator": "5ban Graphics",
+   "abilityFamily": null,
+   "ability": null,
+   "isTagTeam": false,
+   "cardmarketId": 297608,
+   "cardmarketPrice": 13.97
+  }
+ ]
+}

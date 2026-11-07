@@ -9,8 +9,10 @@ import {
   applyAction,
   type CardIndex,
   createRun,
+  type GameEvent,
   IllegalActionError,
   type IllegalReason,
+  type RunOptions,
   type RunState,
 } from '../../engine/index.ts';
 import { decodeSave, encodeSave, type SaveStore } from './save.ts';
@@ -26,8 +28,12 @@ export interface SessionView {
   saveFailed: boolean;
 }
 
+/** Tout ce qu'il faut pour lancer une run. */
+export type RunStart = RunOptions & { setId: string };
+
 export interface SessionOptions {
-  index: CardIndex;
+  /** Index de l'extension d'une run. */
+  indexFor: (setId: string) => CardIndex;
   store: SaveStore;
   /** Multiplicateur de vitesse des animations. */
   speed: () => number;
@@ -35,6 +41,8 @@ export interface SessionOptions {
   now?: () => number;
   /** Prévenu quand un nouvel état s'affiche, pour précharger la main. */
   onCommit?: (state: RunState) => void;
+  /** Prévenu de chaque nouvel état, pour la progression entre les runs. */
+  onProgress?: (state: RunState, events: readonly GameEvent[], index: CardIndex) => void;
 }
 
 export class Session implements Readable<SessionView> {
@@ -91,7 +99,7 @@ export class Session implements Readable<SessionView> {
 
   async savedRun(): Promise<RunState | null> {
     try {
-      return decodeSave(await this.#options.store.read(), this.#options.index);
+      return decodeSave(await this.#options.store.read(), this.#options.indexFor);
     } catch {
       return null;
     }
@@ -101,9 +109,11 @@ export class Session implements Readable<SessionView> {
     this.#commit(state, EMPTY_STAGE);
   }
 
-  newRun(seed: number): void {
-    const state = createRun(this.#options.index, { seed });
+  newRun({ setId, ...options }: RunStart): void {
+    const index = this.#options.indexFor(setId);
+    const state = createRun(index, options);
     this.#commit(state, EMPTY_STAGE);
+    this.#options.onProgress?.(state, [], index);
     void this.#persist(state);
   }
 
@@ -123,7 +133,7 @@ export class Session implements Readable<SessionView> {
     const { state } = this.#current;
     if (!state) return 'runOver';
     try {
-      applyAction(state, action, this.#options.index);
+      applyAction(state, action, this.#options.indexFor(state.setId));
       return null;
     } catch (error) {
       if (error instanceof IllegalActionError) return error.reason;
@@ -135,7 +145,8 @@ export class Session implements Readable<SessionView> {
   async dispatch(action: Action): Promise<IllegalReason | null> {
     const { state, busy } = this.#current;
     if (!state || busy) return null;
-    const { index, texts } = this.#options;
+    const { indexFor, texts } = this.#options;
+    const index = indexFor(state.setId);
     let result: ReturnType<typeof applyAction>;
     try {
       result = applyAction(state, action, index);
@@ -144,6 +155,7 @@ export class Session implements Readable<SessionView> {
       throw error;
     }
     const { state: next, events } = result;
+    this.#options.onProgress?.(next, events, index);
     void this.#persist(next);
     const timeline = buildTimeline({
       before: state,

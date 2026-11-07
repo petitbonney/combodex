@@ -67,6 +67,7 @@ const popup = $derived.by(() => {
         card={entry.card}
         variant={entry.instance.variant}
         energies={entry.instance.energies}
+            specials={entry.instance.specials}
         hidden={entry.hidden && !scoring}
         {maskDamage}
       />

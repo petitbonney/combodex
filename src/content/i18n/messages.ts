@@ -3,6 +3,8 @@ import type { AbilityFamily, PokemonType, Stage, Variant } from '../../engine/ca
 import type { ComboId } from '../../engine/combos.ts';
 import type { IllegalReason, OpponentKind } from '../../engine/state.ts';
 import type { ToolRarity } from '../balance.ts';
+import type { AceSpecId, SpecialEnergyId } from '../consumables.ts';
+import type { ObjectiveId } from '../objectives.ts';
 import type { StatusId } from '../statuses.ts';
 import type { ToolId } from '../tools.ts';
 
@@ -16,6 +18,10 @@ export interface Messages {
   opponents: Record<OpponentKind, string>;
   toolRarities: Record<ToolRarity, string>;
   tools: Record<ToolId, { name: string; effect: string }>;
+  specials: Record<SpecialEnergyId, { name: string; effect: string }>;
+  aces: Record<AceSpecId, { name: string; effect: string }>;
+  leap: { name: string; effect: string };
+  objectives: Record<ObjectiveId, { name: string; condition: string }>;
   statuses: Record<StatusId, { name: string; base: string; strong: string }>;
   permanents: Record<PokemonType, string>;
   families: Record<AbilityFamily, { name: string; effect: string }>;
@@ -32,6 +38,38 @@ export interface AppMessages {
   newRun: string;
   seedLabel: string;
   seedHint: string;
+  invalidCode: string;
+  // Extensions et deck de départ
+  chooseSet: string;
+  startRun: string;
+  deckRandom: string;
+  deckCustom: string;
+  deckCustomLocked: (percent: number) => string;
+  pickLines: string;
+  lineLabel: (name: string, type: string) => string;
+  setMystery: string;
+  // Défi du jour
+  daily: string;
+  dailyHint: string;
+  dailySet: (name: string) => string;
+  dailyBest: (score: string) => string;
+  dailyNoScore: string;
+  dailyPlay: string;
+  dailyShare: (date: string, score: string, code: string) => string;
+  dailyTag: (date: string) => string;
+  // Classeur
+  binder: string;
+  binderSets: string;
+  binderObjectives: string;
+  binderProgress: (seen: number, total: number, percent: number) => string;
+  binderUnknown: string;
+  objectiveHiddenName: string;
+  objectiveHiddenCondition: string;
+  objectiveDone: string;
+  rewardSet: (name: string) => string;
+  rewardTool: (name: string) => string;
+  rewardHidden: string;
+  objectiveReached: (name: string) => string;
   howToPlay: string;
   settings: string;
   about: string;
@@ -64,6 +102,10 @@ export interface AppMessages {
   aboutLicense: string;
   aboutSource: string;
   aboutVersion: (version: string) => string;
+  creditsTitle: string;
+  creditsSets: (names: string) => string;
+  creditsFonts: string;
+  creditsIcons: string;
   // Aide
   helpGoal: string;
   helpFormula: string;
@@ -77,6 +119,8 @@ export interface AppMessages {
   // Parcours
   arenaTitle: (arena: number, type: string) => string;
   arenaProgress: (arena: number, total: number) => string;
+  leagueTitle: string;
+  leagueRules: string;
   nextOpponent: string;
   championEffect: string;
   championStatuses: string;
@@ -140,6 +184,7 @@ export interface AppMessages {
   gainInterest: string;
   gainPicnic: string;
   gainReward: string;
+  gainBonus: string;
   gainTotal: string;
   continueLabel: string;
   // Boutique
@@ -153,6 +198,20 @@ export interface AppMessages {
   evolveHint: string;
   yourTools: string;
   sellFor: (price: number) => string;
+  stadiumTag: string;
+  stadiumReplaces: (name: string) => string;
+  consumableEnergy: (type: string) => string;
+  energyEffect: string;
+  aceTag: string;
+  aceReserve: string;
+  aceUse: string;
+  aceInFight: string;
+  aceOutsideFight: string;
+  pickTargets: (count: number) => string;
+  confirmTargets: string;
+  centerName: string;
+  centerHint: string;
+  centerUsed: string;
   boosterNames: Record<'set' | 'energy' | 'trainer' | 'premium', string>;
   boosterContents: Record<'set' | 'energy' | 'trainer' | 'premium', string>;
   // Booster
@@ -180,7 +239,10 @@ export interface AppMessages {
   statBestHand: string;
   statHands: string;
   statFavorite: string;
-  statSeed: string;
+  statCode: string;
+  copyCode: string;
+  copied: string;
+  copyFailed: string;
   playAgain: string;
   toTitle: string;
 }
@@ -262,6 +324,9 @@ export interface UiMessages {
   eventBurned: (name: string, banished: boolean) => string;
   eventReturned: (count: number) => string;
   eventDamaged: (amount: number, hp: number) => string;
+  eventWeakness: (type: string) => string;
+  eventMoney: (amount: number) => string;
+  eventAce: (name: string) => string;
   eventAffliction: (amount: number) => string;
   eventDiscarded: (count: number, cost: number, money: number) => string;
   eventRecovered: (name: string) => string;
@@ -275,6 +340,7 @@ export interface UiMessages {
     interest: number;
     picnic: number;
     reward: number;
+    bonus: number;
     total: number;
   }) => string;
   eventLost: string;
@@ -287,6 +353,9 @@ export interface UiMessages {
   shopEmpty: (position: number) => string;
   shopBooster: (position: number, name: string, price: number) => string;
   shopReroll: (cost: number) => string;
+  shopConsumable: (name: string, price: number) => string;
+  shopCenter: (available: boolean) => string;
+  shopAce: (name: string) => string;
   boosterSet: string;
   boosterEnergy: string;
   boosterTrainer: string;

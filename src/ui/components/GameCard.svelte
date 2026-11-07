@@ -1,7 +1,9 @@
 <script lang="ts">
 import Lock from '@lucide/svelte/icons/lock';
 import Sparkle from '@lucide/svelte/icons/sparkle';
+import Zap from '@lucide/svelte/icons/zap';
 import TriangleAlert from '@lucide/svelte/icons/triangle-exclamation-point';
+import type { SpecialEnergyId } from '../../content/consumables.ts';
 import type { CardData, PokemonType, Variant } from '../../engine/index.ts';
 import { imageOf } from '../logic/game.ts';
 import type { ImageQuality } from '../logic/images.ts';
@@ -13,6 +15,7 @@ interface Props {
   card: CardData;
   variant?: Variant;
   energies?: readonly PokemonType[];
+  specials?: readonly SpecialEnergyId[] | undefined;
   hidden?: boolean;
   maskDamage?: boolean;
   paralyzed?: boolean;
@@ -26,6 +29,7 @@ const {
   card,
   variant = 'normal',
   energies = [],
+  specials = [],
   hidden = false,
   maskDamage = false,
   paralyzed = false,
@@ -63,6 +67,7 @@ const mainType = $derived(card.types[0] ?? 'Colorless');
       class:loaded={loadedSource === source}
       crossorigin="anonymous"
       decoding="async"
+      loading="lazy"
       draggable="false"
       onload={() => {
         loadedSource = source;
@@ -79,6 +84,11 @@ const mainType = $derived(card.types[0] ?? 'Colorless');
         {#each card.types as type (type)}<TypeIcon {type} size={17} />{/each}
         {#each energies as energy, position (position)}
           <TypeIcon type={energy} size={14} />
+        {/each}
+        {#each specials as special, position (position)}
+          <span class="talent special" title={$texts.text.specials[special].name}>
+            <Zap size={11} strokeWidth={3} aria-hidden="true" />
+          </span>
         {/each}
         {#if card.abilityFamily}
           <span class="talent" title={$texts.text.families[card.abilityFamily].name}>
@@ -101,6 +111,11 @@ const mainType = $derived(card.types[0] ?? 'Colorless');
 {/if}
 
 <style>
+  .special {
+    background: var(--gold);
+    color: var(--gold-ink);
+  }
+
   .card {
     position: relative;
     width: 100%;

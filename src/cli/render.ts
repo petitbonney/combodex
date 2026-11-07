@@ -17,9 +17,11 @@ import {
   isPreviewMasked,
   isStrong,
   type OpenBooster,
+  permanentType,
   type RunState,
   type ScoreResult,
   type ScoreStep,
+  type ShopConsumable,
   type ShopState,
   scoutedCards,
 } from '../engine/index.ts';
@@ -140,7 +142,8 @@ export function deckOrder(view: View, state: RunState): CardInstance[] {
 export function renderIntro(view: View, state: RunState): string[] {
   const { ui, opponents, types } = view.text;
   const arena = currentArena(state);
-  const kind = (['trainer', 'elite', 'champion'] as const)[state.stageIndex] ?? 'trainer';
+  const stageKind = (['trainer', 'elite', 'champion'] as const)[state.stageIndex] ?? 'trainer';
+  const kind = arena.league ? 'league' : stageKind;
   const effect = arena.form === 'permanent' ? view.text.permanents[arena.type] : ui.statusForm;
   const lines = [
     '',
@@ -192,7 +195,8 @@ export function renderFight(view: View, state: RunState, fight: FightState): str
     ui.opponentLine(opponentCard ? cardName(view, opponentCard) : '?', opponent.hp, opponent.maxHp),
     `${ui.labeled(ui.weakness, typeList(view, opponent.weaknesses))} · ${ui.labeled(ui.resistance, typeList(view, opponent.resistances))}`,
   ];
-  if (opponent.form === 'permanent') lines.push(ui.bossEffect(view.text.permanents[opponent.type]));
+  const permanent = permanentType(opponent);
+  if (permanent) lines.push(ui.bossEffect(view.text.permanents[permanent]));
   lines.push(
     ui.turnLine(
       fight.turn,
@@ -240,6 +244,7 @@ function parts(view: View, step: Extract<ScoreStep, { kind: 'card' | 'tool' }>):
   const pieces: string[] = [];
   if (step.kind === 'card') pieces.push(SIGN(step.damage));
   const { mult } = view.text.ui;
+  if (step.kind === 'tool' && step.addDamage !== 0) pieces.push(SIGN(step.addDamage));
   if (step.addMult !== 0) pieces.push(`${SIGN(step.addMult)} ${mult}`);
   if (step.timesMult !== 1) pieces.push(`×${step.timesMult} ${mult}`);
   if (step.kind === 'card' && step.talent) pieces.push(view.text.families[step.talent].name);
@@ -318,6 +323,12 @@ export function renderEvent(view: View, state: RunState, event: GameEvent): stri
       return [ui.eventDamaged(event.amount, event.hp)];
     case 'afflictionTick':
       return [ui.eventAffliction(event.amount)];
+    case 'weaknessChanged':
+      return [ui.eventWeakness(types[event.weakness])];
+    case 'moneyGained':
+      return [ui.eventMoney(event.amount)];
+    case 'aceUsed':
+      return [ui.eventAce(view.text.aces[event.id].name)];
     case 'discarded':
       return [ui.eventDiscarded(event.uids.length, event.cost, event.money)];
     case 'cardRecovered':
@@ -340,6 +351,20 @@ export function renderEvent(view: View, state: RunState, event: GameEvent): stri
       return [ui.eventArena(event.arenaIndex + 1)];
     case 'runWon':
       return [ui.eventRunWon];
+  }
+}
+
+function consumableName(view: View, consumable: ShopConsumable): string {
+  const { app, types, specials, aces, leap } = view.text;
+  switch (consumable.kind) {
+    case 'energy':
+      return app.consumableEnergy(types[consumable.energy]);
+    case 'special':
+      return specials[consumable.special].name;
+    case 'leap':
+      return leap.name;
+    case 'ace':
+      return aces[consumable.ace].name;
   }
 }
 
@@ -374,7 +399,12 @@ export function renderShop(view: View, state: RunState, shop: ShopState): string
     };
     lines.push(ui.shopBooster(position + 1, names[booster.kind], booster.price));
   });
+  if (shop.consumable) {
+    lines.push(ui.shopConsumable(consumableName(view, shop.consumable), shop.consumable.price));
+  }
   lines.push(ui.shopReroll(shop.rerollCost));
+  lines.push(ui.shopCenter(!state.arenaCenterUsed));
+  if (state.aceSpec) lines.push(ui.shopAce(view.text.aces[state.aceSpec].name));
   if (state.tools.length > 0) {
     lines.push(ui.ownedTools);
     state.tools.forEach((tool, position) => {

@@ -4,8 +4,12 @@ import {
   CHAMPION_POOL_SIZE,
   DEFAULT_ARENA_COUNT,
   ELITE_HP_RATIO,
+  LEAGUE_HP,
+  TOOL_SLOTS,
   TRAINER_HP_RATIO,
 } from '../content/balance.ts';
+import type { ToolId } from '../content/tools.ts';
+import { useAce } from './ace.ts';
 import type { CardData, CardIndex, PokemonType } from './cards.ts';
 import {
   discardCards,
@@ -18,12 +22,14 @@ import {
 import { coinFlip, createRng, pick, type Rng, sample } from './rng.ts';
 import {
   buyBooster,
+  buyConsumable,
   buySlot,
   keepBoosterCard,
   keepBoosterEnergy,
   keepBoosterTool,
   openFreeBooster,
   openShop,
+  removeCard,
   requireBooster,
   requireShop,
   reroll,
@@ -47,15 +53,38 @@ const CHAMPION_STAGE = 2;
 export interface RunOptions {
   seed: number;
   arenaCount?: number;
+  /** Vrai par défaut : la run se termine par le Maître de la Ligue. */
+  league?: boolean;
+  /** Outils que cette run ne propose pas. */
+  lockedTools?: readonly ToolId[];
+  /** Lignées du deck custom, par position dans `completeLines`. */
+  starterLines?: readonly number[] | null;
+  /** Date du défi du jour, si la run en est un. */
+  dailyDate?: string | null;
 }
 
 function cardsOfType(index: CardIndex, type: PokemonType): CardData[] {
   return index.set.cards.filter((card) => card.types[0] === type);
 }
 
-function drawChampion(rng: Rng, index: CardIndex, type: PokemonType): CardData {
-  const pool = cardsOfType(index, type).sort((a, b) => b.hp - a.hp);
+function strongest(rng: Rng, cards: CardData[]): CardData {
+  const pool = cards.sort((a, b) => b.hp - a.hp);
   return pick(rng, pool.slice(0, CHAMPION_POOL_SIZE));
+}
+
+function drawChampion(rng: Rng, index: CardIndex, type: PokemonType): CardData {
+  return strongest(rng, cardsOfType(index, type));
+}
+
+/** Le Maître de la Ligue est tiré parmi les plus gros PV de toute l'extension. */
+function drawLeague(rng: Rng, index: CardIndex): Arena {
+  const card = strongest(rng, [...index.set.cards]);
+  return {
+    type: card.types[0] ?? 'Colorless',
+    form: 'statuses',
+    championCardId: card.id,
+    league: true,
+  };
 }
 
 /** Tire les Arènes parmi les types présents ; un type qui revient change de forme d'effet. */
@@ -74,13 +103,19 @@ function drawArenas(rng: Rng, index: CardIndex, count: number): Arena[] {
 }
 
 export function createRun(index: CardIndex, options: RunOptions): RunState {
-  const { seed, arenaCount = DEFAULT_ARENA_COUNT } = options;
+  const { seed, arenaCount = DEFAULT_ARENA_COUNT, league = true } = options;
+  const { lockedTools = [], starterLines = null, dailyDate = null } = options;
   const rng = createRng(seed);
   const arenas = drawArenas(rng, index, arenaCount);
-  const starter = generateStarterDeck(rng, index);
+  if (league) arenas.push(drawLeague(rng, index));
+  const starter = generateStarterDeck(rng, index, starterLines);
   const deck = starter.map((card, uid) => ({ uid, ...card, energies: [] }));
   return {
+    setId: index.set.id,
     seed,
+    lockedTools: [...lockedTools],
+    starterLines: starterLines ? [...starterLines] : null,
+    dailyDate,
     rng,
     phase: 'intro',
     arenas,
@@ -88,10 +123,20 @@ export function createRun(index: CardIndex, options: RunOptions): RunState {
     stageIndex: 0,
     deck,
     tools: [],
+    toolSlots: TOOL_SLOTS,
+    aceSpec: null,
     money: 0,
-    stats: { comboCounts: {}, seenDexIds: [], bestHand: 0, handsPlayed: 0, fightsWon: 0 },
+    stats: {
+      comboCounts: {},
+      seenDexIds: [],
+      bestHand: 0,
+      handsPlayed: 0,
+      fightsWon: 0,
+      championsBeaten: 0,
+    },
     arenaBanishedUids: [],
     arenaEvolutionUsed: false,
+    arenaCenterUsed: false,
     nextUid: deck.length,
     fight: null,
     shop: null,
@@ -105,22 +150,28 @@ export function currentArena(state: RunState): Arena {
   return arena;
 }
 
-function championHp(arenaIndex: number): number {
-  const hp = ARENA_HP[arenaIndex];
+function championHp(arena: Arena, arenaIndex: number): number {
+  const hp = arena.league ? LEAGUE_HP : ARENA_HP[arenaIndex];
   if (hp === undefined) throw new Error(`Pas de PV pour l'Arène ${arenaIndex}`);
   return hp;
 }
 
+/** Le Maître de la Ligue emprunte l'effet permanent d'une des Arènes de la run. */
+function drawLeagueEffect(state: RunState): PokemonType {
+  const types = state.arenas.filter((arena) => !arena.league).map((arena) => arena.type);
+  return pick(state.rng, types);
+}
+
 function buildOpponent(state: RunState, index: CardIndex): Opponent {
   const arena = currentArena(state);
-  const kind = STAGE_KINDS[state.stageIndex] as OpponentKind;
-  const card =
-    kind === 'champion'
-      ? index.byId.get(arena.championCardId)
-      : pick(state.rng, cardsOfType(index, arena.type));
+  const kind = arena.league ? 'league' : (STAGE_KINDS[state.stageIndex] as OpponentKind);
+  const boss = kind === 'champion' || kind === 'league';
+  const card = boss
+    ? index.byId.get(arena.championCardId)
+    : pick(state.rng, cardsOfType(index, arena.type));
   if (!card) throw new Error(`Carte de Champion inconnue : ${arena.championCardId}`);
-  const ratio = { trainer: TRAINER_HP_RATIO, elite: ELITE_HP_RATIO, champion: 1 }[kind];
-  const maxHp = Math.floor(championHp(state.arenaIndex) * ratio);
+  const ratio = { trainer: TRAINER_HP_RATIO, elite: ELITE_HP_RATIO, champion: 1, league: 1 }[kind];
+  const maxHp = Math.floor(championHp(arena, state.arenaIndex) * ratio);
   return {
     kind,
     cardId: card.id,
@@ -129,7 +180,8 @@ function buildOpponent(state: RunState, index: CardIndex): Opponent {
     hp: maxHp,
     weaknesses: [...card.weaknesses],
     resistances: [...card.resistances],
-    form: kind === 'champion' ? arena.form : null,
+    form: boss ? arena.form : null,
+    ...(kind === 'league' ? { leagueEffect: drawLeagueEffect(state) } : {}),
   };
 }
 
@@ -145,6 +197,9 @@ function advance(state: RunState, events: GameEvent[]): void {
   state.arenaIndex += 1;
   state.arenaBanishedUids = [];
   state.arenaEvolutionUsed = false;
+  state.arenaCenterUsed = false;
+  // La Ligue se joue en un seul combat.
+  if (state.arenas[state.arenaIndex]?.league) state.stageIndex = CHAMPION_STAGE;
 }
 
 function play(state: RunState, index: CardIndex, uids: number[], events: GameEvent[]): void {
@@ -157,6 +212,8 @@ function play(state: RunState, index: CardIndex, uids: number[], events: GameEve
   if (outcome !== 'won' || !gains) return;
   state.money += gains.total;
   state.stats.fightsWon += 1;
+  const opponentKind = state.fight?.opponent.kind;
+  if (opponentKind === 'champion' || opponentKind === 'league') state.stats.championsBeaten += 1;
   events.push({ type: 'fightWon', gains });
   const lastArena = state.arenaIndex === state.arenas.length - 1;
   if (lastArena && state.stageIndex === CHAMPION_STAGE) {
@@ -238,6 +295,15 @@ export function applyAction(state: RunState, action: Action, index: CardIndex): 
       break;
     case 'buyBooster':
       buyBooster(next, index, action.index);
+      break;
+    case 'buyConsumable':
+      buyConsumable(next, index, action.targetUid);
+      break;
+    case 'useAce':
+      useAce(next, index, action.targetUids ?? [], events);
+      break;
+    case 'removeCard':
+      removeCard(next, action.uid);
       break;
     case 'sellTool':
       sellTool(next, action.uid);

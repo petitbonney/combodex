@@ -133,6 +133,7 @@ describe('rendu en texte', () => {
     const shop = {
       slots: [{ kind: 'tool' as const, toolId: 'colossus' as const, type: null, price: 5 }, null],
       boosters: [{ kind: 'energy' as const, price: 4 }, null],
+      consumable: null,
       rerollCost: 5,
     };
     const text = renderShop(view, { ...state, money: 7 }, shop).join('\n');
@@ -158,6 +159,7 @@ describe('rendu en texte', () => {
         { kind: 'trainer' as const, price: 6 },
         { kind: 'premium' as const, price: 8 },
       ],
+      consumable: null,
       rerollCost: 5,
     };
     const text = renderShop(view, createRun(index, { seed: 6 }), shop).join('\n');
